@@ -1,0 +1,141 @@
+/*******************************
+            Input
+*******************************/
+
+/*-------------------
+      Element
+--------------------*/
+
+@inputFont: @pageFont;
+@verticalPadding: @inputVerticalPadding;
+@horizontalPadding: @inputHorizontalPadding;
+
+@lineHeight: @inputLineHeight;
+@lineHeightOffset: ((@lineHeight - 1em) / 2);
+
+@padding: (@verticalPadding - @lineHeightOffset) @horizontalPadding;
+
+@textAlign: left;
+@background: @inputBackground;
+@borderWidth: 1px;
+@border: @borderWidth solid @borderColor;
+@boxShadow: none;
+
+@borderRadius: @defaultBorderRadius;
+@transition:
+  box-shadow @defaultDuration @defaultEasing,
+  border-color @defaultDuration @defaultEasing
+;
+
+@inputColor: @textColor;
+
+/*-------------------
+        Types
+--------------------*/
+
+/* Icon Input */
+@iconWidth: (@verticalPadding * 2) + @glyphWidth;
+@iconOpacity: 0.5;
+@iconFocusOpacity: 1;
+@iconOffset: -0.5em;
+
+@iconDistance: 0em;
+@iconMargin: @iconWidth + @iconDistance;
+@iconTransition: opacity 0.3s @defaultEasing;
+
+@transparentIconWidth: @glyphWidth;
+@transparentIconMargin: 2em;
+
+/* Circular Icon Input */
+@circularIconVerticalOffset: 0.35em;
+@circularIconHorizontalOffset: 0.5em;
+
+/* Labeled Input */
+@labelCornerTop: @borderWidth;
+@labelCornerRight: @borderWidth;
+@labelCornerSize: @relative9px;
+@labelSize: 1em;
+@labelVerticalPadding: (@verticalPadding - @lineHeightOffset);
+
+@labeledMargin: 2.5em;
+@labeledIconInputMargin: 3.25em;
+@labeledIconMargin: 1.25em;
+
+/*-------------------
+        States
+--------------------*/
+
+/* Placeholder */
+@placeholderColor: @unselectedTextColor;
+@placeholderFocusColor: @textColor;
+
+/* Down */
+@downBorderColor: rgba(0, 0, 0, 0.3);
+@downBackground: #FAFAFA;
+@downColor: @textColor;
+@downBoxShadow: none;
+
+/* Focus */
+@focusBorderColor: @focusedFormBorderColor;
+@focusBackground: @background;
+@focusColor: @hoveredTextColor;
+@focusBoxShadow: none;
+
+/* Primary */
+@primaryBackground: @primaryBackgroundColor;
+@primaryBorder: @primaryBorderColor;
+@primaryBoxShadow: none;
+
+@placeholderPrimaryColor: lighten(@primaryColor, 40);
+@placeholderPrimaryFocusColor: lighten(@primaryColor, 30);
+
+/* Secondary */
+@secondaryBackground: @secondaryBackgroundColor;
+@secondaryBorder: @secondaryBorderColor;
+@secondaryBoxShadow: none;
+
+@placeholderSecondaryColor: lighten(@secondaryColor, 40);
+@placeholderSecondaryFocusColor: lighten(@secondaryColor, 30);
+
+/* Success */
+@successBackground: @successBackgroundColor;
+@successBorder: @successBorderColor;
+@successBoxShadow: none;
+
+@placeholderSuccessColor: lighten(@successColor, 40);
+@placeholderSuccessFocusColor: lighten(@successColor, 30);
+
+/* Info */
+@infoBackground: @infoBackgroundColor;
+@infoBorder: @infoBorderColor;
+@infoBoxShadow: none;
+
+@placeholderInfoColor: lighten(@infoColor, 40);
+@placeholderInfoFocusColor: lighten(@infoColor, 30);
+
+/* Warning */
+@warningBackground: @warningBackgroundColor;
+@warningBorder: @warningBorderColor;
+@warningBoxShadow: none;
+
+@placeholderWarningColor: lighten(@warningColor, 40);
+@placeholderWarningFocusColor: lighten(@warningColor, 30);
+
+/* Error */
+@errorBackground: @errorBackgroundColor;
+@errorBorder: @errorBorderColor;
+@errorBoxShadow: none;
+
+@placeholderErrorColor: lighten(@errorColor, 40);
+@placeholderErrorFocusColor: lighten(@errorColor, 30);
+
+/* Loader */
+@invertedLoaderFillColor: rgba(0, 0, 0, 0.15);
+
+/*-------------------
+      Variations
+--------------------*/
+
+/* Inverted */
+@transparentInvertedPlaceholderColor: @invertedUnselectedTextColor;
+@transparentInvertedColor: @white;

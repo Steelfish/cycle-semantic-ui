@@ -1,0 +1,40 @@
+{
+  "name": "cycle-semantic-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "scripts": {
+    "typings": "typings install",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/Steelfish/cycle-semantic-ui"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cycle/base": "^4.1.1",
+    "@cycle/dom": "^14.1.0",
+    "@cycle/isolate": "^1.4.0",
+    "xstream": "^9.0.0"
+  },
+  "devDependencies": {
+    "css-loader": "^0.26.0",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
+    "ts-loader": "^1.2.2",
+    "typescript": "^2.0.10",
+    "typings": "^2.0.0",
+    "webpack": "^1.13.2",
+    "webpack-append": "^0.1.2",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.12.2"
+  }
+}

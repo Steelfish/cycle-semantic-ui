@@ -1,0 +1,668 @@
+/*!
+ * # Semantic UI - Input
+ * http://github.com/semantic-org/semantic-ui/
+ *
+ *
+ * Copyright 2015 Contributors
+ * Released under the MIT license
+ * http://opensource.org/licenses/MIT
+ *
+ */
+
+/*******************************
+            Theme
+*******************************/
+
+@import (multiple) '../../theme.less';
+@import './index.variables';
+@import './index.overrides';
+
+/*******************************
+           Standard
+*******************************/
+
+
+/*--------------------
+        Inputs
+---------------------*/
+
+.ui.input {
+  position: relative;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-flex;
+  color: @inputColor;
+}
+.ui.input input,
+.ui.input textarea {
+  margin: 0em;
+  max-width: 100%;
+  flex: 1 0 auto;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-align: @textAlign;
+  line-height: @lineHeight;
+
+  font-family: @inputFont;
+  padding: @padding;
+
+  background: @background;
+  border: @border;
+  color: @inputColor;
+  border-radius: @borderRadius;
+  transition: @transition;
+
+  box-shadow: @boxShadow;
+}
+
+
+/*--------------------
+      Placeholder
+---------------------*/
+
+/* browsers require these rules separate */
+
+.ui.input input::-webkit-input-placeholder {
+  color: @placeholderColor;
+}
+.ui.input input::-moz-placeholder {
+  color: @placeholderColor;
+}
+.ui.input input::-ms-input-placeholder {
+  color: @placeholderColor;
+}
+
+
+/*******************************
+            States
+*******************************/
+
+/*--------------------
+        Disabled
+---------------------*/
+
+.ui.disabled.input,
+.ui.input input[disabled] {
+  opacity: @disabledOpacity;
+}
+
+.ui.disabled.input input,
+.ui.disabled.input textarea {
+  pointer-events: none;
+}
+
+
+/*--------------------
+        Active
+---------------------*/
+
+.ui.input input:active,
+.ui.input.down input {
+  border-color: @downBorderColor;
+  background: @downBackground;
+  color: @downColor;
+  box-shadow: @downBoxShadow;
+}
+
+/*--------------------
+       Loading
+---------------------*/
+
+.ui.loading.loading.input > i.icon:before {
+  position: absolute;
+  content: '';
+  top: 50%;
+  left: 50%;
+
+  margin: @loaderMargin;
+  width: @loaderSize;
+  height: @loaderSize;
+
+  border-radius: @circularRadius;
+  border: @loaderLineWidth solid @loaderFillColor;
+}
+.ui.loading.loading.input > i.icon:after {
+  position: absolute;
+  content: '';
+  top: 50%;
+  left: 50%;
+
+  margin: @loaderMargin;
+  width: @loaderSize;
+  height: @loaderSize;
+
+  animation: button-spin @loaderSpeed linear;
+  animation-iteration-count: infinite;
+
+  border-radius: @circularRadius;
+
+  border-color: @loaderLineColor transparent transparent;
+  border-style: solid;
+  border-width: @loaderLineWidth;
+
+  box-shadow: 0px 0px 0px 1px transparent;
+}
+
+
+/*--------------------
+        Focus
+---------------------*/
+
+.ui.input.focus input,
+.ui.input input:focus  {
+  border-color: @focusBorderColor;
+  background: @focusBackground;
+  color: @focusColor;
+  box-shadow: @focusBoxShadow;
+}
+.ui.input.focus input::-webkit-input-placeholder,
+.ui.input input:focus::-webkit-input-placeholder {
+  color: @placeholderFocusColor;
+}
+.ui.input.focus input::-moz-placeholder,
+.ui.input input:focus::-moz-placeholder {
+  color: @placeholderFocusColor;
+}
+.ui.input.focus input::-ms-input-placeholder,
+.ui.input input:focus::-ms-input-placeholder {
+  color: @placeholderFocusColor;
+}
+
+/*--------------------
+        Primary
+---------------------*/
+
+.ui.input.primaryColored input {
+  background-color: @primaryBackground;
+  border-color: @primaryBorder;
+  color: @primaryTextColor;
+  box-shadow: @primaryBoxShadow;
+}
+/* Primary Placeholder */
+.ui.input.primaryColored input::-webkit-input-placeholder {
+  color: @placeholderPrimaryColor;
+}
+.ui.input.primaryColored input::-moz-placeholder {
+  color: @placeholderPrimaryColor;
+}
+.ui.input.primaryColored input::-ms-input-placeholder {
+  color: @placeholderPrimaryColor;
+}
+/* Focused Primary Placeholder */
+.ui.input.primaryColored input:focus::-webkit-input-placeholder {
+  color: @placeholderPrimaryFocusColor;
+}
+.ui.input.primaryColored input:focus::-moz-placeholder {
+  color: @placeholderPrimaryFocusColor;
+}
+.ui.input.primaryColored input:focus::-ms-input-placeholder {
+  color: @placeholderPrimaryFocusColor;
+}
+
+/*--------------------
+        Secondary
+---------------------*/
+
+.ui.input.secondaryColored input {
+  background-color: @secondaryBackground;
+  border-color: @secondaryBorder;
+  color: @secondaryTextColor;
+  box-shadow: @secondaryBoxShadow;
+}
+/* Secondary Placeholder */
+.ui.input.secondaryColored input::-webkit-input-placeholder {
+  color: @placeholderSecondaryColor;
+}
+.ui.input.secondaryColored input::-moz-placeholder {
+  color: @placeholderSecondaryColor;
+}
+.ui.input.secondaryColored input::-ms-input-placeholder {
+  color: @placeholderSecondaryColor;
+}
+/* Focused Secondary Placeholder */
+.ui.input.secondaryColored input:focus::-webkit-input-placeholder {
+  color: @placeholderSecondaryFocusColor;
+}
+.ui.input.secondaryColored input:focus::-moz-placeholder {
+  color: @placeholderSecondaryFocusColor;
+}
+.ui.input.secondaryColored input:focus::-ms-input-placeholder {
+  color: @placeholderSecondaryFocusColor;
+}
+
+/*--------------------
+        Success
+---------------------*/
+
+.ui.input.successColored input {
+  background-color: @successBackground;
+  border-color: @successBorder;
+  color: @successTextColor;
+  box-shadow: @successBoxShadow;
+}
+/* Success Placeholder */
+.ui.input.successColored input::-webkit-input-placeholder {
+  color: @placeholderSuccessColor;
+}
+.ui.input.successColored input::-moz-placeholder {
+  color: @placeholderSuccessColor;
+}
+.ui.input.successColored input::-ms-input-placeholder {
+  color: @placeholderSuccessColor;
+}
+/* Focused Success Placeholder */
+.ui.input.successColored input:focus::-webkit-input-placeholder {
+  color: @placeholderSuccessFocusColor;
+}
+.ui.input.successColored input:focus::-moz-placeholder {
+  color: @placeholderSuccessFocusColor;
+}
+.ui.input.successColored input:focus::-ms-input-placeholder {
+  color: @placeholderSuccessFocusColor;
+}
+
+/*--------------------
+        Info
+---------------------*/
+
+.ui.input.infoColored input {
+  background-color: @infoBackground;
+  border-color: @infoBorder;
+  color: @infoTextColor;
+  box-shadow: @infoBoxShadow;
+}
+/* Info Placeholder */
+.ui.input.infoColored input::-webkit-input-placeholder {
+  color: @placeholderInfoColor;
+}
+.ui.input.infoColored input::-moz-placeholder {
+  color: @placeholderInfoColor;
+}
+.ui.input.infoColored input::-ms-input-placeholder {
+  color: @placeholderInfoColor;
+}
+/* Focused Info Placeholder */
+.ui.input.infoColored input:focus::-webkit-input-placeholder {
+  color: @placeholderInfoFocusColor;
+}
+.ui.input.infoColored input:focus::-moz-placeholder {
+  color: @placeholderInfoFocusColor;
+}
+.ui.input.infoColored input:focus::-ms-input-placeholder {
+  color: @placeholderInfoFocusColor;
+}
+
+/*--------------------
+        Warning
+---------------------*/
+
+.ui.input.warningColored input {
+  background-color: @warningBackground;
+  border-color: @warningBorder;
+  color: @warningTextColor;
+  box-shadow: @warningBoxShadow;
+}
+/* Warning Placeholder */
+.ui.input.warningColored input::-webkit-input-placeholder {
+  color: @placeholderWarningColor;
+}
+.ui.input.warningColored input::-moz-placeholder {
+  color: @placeholderWarningColor;
+}
+.ui.input.warningColored input::-ms-input-placeholder {
+  color: @placeholderWarningColor;
+}
+/* Focused Warning Placeholder */
+.ui.input.warningColored input:focus::-webkit-input-placeholder {
+  color: @placeholderWarningFocusColor;
+}
+.ui.input.warningColored input:focus::-moz-placeholder {
+  color: @placeholderWarningFocusColor;
+}
+.ui.input.warningColored input:focus::-ms-input-placeholder {
+  color: @placeholderWarningFocusColor;
+}
+
+/*--------------------
+        Error
+---------------------*/
+
+.ui.input.errorColored input {
+  background-color: @errorBackground;
+  border-color: @errorBorder;
+  color: @errorTextColor;
+  box-shadow: @errorBoxShadow;
+}
+/* Error Placeholder */
+.ui.input.errorColored input::-webkit-input-placeholder {
+  color: @placeholderErrorColor;
+}
+.ui.input.errorColored input::-moz-placeholder {
+  color: @placeholderErrorColor;
+}
+.ui.input.errorColored input::-ms-input-placeholder {
+  color: @placeholderErrorColor;
+}
+/* Focused Error Placeholder */
+.ui.input.errorColored input:focus::-webkit-input-placeholder {
+  color: @placeholderErrorFocusColor;
+}
+.ui.input.errorColored input:focus::-moz-placeholder {
+  color: @placeholderErrorFocusColor;
+}
+.ui.input.errorColored input:focus::-ms-input-placeholder {
+  color: @placeholderErrorFocusColor;
+}
+
+/*******************************
+           Variations
+*******************************/
+
+/*--------------------
+      Transparent
+---------------------*/
+
+
+.ui.transparent.input input,
+.ui.transparent.input textarea {
+  border-color: transparent !important;
+  background-color: transparent !important;
+  padding: 0em !important;
+  box-shadow: none !important;
+}
+/* Transparent Icon */
+.ui.transparent.icon.input > i.icon {
+  width: @transparentIconWidth;
+}
+.ui.transparent.icon.input > input {
+  padding-left: 0em !important;
+  padding-right: @transparentIconMargin !important;
+}
+.ui.transparent[class*="left icon"].input > input {
+  padding-left: @transparentIconMargin !important;
+  padding-right: 0em !important;
+}
+
+/* Transparent Inverted */
+.ui.transparent.inverted.input {
+  color: @transparentInvertedColor;
+}
+.ui.transparent.inverted.input input {
+  color: inherit;
+}
+
+.ui.transparent.inverted.input input::-webkit-input-placeholder {
+  color: @transparentInvertedPlaceholderColor;
+}
+.ui.transparent.inverted.input input::-moz-placeholder {
+  color: @transparentInvertedPlaceholderColor;
+}
+.ui.transparent.inverted.input input::-ms-input-placeholder {
+  color: @transparentInvertedPlaceholderColor;
+}
+
+
+/*--------------------
+         Icon
+---------------------*/
+
+.ui.icon.input > i.icon {
+  cursor: default;
+  position: absolute;
+  line-height: 1;
+  text-align: center;
+  top: 0px;
+  right: 0px;
+  margin: 0em;
+  height: 100%;
+
+  width: @iconWidth;
+  opacity: @iconOpacity;
+  border-radius: 0em @borderRadius @borderRadius 0em;
+  transition: @iconTransition;
+}
+.ui.icon.input > i.icon:not(.link) {
+  pointer-events: none;
+}
+.ui.icon.input input {
+  padding-right: @iconMargin !important;
+}
+
+.ui.icon.input > i.icon:before,
+.ui.icon.input > i.icon:after {
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100%;
+  margin-top: @iconOffset;
+}
+.ui.icon.input > i.link.icon {
+  cursor: pointer;
+}
+.ui.icon.input > i.circular.icon {
+  top: @circularIconVerticalOffset;
+  right: @circularIconHorizontalOffset;
+}
+
+/* Left Icon Input */
+.ui[class*="left icon"].input > i.icon {
+  right: auto;
+  left: @borderWidth;
+  border-radius: @borderRadius 0em 0em @borderRadius;
+}
+.ui[class*="left icon"].input > i.circular.icon {
+  right: auto;
+  left: @circularIconHorizontalOffset;
+}
+.ui[class*="left icon"].input > input {
+  padding-left: @iconMargin !important;
+  padding-right: @horizontalPadding !important;
+}
+
+/* Focus */
+.ui.icon.input > input:focus ~ i.icon {
+  opacity: 1;
+}
+
+/*--------------------
+        Labeled
+---------------------*/
+
+/* Adjacent Label */
+.ui.labeled.input > .label {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: @relativeMedium;
+}
+.ui.labeled.input > .label:not(.corner) {
+  padding-top: @verticalPadding;
+  padding-bottom: @verticalPadding;
+}
+
+/* Regular Label on Left */
+.ui.labeled.input:not([class*="corner labeled"]) .label:first-child {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.ui.labeled.input:not([class*="corner labeled"]) .label:first-child + input {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-left-color: transparent;
+}
+.ui.labeled.input:not([class*="corner labeled"]) .label:first-child + input:focus {
+  border-left-color: @focusBorderColor;
+}
+
+/* Regular Label on Right */
+.ui[class*="right labeled"].input input {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-right-color: transparent !important;
+}
+.ui[class*="right labeled"].input input + .label {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.ui[class*="right labeled"].input input:focus {
+  border-right-color: @focusBorderColor !important;
+}
+
+/* Corner Label */
+.ui.labeled.input .corner.label {
+  top: @labelCornerTop;
+  right: @labelCornerRight;
+  font-size: @labelCornerSize;
+  border-radius: 0em @borderRadius 0em 0em;
+}
+
+/* Spacing with corner label */
+.ui[class*="corner labeled"]:not([class*="left corner labeled"]).labeled.input input {
+  padding-right: @labeledMargin !important;
+}
+.ui[class*="corner labeled"].icon.input:not([class*="left corner labeled"]) > input {
+  padding-right: @labeledIconInputMargin !important;
+}
+.ui[class*="corner labeled"].icon.input:not([class*="left corner labeled"]) > .icon {
+  margin-right: @labeledIconMargin;
+}
+
+/* Left Labeled */
+.ui[class*="left corner labeled"].labeled.input input {
+  padding-left: @labeledMargin !important;
+}
+.ui[class*="left corner labeled"].icon.input > input {
+  padding-left: @labeledIconInputMargin !important;
+}
+.ui[class*="left corner labeled"].icon.input > .icon {
+  margin-left: @labeledIconMargin;
+}
+
+/* Corner Label Position  */
+.ui.input > .ui.corner.label {
+  top: @borderWidth;
+  right: @borderWidth;
+}
+.ui.input > .ui.left.corner.label {
+  right: auto;
+  left: @borderWidth;
+}
+
+
+/*--------------------
+        Action
+---------------------*/
+
+.ui.action.input > .button,
+.ui.action.input > .buttons {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.ui.action.input > .button,
+.ui.action.input > .buttons > .button {
+  padding-top: @verticalPadding;
+  padding-bottom: @verticalPadding;
+  margin: 0;
+}
+
+/* Button on Right */
+.ui.action.input:not([class*="left action"]) > input {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-right-color: transparent !important;
+}
+.ui.action.input:not([class*="left action"]) > .dropdown,
+.ui.action.input:not([class*="left action"]) > .button,
+.ui.action.input:not([class*="left action"]) > .buttons > .button {
+  border-radius: 0px;
+}
+.ui.action.input:not([class*="left action"]) > .dropdown:last-child,
+.ui.action.input:not([class*="left action"]) > .button:last-child,
+.ui.action.input:not([class*="left action"]) > .buttons:last-child > .button {
+  border-radius: 0px @borderRadius @borderRadius 0px;
+}
+
+/* Input Focus */
+.ui.action.input:not([class*="left action"]) input:focus {
+  border-right-color: @focusBorderColor !important;
+}
+
+/* Button on Left */
+.ui[class*="left action"].input > input {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-left-color: transparent !important;
+}
+.ui[class*="left action"].input > .dropdown,
+.ui[class*="left action"].input > .button,
+.ui[class*="left action"].input > .buttons > .button {
+  border-radius: 0px;
+}
+.ui[class*="left action"].input > .dropdown:first-child,
+.ui[class*="left action"].input > .button:first-child,
+.ui[class*="left action"].input > .buttons:first-child > .button {
+  border-radius: @borderRadius 0px 0px @borderRadius;
+}
+/* Input Focus */
+.ui[class*="left action"].input > input:focus {
+  border-left-color: @focusBorderColor !important;
+}
+
+/*--------------------
+       Inverted
+---------------------*/
+
+/* Standard */
+.ui.inverted.input input {
+  border: none;
+}
+
+/*--------------------
+        Fluid
+---------------------*/
+
+.ui.fluid.input {
+  display: flex;
+}
+.ui.fluid.input > input {
+  width: 0px !important;
+}
+
+/*--------------------
+        Size
+---------------------*/
+
+.ui.mini.input,
+.ui.mini.input input {
+  font-size: @relativeMini !important;
+}
+.ui.tiny.input,
+.ui.tiny.input input {
+  font-size: @relativeTiny !important;
+}
+.ui.small.input,
+.ui.small.input input {
+  font-size: @relativeSmall;
+}
+.ui.input,
+.ui.input input {
+  font-size: @relativeMedium;
+}
+.ui.large.input,
+.ui.large.input input {
+  font-size: @large;
+}
+.ui.big.input,
+.ui.big.input input {
+  font-size: @relativeBig;
+}
+.ui.huge.input,
+.ui.huge.input input {
+  font-size: @relativeHuge;
+}
+.ui.massive.input,
+.ui.massive.input input {
+  font-size: @relativeMassive;
+}
