@@ -1,8 +1,8 @@
 import {
   DOMContent, VNode, IInteractiveComponentSources,
   IInteractiveComponentSinks, isDOMContent
-} from "interfaces";
-import { numToText } from "utils";
+} from "../../interfaces";
+import { numToText } from "../../utils";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { div, label } from "@cycle/dom";

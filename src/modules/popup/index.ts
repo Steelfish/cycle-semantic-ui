@@ -1,6 +1,6 @@
-import { DOMContent, VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "interfaces";
-import { Size, Animation, Direction } from "enums";
-import { Transition } from "modules/transition";
+import { DOMContent, VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
+import { Size, Animation, Direction } from "../../enums";
+import { Transition } from "../../modules/transition";
 import { div } from "@cycle/dom";
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";

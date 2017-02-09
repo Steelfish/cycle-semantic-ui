@@ -1,5 +1,5 @@
-import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "interfaces";
-import { Color, Size, IconType } from "enums";
+import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "../../interfaces";
+import { Color, Size, IconType } from "../../enums";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { i } from "@cycle/dom";

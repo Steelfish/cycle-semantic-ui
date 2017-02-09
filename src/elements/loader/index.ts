@@ -1,9 +1,9 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "interfaces";
-import { Size } from "enums";
+import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
+import { Size } from "../../enums";
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";
-import { Dimmer } from "modules/dimmer";
+import { Dimmer } from "../../modules/dimmer";
 
 export namespace Loader {
   export interface Props {

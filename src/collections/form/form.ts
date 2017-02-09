@@ -1,8 +1,8 @@
 import {
   DOMContent, VNode, IInteractiveComponentSources,
   IInteractiveComponentSinks, isDOMContent
-} from "interfaces";
-import { Size } from "enums";
+} from "../../interfaces";
+import { Size } from "../../enums";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";

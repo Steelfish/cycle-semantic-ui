@@ -9,7 +9,7 @@
     "serve-docs": "webpack-dev-server --hot --config docs-src/webpack.config.js",
     "build-docs": "rm -rf docs/ && webpack --config docs-src/webpack.config.js",
     "build": "rm -rf build/ && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.ts test/**/*.ts --compilers ts:ts-node/register"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,10 @@
     "xstream": "^10.2.0"
   },
   "devDependencies": {
+    "@cycle/xstream-adapter": "^3.1.0",
     "@cycle/xstream-run": "^4.2.0",
     "@types/es6-shim": "^0.31.32",
+    "@types/mocha": "^2.2.39",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.0",
     "cyclic-router": "^3.0.1",
@@ -39,6 +41,7 @@
     "style-loader": "^0.13.1",
     "switch-path": "^1.1.8",
     "ts-loader": "^2.0.0",
+    "ts-node": "^2.1.0",
     "typescript": "^2.0.10",
     "typings": "^2.0.0",
     "webpack": "^2.2.1",

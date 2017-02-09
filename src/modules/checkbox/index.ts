@@ -1,4 +1,4 @@
-import { DOMContent, IInteractiveComponentSources, isDOMContent} from "interfaces";
+import { DOMContent, IInteractiveComponentSources, isDOMContent} from "../../interfaces";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import {input, label, div, VNode} from "@cycle/dom";

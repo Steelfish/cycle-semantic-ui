@@ -1,10 +1,10 @@
-import {DOMContent, ITargettingComponentSources, IInteractiveComponentSinks, VNode, EventSelector} from "interfaces";
+import {DOMContent, ITargettingComponentSources, IInteractiveComponentSinks, VNode, EventSelector} from "../../interfaces";
 import isolate from "@cycle/isolate";
 import xs from "xstream";
-import {Animation, Direction} from "enums";
+import {Animation, Direction} from "../../enums";
 import {h, div} from "@cycle/dom";
-import {Transition} from "modules/transition";
-import {patchClassList, addElement} from "utils";
+import {Transition} from "../../modules/transition";
+import {patchClassList, addElement} from "../../utils";
 ;
 
 export namespace Dimmer {

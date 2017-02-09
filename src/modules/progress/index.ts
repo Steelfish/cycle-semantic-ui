@@ -1,5 +1,5 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "interfaces";
-import { Size, Attachment, Color } from "enums";
+import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
+import { Size, Attachment, Color } from "../../enums";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";

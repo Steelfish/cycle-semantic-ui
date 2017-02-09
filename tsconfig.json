@@ -14,11 +14,7 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "sourceMap": true,
-        "rootDir": "./src",
         "outDir": "./build",
-        "baseUrl": "./src",
-        "paths": {
-        },
         "typeRoots": ["node_modules/@types", "./typings-custom"]
     },  
     "formatCodeOptions": {
@@ -28,6 +24,7 @@
     "exclude": [
         "node_modules",
         "docs-src",
+        "test",
         "typings/browser",
         "typings/browser.d.ts"
     ],  

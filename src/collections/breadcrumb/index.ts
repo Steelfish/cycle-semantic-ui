@@ -1,4 +1,4 @@
-import { IInteractiveComponentSources, IInteractiveComponentSinks} from "interfaces";
+import { IInteractiveComponentSources, IInteractiveComponentSinks} from "../../interfaces";
 import {div, a, span, i, VNode} from "@cycle/dom";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
@@ -55,7 +55,7 @@ export namespace Breadcrumb {
     let content = isContent(pOrC) ? pOrC : c;
     let children = content.map(c => [
       section(c), divider(props)
-    ]).reduce((a, n) => a.concat(n));
+    ]).reduce((a, n) => a.concat(n), []);
     children.splice(-1, 1);
     return div({ props: { className: "ui breadcrumb"}}, children);
   }
@@ -76,7 +76,6 @@ export namespace Breadcrumb {
     }
     return (" / ");
   }
-  
   function isContent(propsOrContent: Props | Content): propsOrContent is Content {
     return propsOrContent !== undefined && (<Content>propsOrContent).push !== undefined;
   }

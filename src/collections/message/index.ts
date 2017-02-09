@@ -1,10 +1,10 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "interfaces";
-import { IconType, Size, Color, Animation, Direction } from "enums";
+import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
+import { IconType, Size, Color, Animation, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";
-import { Icon } from "elements/icon";
-import { Transition } from "modules/transition";
+import { Icon } from "../../elements/icon";
+import { Transition } from "../../modules/transition";
 
 export namespace Message {
   export interface Props {

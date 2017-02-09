@@ -1,5 +1,5 @@
-import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "interfaces";
-import { Size, VerticalAlignment, Float } from "enums";
+import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "../../interfaces";
+import { Size, VerticalAlignment, Float } from "../../enums";
 import isolate from "@cycle/isolate";
 import { a, img } from "@cycle/dom";
 import xs from "xstream";

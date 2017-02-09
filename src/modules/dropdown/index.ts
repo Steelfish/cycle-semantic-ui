@@ -1,5 +1,5 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IValueComponentSinks } from "interfaces";
-import { IconType, Color, Size, Animation, Direction } from "enums";
+import { DOMContent, VNode, IInteractiveComponentSources, IValueComponentSinks } from "../../interfaces";
+import { IconType, Color, Size, Animation, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import dropRepeats from "xstream/extra/dropRepeats";
 import debounce from "xstream/extra/debounce";
@@ -8,9 +8,9 @@ import isolate from "@cycle/isolate";
 import delay from "xstream/extra/delay";
 import { div, input } from "@cycle/dom";
 
-import { Menu } from "collections/menu";
-import { Icon } from "elements/icon";
-import { Transition } from "modules/transition";
+import { Menu } from "../../collections/menu";
+import { Icon } from "../../elements/icon";
+import { Transition } from "../../modules/transition";
 
 export namespace Dropdown {
   export interface Props {

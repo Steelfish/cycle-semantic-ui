@@ -1,12 +1,12 @@
-import { DOMContent, VNode, DOMSource } from "interfaces";
+import { DOMContent, VNode, DOMSource } from "../../interfaces";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";
 import xs, { Stream, MemoryStream } from "xstream";
 
-import { IconType, Direction, Animation} from "enums";
-import { Dimmer} from "modules/dimmer";
-import { Icon } from "elements/icon";
-import { Transition } from "modules/transition";
+import { IconType, Direction, Animation} from "../../enums";
+import { Dimmer} from "../../modules/dimmer";
+import { Icon } from "../../elements/icon";
+import { Transition } from "../../modules/transition";
 
 export namespace Modal {
   export interface Props {

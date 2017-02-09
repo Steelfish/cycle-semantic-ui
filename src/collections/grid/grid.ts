@@ -1,9 +1,9 @@
 import {
   DOMContent, VNode, IInteractiveComponentSources,
   IInteractiveComponentSinks, isDOMContent
-} from "interfaces";
-import { VerticalAlignment, TextAlignment } from "enums";
-import { numToText } from "utils";
+} from "../../interfaces";
+import { VerticalAlignment, TextAlignment } from "../../enums";
+import { numToText } from "../../utils";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { div } from "@cycle/dom";

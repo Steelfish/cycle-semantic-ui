@@ -1,5 +1,5 @@
-import { VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "interfaces";
-import { Animation, AnimationDirection, Direction } from "enums";
+import { VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
+import { Animation, AnimationDirection, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import { h } from "@cycle/dom";
 import isolate from "@cycle/isolate";
