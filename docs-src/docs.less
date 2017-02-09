@@ -1,0 +1,90 @@
+@import "../src/overrides.less";
+@import "../src/main.less";
+@import "../src/theme.less";
+
+.app, .full.height, .content.pusher {
+  height: 100%
+}
+
+.content.pusher {
+  display: flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+}
+
+.left.menu {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+   position: relative;
+   width:250px;
+  background-color: @secondaryColor;
+}
+.left.menu .menu .item {
+  border-radius: 0 !important;
+}
+
+.left.menu > .fixed > .ui.menu {
+  background-color: @secondaryColor;
+  margin:0px;
+  border:0px;
+}
+
+.left.menu > .fixed > .ui.menu .active.item {
+  background: @primaryColor;
+}
+
+.left.menu .ui.menu .item:not(.active):hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.top.menu {
+  width: 100%;
+  position:relative;
+  height: 70px;
+}
+.fixed {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+}
+.fixed > .ui.menu {
+  height: 100%
+}
+.right.view {
+  min-width: 0px;
+  overflow: visible !important;
+  flex: 1 1 auto;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  box-sizing: inherit;
+}
+.page.overview {
+  height:250px;
+  overflow-y: auto;
+}
+.centered {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100%;
+  width:100%;
+}
+
+.top.menu > .ui.menu {
+  background-color: @secondaryColor;
+  border:none;
+  position:fixed;
+  height: 70px;
+  z-index:100;
+}
+
+.ui.disabled.transparent.input,
+.ui.input input[disabled] {
+  opacity: 1;
+}
+
+// body {
+//   background-color: #E9EDEF
+// }

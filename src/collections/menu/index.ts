@@ -7,6 +7,7 @@ import xs from "xstream";
 
 export namespace Menu {
   export interface Props {
+    submenu?: boolean;
     secondary?: boolean;
     pointing?: boolean;
     tabular?: boolean;
@@ -140,7 +141,10 @@ export namespace Menu {
     return div({ props: { className: getClassname(props, content.length) } }, items);
   }
   function getClassname(props: Props, length: number) {
-    let className = "ui";
+    let className;
+    if (!props.submenu) {
+      className = "ui";
+    }
     if (props.secondary) {
       className += " secondary";
     }

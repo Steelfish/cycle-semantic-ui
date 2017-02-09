@@ -6,7 +6,7 @@
         "isolatedModules": false,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declaration": true,
+        // "declaration": true,
         "noImplicitAny": false,
         "noImplicitUseStrict": false,
         "removeComments": false,
@@ -14,12 +14,12 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "sourceMap": true,
-        "rootDir": "./src",
+        // "rootDir": "./src",
         "outDir": "./build",
-        "baseUrl": "./src",
+        "baseUrl": "../src",
         "paths": {
         },
-        "typeRoots": ["node_modules/@types", "./typings-custom"]
+        "typeRoots": ["../typings-custom", "../node_modules/@types"]
     },  
     "formatCodeOptions": {
       "indentSize": 2,
@@ -27,7 +27,6 @@
     },
     "exclude": [
         "node_modules",
-        "docs-src",
         "typings/browser",
         "typings/browser.d.ts"
     ],  

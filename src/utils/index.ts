@@ -1,15 +1,16 @@
-import {VNode} from '@cycle/dom';
-import xs, {Stream} from 'xstream';
-import flattenConcurrently from 'xstream/extra/flattenConcurrently';
+import {VNode} from "@cycle/dom";
+import xs, {Stream} from "xstream";
+import flattenConcurrently from "xstream/extra/flattenConcurrently";
 
 export function patchClassList(target: VNode, classes: string[], classesToAdd: string) {
   let className = "";
   if (target.data) {
-    let props = target.data.props ? target.data.props : { className: target.sel.split('.').join(" ")};
-    let classList = props.className.split(' ') as Array<string>;
+    let props = target.data.props ? target.data.props : { className: target.sel.split(".").join(" ")};
+    let classList = props.className.split(" ") as Array<string>;
     classList.forEach(item => {
-      if (classes.indexOf(item) === -1)
+      if (classes.indexOf(item) === -1) {
         className += item + " ";
+      }
     });
   }
   className += classesToAdd;
@@ -37,10 +38,10 @@ export function addElement(element: VNode, target: VNode, identifier: string): A
   }
   for(let i = 0; i < c.length; i++) {
     let child = c[i];
-    var cProps = child.data ? child.data.props ? child.data.props : {} : {};
+    let cProps = child.data ? child.data.props ? child.data.props : {} : {};
     if (typeof(child) !== "undefined" && typeof(cProps.className) !== "undefined")
     {
-      let classList = child.data.props.className.split(' ') as Array<string>;
+      let classList = child.data.props.className.split(" ") as Array<string>;
       for (let s of classList) {
         if (s === identifier)
         {
@@ -63,14 +64,16 @@ export function asStream(obj): Stream<any> {
     if (typeof(obj.addListener) === "function") {
       return obj;
     }
-    if (Object.prototype.toString.call(obj) === '[object Array]'){
+    if (Object.prototype.toString.call(obj) === "[object Array]"){
         let isStreams = true;
         for (let subobj of obj) {
-          if (typeof(subobj.addListener) !== "function")
+          if (typeof(subobj.addListener) !== "function"){
             isStreams = false;
+          }
         }
-        if (isStreams)
+        if (isStreams) {
           return xs.combine.apply(this, obj);
+        }
     }
     return xs.of(obj);
   }

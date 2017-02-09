@@ -1,1 +1,1 @@
-export "./statistic";
+export * from "./statistic";

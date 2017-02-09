@@ -1,4 +1,4 @@
-export * from './iconType';
+export * from "./iconType";
 
 export enum Size {
   Mini, Tiny, Small, Medium, Large, Big, Huge, Massive, Fluid
@@ -133,12 +133,12 @@ export namespace Animation {
   }
   export function isStatic(anim: Animation): Boolean {
     const staticAnimations = [Animation.Flash, Animation.Shake,
-      Animation.Bounce, Animation.Tada, Animation.Pulse, Animation.Jiggle]
+      Animation.Bounce, Animation.Tada, Animation.Pulse, Animation.Jiggle];
     return staticAnimations.indexOf(anim) !== -1;
   }
   export function isDirectional(anim: Animation): Boolean {
     const directionAnimations = [Animation.Browse, Animation.Fade,
-      Animation.Fly, Animation.Slide, Animation.Swing]
+      Animation.Fly, Animation.Slide, Animation.Swing];
     return directionAnimations.indexOf(anim) !== -1;
   }
 }

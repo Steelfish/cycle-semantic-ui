@@ -19,7 +19,7 @@
         "baseUrl": "./src",
         "paths": {
         },
-        "typeRoots": ["node_modules/@types", "./typings-custom"]
+        "typeRoots": ["./typings", "./typings-custom"]
     },  
     "formatCodeOptions": {
       "indentSize": 2,

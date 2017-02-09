@@ -1,5 +1,5 @@
-import { IInteractiveComponentSources, IInteractiveComponentSinks, VNode} from "interfaces";
-import {div, a, span, i} from "@cycle/dom";
+import { IInteractiveComponentSources, IInteractiveComponentSinks} from "interfaces";
+import {div, a, span, i, VNode} from "@cycle/dom";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 

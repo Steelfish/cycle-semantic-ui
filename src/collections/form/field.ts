@@ -5,7 +5,7 @@ import {
 import { numToText } from "utils";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
-import { div, label } from "@cycle/dom";
+import { div, label, VNode } from "@cycle/dom";
 
 export namespace Field {
   export interface Props {
@@ -54,7 +54,7 @@ export namespace Field {
    *   label?: DOMContent - The label for the field.
    *   body: DOMContent - The field input.
    */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = "") {
+  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = ""): VNode {
     let props = isDOMContent(pOrC) ? {} : pOrC;
     let content = isDOMContent(pOrC) ? pOrC : c;
     let extra = isDOMContent(pOrC) ? (c === "") ? e : c : e;
