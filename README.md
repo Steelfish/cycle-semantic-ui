@@ -4,7 +4,6 @@
   <a href="https://github.com/cyclejs/cyclejs/">
   <img alt="cyclejs-logo" src="https://raw.githubusercontent.com/cyclejs/cyclejs/master/logo.png" width="128">
   </a>
-  +
   <a href="https://github.com/Semantic-Org/Semantic-UI">
   <img alt="semantic-ui-log" src="https://camo.githubusercontent.com/64fc67646c5de06fe6aae46b33accdb111208897/687474703a2f2f73656d616e7469632d75692e636f6d2f696d616765732f6c6f676f2e706e67" width="128">
   </a>
@@ -15,15 +14,45 @@
 
 ## Welcome
 
-This repository is a WIP port of Semantic UI as cyclejs components.
-It is being written in typescript, using xstream as the stream library.
+This repository is home to a set of cyclejs UI components based on Semantic UI.
+It is not a direct port of Semantic UI, there are some slight changes:
+  * The secondary color is now supported for elements that support colors.
+  * Table coloring has been reworked.
+  * The color class have been renamed to primaryColored, infoColored etc. to avoid naming conflicts with the menu elements 'Secondary' style.
+  * Input has been renamed to Textbox
 
 Current status of components available:
 
- * collections: 6/6
- * elements: 12/15
- * views: 1/6
- * modules: 7/16
+ * Collections (6/6)
+  * Breadcrumb
+  * Form
+  * Grid
+  * Menu
+  * Message
+  * Table
+ * Elements (12/15) 
+  * Button
+  * Container
+  * Divider
+  * Header
+  * Icon
+  * Image
+  * Input (Textbox)
+  * Label
+  * List
+  * Loader
+  * Segment
+  * Step
+ * Views (1/6)
+  * Statistic
+ * Modules: (7/16)
+  * Checkbox
+  * Dimmer
+  * Dropdown
+  * Modal
+  * Popup
+  * Progress
+  * Transition
 
 ## Usage
 
