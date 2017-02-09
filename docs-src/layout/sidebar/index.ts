@@ -6,6 +6,7 @@ import { div, VNode } from "@cycle/dom";
 export namespace Sidebar {
   export function run(sources) {
     let currentPage$ = sources.router.history$.map(x => x.pathname) as Stream<string>;
+    let prefix = "/cycle-semantic-ui";
     const vTree$ = currentPage$.map(page =>
       div(".left.menu", [
         div(".fixed", [
@@ -16,7 +17,7 @@ export namespace Sidebar {
             header: true,
             body: ["Introduction", UI.Menu.render(
               { submenu: true, }, [{
-                link: true, href: "/", active: page === "/" || page === "/home",
+                link: true, href: prefix + "/", active: page === prefix + "/" || page === prefix + "/home",
                 body: "About"
               }])]
           },
@@ -24,40 +25,40 @@ export namespace Sidebar {
             header: true,
             body: ["Elements", UI.Menu.render(
               { submenu: true, }, [{
-                link: true, href: "/elements/button", active: page === "/elements/button",
+                link: true, href: prefix + "/elements/button", active: page === prefix + "/elements/button",
                 body: "Button"
               }, {
-                link: true, href: "/elements/container", active: page === "/elements/container",
+                link: true, href: prefix + "/elements/container", active: page === prefix + "/elements/container",
                 body: "Container"
               }, {
-                link: true, href: "/elements/divider", active: page === "/elements/divider",
+                link: true, href: prefix + "/elements/divider", active: page === prefix + "/elements/divider",
                 body: "Divider"
               }, {
-                link: true, href: "/elements/header", active: page === "/elements/header",
+                link: true, href: prefix + "/elements/header", active: page === prefix + "/elements/header",
                 body: "Header"
               }, {
-                link: true, href: "/elements/icon", active: page === "/elements/icon",
+                link: true, href: prefix + "/elements/icon", active: page === prefix + "/elements/icon",
                 body: "Icon"
               }, {
-                link: true, href: "/elements/image", active: page === "/elements/image",
+                link: true, href: prefix + "/elements/image", active: page === prefix + "/elements/image",
                 body: "Image"
               }, {
-                link: true, href: "/elements/label", active: page === "/elements/label",
+                link: true, href: prefix + "/elements/label", active: page === prefix + "/elements/label",
                 body: "Label"
               }, {
-                link: true, href: "/elements/list", active: page === "/elements/list",
+                link: true, href: prefix + "/elements/list", active: page === prefix + "/elements/list",
                 body: "List"
               }, {
-                link: true, href: "/elements/loader", active: page === "/elements/loader",
+                link: true, href: prefix + "/elements/loader", active: page === prefix + "/elements/loader",
                 body: "Loader"
               }, {
-                link: true, href: "/elements/segment", active: page === "/elements/segment",
+                link: true, href: prefix + "/elements/segment", active: page === prefix + "/elements/segment",
                 body: "Segment"
               }, {
-                link: true, href: "/elements/step", active: page === "/elements/step",
+                link: true, href: prefix + "/elements/step", active: page === prefix + "/elements/step",
                 body: "Step"
               }, {
-                link: true, href: "/elements/textbox", active: page === "/elements/textbox",
+                link: true, href: prefix + "/elements/textbox", active: page === prefix + "/elements/textbox",
                 body: "Textbox"
               }])]
           },
@@ -65,22 +66,22 @@ export namespace Sidebar {
             header: true,
             body: ["Collections", UI.Menu.render(
               { submenu: true, }, [{
-                link: true, href: "/collections/breadcrumb", active: page === "/collections/breadcrumb",
+                link: true, href: prefix + "/collections/breadcrumb", active: page === prefix + "/collections/breadcrumb",
                 body: "Breadcrumb"
               }, {
-                link: true, href: "/collections/form", active: page === "/collections/form",
+                link: true, href: prefix + "/collections/form", active: page === prefix + "/collections/form",
                 body: "Form"
               }, {
-                link: true, href: "/collections/grid", active: page === "/collections/grid",
+                link: true, href: prefix + "/collections/grid", active: page === prefix + "/collections/grid",
                 body: "Grid"
               }, {
-                link: true, href: "/collections/menu", active: page === "/collections/menu",
+                link: true, href: prefix + "/collections/menu", active: page === prefix + "/collections/menu",
                 body: "Menu"
               }, {
-                link: true, href: "/collections/message", active: page === "/collections/message",
+                link: true, href: prefix + "/collections/message", active: page === prefix + "/collections/message",
                 body: "Message"
               }, {
-                link: true, href: "/collections/table", active: page === "/collections/table",
+                link: true, href: prefix + "/collections/table", active: page === prefix + "/collections/table",
                 body: "Table"
               }])]
           },
@@ -88,25 +89,25 @@ export namespace Sidebar {
             header: true,
             body: ["Modules", UI.Menu.render(
               { submenu: true, }, [{
-                link: true, href: "/modules/checkbox", active: page === "/modules/checkbox",
+                link: true, href: prefix + "/modules/checkbox", active: page === prefix + "/modules/checkbox",
                 body: "Checkbox"
               }, {
-                link: true, href: "/modules/dimmer", active: page === "/modules/dimmer",
+                link: true, href: prefix + "/modules/dimmer", active: page === prefix + "/modules/dimmer",
                 body: "Dimmer"
               }, {
-                link: true, href: "/modules/dropdown", active: page === "/modules/dropdown",
+                link: true, href: prefix + "/modules/dropdown", active: page === prefix + "/modules/dropdown",
                 body: "Dropdown"
               }, {
-                link: true, href: "/modules/modal", active: page === "/modules/modal",
+                link: true, href: prefix + "/modules/modal", active: page === prefix + "/modules/modal",
                 body: "Modal"
               }, {
-                link: true, href: "/modules/popup", active: page === "/modules/popup",
+                link: true, href: prefix + "/modules/popup", active: page === prefix + "/modules/popup",
                 body: "Popup"
               }, {
-                link: true, href: "/modules/progress", active: page === "/modules/progress",
+                link: true, href: prefix + "/modules/progress", active: page === prefix + "/modules/progress",
                 body: "Progress"
               }, {
-                link: true, href: "/modules/transition", active: page === "/modules/transition",
+                link: true, href: prefix + "/modules/transition", active: page === prefix + "/modules/transition",
                 body: "Transition"
               }])]
           },
@@ -114,7 +115,7 @@ export namespace Sidebar {
             header: true,
             body: ["Views", UI.Menu.render(
               { submenu: true, }, [{
-                link: true, href: "/views/statistic", active: page === "/views/statistic",
+                link: true, href: prefix + "/views/statistic", active: page === prefix + "/views/statistic",
                 body: "Statistic"
               }])]
           }])

@@ -12,7 +12,7 @@ module.exports = {
     './docs-src/docs.less'
   ],
   output: {
-    path: './docs',
+    path: path.resolve('./docs'),
     filename: 'app.js',
     publicPath: "/"
   },

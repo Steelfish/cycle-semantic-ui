@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm install && typings install",
     "serve-docs": "webpack-dev-server --hot --config docs-src/webpack.config.js",
-    "build-docs": "webpack --config docs-src/webpack.config.js",
+    "build-docs": "rm -rf docs/ && webpack --config docs-src/webpack.config.js",
     "build": "rm -rf build/ && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

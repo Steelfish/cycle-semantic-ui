@@ -10,8 +10,8 @@ import routes from "./routes";
 import {Layout} from "./layout";
 
 const history = supportsHistory()
-  ? [createHistory(), switchPath]
-  : [createHashHistory(), switchPath];
+  ? [createHistory(), switchPath, {capture: true}]
+  : [createHashHistory(), switchPath, {capture: true}];
 
 function app(drivers) {
   const page = Router(Object.assign({}, drivers, {routes}));
