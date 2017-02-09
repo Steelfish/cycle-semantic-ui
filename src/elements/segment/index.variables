@@ -138,3 +138,5 @@
   )
 ;
 @tertiaryInvertedColor: @invertedMutedTextColor;
+
+@import (optional) "@{segment_overrides}";

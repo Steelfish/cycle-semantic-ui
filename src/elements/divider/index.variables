@@ -51,3 +51,5 @@
 
 /* Sizes */
 @medium: 1rem;
+
+@import (optional) "@{divider_overrides}";

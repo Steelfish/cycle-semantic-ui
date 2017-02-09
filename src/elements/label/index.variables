@@ -272,3 +272,5 @@
 @big     : @absoluteBig;
 @huge    : @absoluteHuge;
 @massive : @absoluteMassive;
+
+@import (optional) "@{label_overrides}";

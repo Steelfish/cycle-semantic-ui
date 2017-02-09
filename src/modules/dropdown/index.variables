@@ -410,3 +410,5 @@
 /* Pointing Upward */
 @pointingUpwardMenuBorderRadius: @borderRadius;
 @pointingUpwardArrowBoxShadow: @menuBorderWidth @menuBorderWidth 0px @menuBorderWidth @menuBorderColor;
+
+@import (optional) "@{dropdown_overrides}";

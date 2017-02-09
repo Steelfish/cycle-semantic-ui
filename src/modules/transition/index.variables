@@ -8,3 +8,5 @@
 
 @use3DAcceleration: translateZ(0);
 @backfaceVisibility: hidden;
+
+@import (optional) "@{transition_overrides}";

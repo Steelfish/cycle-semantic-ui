@@ -58,3 +58,6 @@
 @big: 2em;
 @huge: 4em;
 @massive: 8em;
+
+@import {font_awesome.variables};
+@import (optional) "@{icon_overrides}";

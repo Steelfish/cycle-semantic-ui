@@ -104,3 +104,5 @@
 @massiveTextValueSize: 3.5rem;
 @massiveValueSize: 8rem;
 @massiveHorizontalValueSize: 7rem;
+
+@import (optional) "@{statistic_overrides}";

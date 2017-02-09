@@ -42,3 +42,5 @@
 @bigWidth: 600px;
 @hugeWidth: 800px;
 @massiveWidth: 960px;
+
+@import (optional) "@{image_overrides}";

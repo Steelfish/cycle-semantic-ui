@@ -111,3 +111,5 @@
 @smallBarHeight: 1em;
 @largeBarHeight: 2.5em;
 @bigBarHeight: 3.5em;
+
+@import (optional) "@{progress_overrides}";

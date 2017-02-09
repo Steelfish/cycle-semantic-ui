@@ -58,3 +58,5 @@
 @simpleEndBackgroundColor: @backgroundColor;
 @simpleInvertedStartBackgroundColor: rgba(255, 255, 255, 0);
 @simpleInvertedEndBackgroundColor: @invertedBackgroundColor;
+
+@import (optional) "@{dimmer_overrides}";

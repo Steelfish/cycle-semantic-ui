@@ -31,3 +31,6 @@
 --------------------*/
 
 @activeFontWeight: bold;
+
+//Add overwriting variables
+@import (optional) "@{breadcrumb_overrides}";
