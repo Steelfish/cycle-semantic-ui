@@ -14,7 +14,7 @@ module.exports = {
   output: {
     path: path.resolve('./docs'),
     filename: 'app.js',
-    publicPath: "/"
+    publicPath: "/cycle-semantic-ui/"
   },
   module: {
     rules: [
@@ -43,7 +43,12 @@ module.exports = {
     ]
   },
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: {
+      index: '/cycle-semantic-ui/',
+      // rewrites: [
+      //   { from: /^\/$/, to: '/cycle-semantic-ui/index.html' },
+      // ]
+    }
   },
   resolve: {
     extensions: ['.js', '.ts'],

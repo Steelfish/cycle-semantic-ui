@@ -2,6 +2,10 @@ import {VNode} from "@cycle/dom";
 import xs, {Stream} from "xstream";
 import flattenConcurrently from "xstream/extra/flattenConcurrently";
 
+export function capitalize(string: string) : string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export function patchClassList(target: VNode, classes: string[], classesToAdd: string) {
   let className = "";
   if (target.data) {

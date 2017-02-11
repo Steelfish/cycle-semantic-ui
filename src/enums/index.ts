@@ -1,11 +1,19 @@
+import {capitalize} from "../utils";
 export * from "./iconType";
+
 
 export enum Size {
   Mini, Tiny, Small, Medium, Large, Big, Huge, Massive, Fluid
 }
 
 export namespace Size {
-  export function ToClassname(size: Size) {
+  export function ToEnum(sizeOrString: Size|string) : Size {
+    return typeof(sizeOrString) === "number" 
+      ? sizeOrString 
+      : Size[capitalize(sizeOrString)];
+  }
+  export function ToClassname(size: Size|string) {
+    size = ToEnum(size);
     switch(size) {
       case Size.Mini: return " mini";
       case Size.Tiny: return " tiny";

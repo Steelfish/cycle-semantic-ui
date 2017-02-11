@@ -47,6 +47,25 @@
   width: 250px;
   height: 100%;
   position: fixed;
+  overflow-y: scroll;
+}
+.fixed::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: @secondaryColor;
+}
+
+.fixed::-webkit-scrollbar
+{
+	width: 12px;
+	background-color:@white;
+}
+
+.fixed::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: @white;
 }
 .fixed > .ui.menu {
   height: 100%
