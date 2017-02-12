@@ -1,23 +1,293 @@
 import * as UI from "../ui";
 import xs from "xstream";
 // tslint:disable-next-line:no-unused-variable
-import { div, VNode } from "@cycle/dom";
+import { div, a, pre, code, VNode } from "@cycle/dom";
+import { Example } from "../components";
 
-export namespace Index {
+export namespace Breadcrumb {
   export function run(sources) {
-    const vTree$ = xs.of(
-      UI.Container.render([
-        UI.Grid.render([
-          UI.Row.render([
-            UI.Header.render({ size: UI.Size.Huge }, "Breadcrumb", {
-            }),
-          ])
+    let basics = createBasicExamples(sources);
+    let content = createContentExamples(sources);
+    let variations = createVariationExamples(sources);
+
+    const vTree$ = xs.combine(basics, content, variations).map(
+      ([basics, content, variations]) =>
+        div({ props: { className: "article" } }, [
+          UI.Segment.render({ vertical: true }, [
+            UI.Container.render([
+              UI.Header.render({ size: UI.Size.Huge }, "Breadcrumb", {
+                subtext: "A breadcrumb is used to show hierarchy between content"
+              }),
+            ]),
+          ]),
+          UI.Container.render([
+            UI.Segment.render({ basic: true }, [UI.Header.render({ dividing: true, size: UI.Size.Huge }, "Types")].concat(basics)),
+            UI.Segment.render({ basic: true }, [UI.Header.render({ dividing: true, size: UI.Size.Huge }, "Content")].concat(content)),
+            UI.Segment.render({ basic: true }, [UI.Header.render({ dividing: true, size: UI.Size.Huge }, "Variations")].concat(variations))
+          ]),
         ])
-      ])
     );
     return {
       DOM: vTree$,
       router: xs.never()
     };
+  }
+
+  function createBasicExamples(sources) {
+    let ex1 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render([
+        { text: "Home", href: "#" },
+        { text: "Store", href: "#" },
+        { text: "T-Shirt", active: true }
+      ])),
+      code: `Breadcrumb.render([
+  { text: "Home", href: "#" },
+  { text: "Store", href: "#" },
+  { text: "T-Shirt", active: true }
+])`,
+      header: "Breadcrumb",
+      description: "A standard breadcrumb."
+    });
+    let ex2 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Store", href: "#" },
+          { text: "T-Shirt", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { divider: Icon.render(IconType.AngleRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Store", href: "#" },
+    { text: "T-Shirt", active: true }
+  ]
+})`
+    });
+    return xs.combine(ex1.DOM, ex2.DOM);
+  }
+  function createContentExamples(sources) {
+    let ex1 = Example.run(sources, {
+      header: "Divider",
+      description: "A breadcrumb can contain a divider to show the relationship between sections, this can be formatted as an icon or text.",
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+style: { divider: Icon.render(IconType.ArrowRight) },
+content:[
+  { text: "Home", href: "#" },
+  { text: "Registration", href: "#" },
+  { text: "Personal Information", active: true }
+]})`
+    });
+    let ex2 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { divider: "|" },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { divider: "|" },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    });
+    let ex3 = Example.run(sources, {
+      header: "Section",
+      description: "A breadcrumb can contain sections that can either be formatted as a link or text.",
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        content: [
+          { text: "Home" },
+          { text: "Search", active: true },
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { divider: Icon.render(IconType.AngleRight) },
+  content: [
+    { text: "Home" },
+    { text: "Search", active: true },
+  ]
+})`
+    });
+    let ex4 = Example.run(sources, {
+      header: "Link",
+      description: "A section may be linkable or contain a link.",
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: ["Search for: ", a("paper towels")], active: true },
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { divider: Icon.render(IconType.AngleRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: ["Search for: ", a("paper towels")], active: true },
+  ]
+})`
+    });
+    return xs.combine(ex1.DOM, ex2.DOM, ex3.DOM, ex4.DOM);
+  }
+
+  function createVariationExamples(sources) {
+    let ex1 = Example.run(sources, {
+      header: "Size",
+      description: "A breadcrumb can vary in size.",
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Mini, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Mini, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    });
+    let ex2 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Tiny, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Tiny, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    });
+    let ex3 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Small, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Small, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    }); let ex4 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Medium, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Medium, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    }); let ex5 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Large, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Large, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    });
+    let ex6 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Big, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Big, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    }); let ex7 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Huge, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Huge, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    }); let ex8 = Example.run(sources, {
+      VNode$: xs.of(UI.Breadcrumb.render({
+        style: { size: UI.Size.Massive, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        content: [
+          { text: "Home", href: "#" },
+          { text: "Registration", href: "#" },
+          { text: "Personal Information", active: true }
+        ]
+      })),
+      code: `Breadcrumb.render({
+  style: { size: Size.Massive, divider: Icon.render(UI.IconType.ArrowRight) },
+  content: [
+    { text: "Home", href: "#" },
+    { text: "Registration", href: "#" },
+    { text: "Personal Information", active: true }
+  ]
+})`
+    });
+    return xs.combine(ex1.DOM, ex2.DOM, ex3.DOM, ex4.DOM, ex5.DOM, ex6.DOM, ex7.DOM, ex8.DOM);
   }
 }

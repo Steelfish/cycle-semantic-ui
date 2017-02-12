@@ -28,6 +28,12 @@ describe("Breadcrumb", function () {
         content: [{ text: "Hello" }]
       }));
     });
+    it("should create a link only if the href attribute is set", function () {
+      let breadcrumb = Breadcrumb.render([{ text: "Child 1" }]).children[0] as VNode;
+      assert.equal(breadcrumb.sel, "div");
+      breadcrumb = Breadcrumb.render([{ text: "Child 1", href: "#" }]).children[0] as VNode;
+      assert.equal(breadcrumb.sel, "a");
+    });
     it("should have only one section when given only 1 child", function () {
       let breadcrumb = Breadcrumb.render([{ text: "Hello" }]);
       assert.equal(breadcrumb.children.length, 1);
@@ -51,7 +57,7 @@ describe("Breadcrumb", function () {
         { text: "Child1" }, { text: "Child2" }
       ]);
       divider = breadcrumb.children[1] as VNode;
-      assert.equal(divider.data.props.className, "ui angle right icon divider");
+      assert.equal(divider.data.props.className, "angle right icon divider");
     });
     it("should support the size enum", function () {
       let breadcrumb = Breadcrumb.render({size: "massive"});

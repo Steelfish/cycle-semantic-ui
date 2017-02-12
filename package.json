@@ -34,6 +34,7 @@
     "cyclic-router": "^3.0.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "file-loader": "^0.10.0",
+    "highlight.js": "^9.9.0",
     "history": "3.0.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",

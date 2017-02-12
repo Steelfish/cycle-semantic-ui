@@ -1,4 +1,4 @@
-import { DOMContent, VNode, IInteractiveExtraComponentSources, isDOMContent } from "../../interfaces";
+import { DOMContent, VNode, IInteractiveExtraComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
 import { Color, Size, Attachment, Float } from "../../enums";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
@@ -49,7 +49,7 @@ export namespace Button {
    *   body?: DOMContent - The body content to display on the button.
    *   hidden?: DOMContent - The hidden content to display for animated buttons.
    */
-  export function run(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) {
+  export function run(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) : IInteractiveComponentSinks {
     function main(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) {
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
       sources.content$ = sources.content$ ? sources.content$ : xs.of("");

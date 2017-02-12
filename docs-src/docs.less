@@ -2,6 +2,8 @@
 @import "../src/main.less";
 @import "../src/theme.less";
 
+@import "~highlight.js/styles/atom-one-light.css";
+
 .app, .full.height, .content.pusher {
   height: 100%
 }
@@ -103,6 +105,45 @@
 .ui.input input[disabled] {
   opacity: 1;
 }
+
+.article {
+  width: 100%;
+}
+
+.article .example {
+  width: 100%;
+  position: relative;    
+  margin: 2em 0em;
+  padding: 2em 0em;
+}
+.example:first-child, #example .header + .example, {
+  margin-top:0px;
+}
+.article .example .code.icon {
+  position: absolute;
+  right: 0;
+  top: -0.5em;
+  color: #000000;
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 20px;
+  transition: opacity 0.3s ease-out;
+}
+.article .example .code.icon:hover {
+  opacity: 1;
+}
+.example .code {
+  margin-top: 2em;
+}
+.example pre {
+  margin: 0;
+}
+
+.article > .segment {
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
 
 // body {
 //   background-color: #E9EDEF

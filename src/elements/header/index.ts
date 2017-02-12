@@ -8,6 +8,7 @@ export namespace Header {
   export interface Props {
     icon?: boolean;
     divider?: boolean;
+    dividing?: boolean;
     block?: boolean;
     disabled?: boolean;
     inverted?: boolean;
@@ -92,6 +93,9 @@ export namespace Header {
     let className = "ui";
     if (props.icon) {
       className += " icon";
+    }
+    if (props.dividing) {
+      className += " dividing";
     }
     if (props.divider) {
       className += " divider";

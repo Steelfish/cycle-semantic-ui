@@ -82,10 +82,15 @@ export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOM
     let props = isDOMContent(pOrC) ? {} : pOrC;
     let content = isDOMContent(pOrC) ? pOrC : c;
     let detail = isDOMContent(pOrC) ? c : e;
-    return div({ props: { className: getClassname(props) } }, [
-      content,
-      detail ? div({ props: { className: "detail" } }, detail) : ""
-    ]);
+    if (content instanceof Array) {
+      content = content.concat(detail ? div({ props: { className: "detail" } }, detail) : "");
+    } else {
+      content = [
+        content,
+        detail ? div({ props: { className: "detail" } }, detail) : ""
+      ];
+    }
+    return div({ props: { className: getClassname(props) } }, content);
   }
 
   function getClassname(props: Props): string {

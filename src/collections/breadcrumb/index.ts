@@ -1,18 +1,18 @@
 import { div, a, span, VNode } from "@cycle/dom";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
-import { ComponentSources, ContentObj } from "../../types";
-import {Size} from "../../enums";
+import { ComponentSources, ContentObj, DOMContent } from "../../types";
+import { Size, SizeString } from "../../enums";
 
 export namespace Breadcrumb {
   export interface Style {
     divider?: VNode | string;
-    size?: Size|string;
+    size?: Size | SizeString;
   }
   export type Content = Array<BreadCrumbItem>;
   export interface BreadCrumbItem {
     active?: boolean;
-    text?: string;
+    text?: DOMContent;
     href?: string;
   }
   export interface BreadCrumbArgs {
@@ -62,9 +62,9 @@ export namespace Breadcrumb {
     return div({ props: { className: getClassName(args.style) } }, children);
   }
 
-  function getClassName(style: Style) : string {
+  function getClassName(style: Style): string {
     let className = "ui";
-    if (typeof(style.size) !== "undefined"){
+    if (typeof (style.size) !== "undefined") {
       className += Size.ToClassname(style.size);
     }
     return className + " breadcrumb";
@@ -73,11 +73,16 @@ export namespace Breadcrumb {
   function section(section: BreadCrumbItem): VNode {
     return section.active
       ? div({ props: { className: "active section" } }, section.text)
-      : a({ props: { className: "section", href: section.href } }, section.text);
+      : section.href 
+        ? a({ props: { className: "section", href: section.href } }, section.text)
+        : div({ props: { className: "section" } }, section.text);
   }
   function divider(style: Style): VNode {
     if (typeof (style.divider) === "string") {
       return span({ props: { className: "divider" } }, style.divider);
+    }
+    if (style.divider.data.props.className.indexOf("ui") !== -1) {
+      style.divider.data.props.className = style.divider.data.props.className.substring(3);
     }
     if (style.divider.data.props.className.indexOf("divider") === -1) {
       style.divider.data.props.className += " divider";

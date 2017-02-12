@@ -5,14 +5,15 @@ export * from "./iconType";
 export enum Size {
   Mini, Tiny, Small, Medium, Large, Big, Huge, Massive, Fluid
 }
+export type SizeString = "mini"|"tiny"|"small"|"medium"|"large"|"big"|"huge"|"massive"|"fluid";
 
 export namespace Size {
-  export function ToEnum(sizeOrString: Size|string) : Size {
+  export function ToEnum(sizeOrString: Size|SizeString) : Size {
     return typeof(sizeOrString) === "number" 
       ? sizeOrString 
       : Size[capitalize(sizeOrString)];
   }
-  export function ToClassname(size: Size|string) {
+  export function ToClassname(size: Size|SizeString) {
     size = ToEnum(size);
     switch(size) {
       case Size.Mini: return " mini";
