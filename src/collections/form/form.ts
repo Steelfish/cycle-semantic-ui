@@ -1,75 +1,81 @@
-import {
-  DOMContent, VNode, IInteractiveComponentSources,
-  IInteractiveComponentSinks, isDOMContent
-} from "../../interfaces";
-import { Size } from "../../enums";
+import { Size, SizeString } from "../../enums";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
+import { div, VNode } from "@cycle/dom";
+import { ComponentSources, ComponentSinks, ContentObj, DOMContent, isDOMContent } from "../../types";
 
 export namespace Form {
-  export interface Props {
+  export interface Style {
     loading?: boolean;
     equalWidth?: boolean;
     inverted?: boolean;
-    size?: Size;
+    size?: Size | SizeString;
+  }
+  export interface Args {
+    style?: Style;
+    content?: ContentObj<DOMContent> | DOMContent;
   }
 
-  /**
-   * A form component for capturing groups of user input.
-   * Accepts the following properties in props$:
-   *   loading?: boolean - Styles the form with a loader.
-   *   equalWidth?: boolean - Styles the form content to have equal widths per row.
-   *   inverted?: boolean - Styles the form for dark backgrounds.
-   *   size?: Size - The size of the form's content.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
+  export function render(arg1?: Style | DOMContent | Args, arg2?: DOMContent): VNode {
+    if (isArgs(arg1)) {
+      return form(arg1);
+    }
+    let args: Args = {};
+    if (isDOMContent(arg1)) {
+      args.style = {};
+      args.content = { main: arg1 };
+    } else {
+      args.style = arg1 || {};
+      args.content = { main: arg2 || [] };
+    }
+    return form(args);
+  }
+
+  export function run(sources: ComponentSources<Style, ContentObj<DOMContent> | DOMContent>, scope?: string): ComponentSinks {
+    function main(sources: ComponentSources<Style, ContentObj<DOMContent> | DOMContent>) {
+      sources.style$ = sources.style$ ? sources.style$ : xs.of({});
       sources.content$ = sources.content$ ? sources.content$ : xs.of("");
 
-      const vTree$ = xs.combine(sources.props$, sources.content$)
-        .map(([props, content]) => render(props, content)
+      const vTree$ = xs.combine(sources.style$, sources.content$)
+        .map(([props, content]) => render(props, isDOMContent(content) ? content : content.main)
         );
       return {
         DOM: vTree$,
-        Events: (type) => sources.DOM.select(".form").events(type)
+        events: (type) => sources.DOM.select(".form").events(type)
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
 
-  /**
-   * A form component for capturing groups of user input.
-   * Accepts the following properties:
-   *   loading?: boolean - Styles the form with a loader.
-   *   equalWidth?: boolean - Styles the form content to have equal widths per row.
-   *   inverted?: boolean - Styles the form for dark backgrounds.
-   *   size?: Size - The size of the form's content.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    return div({ props: { className: getClassname(props) } }, content);
+  function form(args: Args) {
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
+    let style = typeof(args.style) !== "undefined" ? args.style : {};
+    return div({ props: { className: getClassname(style) } }, content);
   }
-  function getClassname(props: Props) {
+
+  function getClassname(style: Style) {
     let className = "ui";
-    if (props.loading) {
+    if (style.loading) {
       className += " loading";
     }
-    if (props.equalWidth) {
+    if (style.equalWidth) {
       className += " equal width";
     }
-    if (props.inverted) {
+    if (style.inverted) {
       className += " inverted";
     }
-    if (typeof (props.size) !== "undefined") {
-      className += Size.ToClassname(props.size);
+    if (typeof (style.size) !== "undefined") {
+      className += Size.ToClassname(style.size);
     }
     className += " form";
     return className;
+  }
+
+  function isArgs(obj): obj is Args {
+    return obj && (
+      typeof (obj.style) !== "undefined" ||
+      (typeof (obj.content) !== "undefined" && (isDOMContent(obj.content) || isDOMContent(obj.content.main)))
+    );
   }
 }

@@ -9,7 +9,7 @@
     "serve-docs": "webpack-dev-server --hot --config docs-src/webpack.config.js",
     "build-docs": "rm -rf docs/ && webpack --config docs-src/webpack.config.js",
     "build": "rm -rf build/ && tsc",
-    "test": "mocha test/*.ts test/**/*.ts --compilers ts:ts-node/register"
+    "test": "mocha test/**/*.ts --compilers ts:ts-node/register"
   },
   "repository": {
     "type": "git",

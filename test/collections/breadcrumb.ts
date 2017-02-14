@@ -12,21 +12,56 @@ describe("Breadcrumb", function () {
       assert.equal(breadcrumb.children.length, 0);
     });
     it("should support argument syntax", function () {
-      assert.doesNotThrow(() => Breadcrumb.render({ divider: "|" }, [{ text: "Hello" }]));
+      let breadcrumb = Breadcrumb.render({ divider: "|" }, [{ text: "Hello" }, { text: "There" }]);
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "|");
+      breadcrumb = Breadcrumb.render([{ text: "Hello" }, { text: "There" }]);
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "/");
+      breadcrumb = Breadcrumb.render({ size: "tiny" });
+      assert.equal(breadcrumb.children.length, 0);
+      assert.equal(breadcrumb.data.props.className, "ui tiny breadcrumb");
     });
     it("should support verbose argument object syntax", function () {
-      assert.doesNotThrow(() => Breadcrumb.render({
+      let breadcrumb = Breadcrumb.render({
         style: { divider: "|" },
         content: {
-          main: [{ text: "Hello" }]
+          main: [{ text: "Hello" }, { text: "There" }]
         }
-      }));
+      });
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "|");
+      breadcrumb = Breadcrumb.render({
+        content: {
+          main: [{ text: "Hello" }, { text: "There" }]
+        }
+      });
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "/");
+      breadcrumb = Breadcrumb.render({
+        style: { size: "tiny" }
+      });
+      assert.equal(breadcrumb.children.length, 0);
+      assert.equal(breadcrumb.data.props.className, "ui tiny breadcrumb");
     });
     it("should support shorthand argument object syntax", function () {
-      assert.doesNotThrow(() => Breadcrumb.render({
+      let breadcrumb = Breadcrumb.render({
         style: { divider: "|" },
-        content: [{ text: "Hello" }]
-      }));
+        content: [{ text: "Hello" }, { text: "There" }]
+      });
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "|");
+      breadcrumb = Breadcrumb.render({
+        content: [{ text: "Hello" }, { text: "There" }]
+      });
+      assert.equal(breadcrumb.children.length, 3);
+      assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
+      assert.equal((breadcrumb.children[1] as VNode).text, "/");
     });
     it("should create a link only if the href attribute is set", function () {
       let breadcrumb = Breadcrumb.render([{ text: "Child 1" }]).children[0] as VNode;
@@ -60,35 +95,39 @@ describe("Breadcrumb", function () {
       assert.equal(divider.data.props.className, "angle right icon divider");
     });
     it("should support the size enum", function () {
-      let breadcrumb = Breadcrumb.render({size: "massive"});
+      let breadcrumb = Breadcrumb.render({ size: "massive" });
       assert.equal(breadcrumb.data.props.className, "ui massive breadcrumb");
     });
   });
   describe("run", function () {
     let dom = mockDOMSource(xsAdapter, {
-      ".___cycle2": {
+      ".___breadcrumb": {
         ".breadcrumb": {
           "click": xs.of("Clicked")
         }
       }
     });
     it("should return a breadcrumb stream", function (done) {
-      let breadcrumb = Breadcrumb.run({
-        DOM: dom
-      });
+      let breadcrumb = Breadcrumb.run({ DOM: dom });
       breadcrumb.DOM.addListener({
         next: (x) => {
-          assert.equal("div.___cycle1", x.sel);
           assert.equal("ui breadcrumb", x.data.props.className);
           done();
         }
       });
     });
-    it("should expose events through the Events function", function (done) {
-      let breadcrumb = Breadcrumb.run({
-        DOM: dom
+    it("should return an isolated component", function (done) {
+      let breadcrumb = Breadcrumb.run({ DOM: dom }, "breadcrumb");
+      breadcrumb.DOM.addListener({
+        next: (x) => {
+          assert.equal("div.___breadcrumb", x.sel);
+          done();
+        }
       });
-      breadcrumb.Events("click").addListener({
+    });
+    it("should expose events through the events function", function (done) {
+      let breadcrumb = Breadcrumb.run({ DOM: dom }, "breadcrumb");
+      breadcrumb.events("click").addListener({
         next: (x) => {
           assert.equal("Clicked", x);
           done();

@@ -1,67 +1,61 @@
-import {
-  DOMContent, VNode, IInteractiveComponentSources,
-  IInteractiveComponentSinks, isDOMContent
-} from "../../interfaces";
-import { numToText } from "../../utils";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
-import { div, label } from "@cycle/dom";
+import { div, label, VNode } from "@cycle/dom";
+import { ComponentSources, ComponentSinks, DOMContent, isDOMContent } from "../../types";
+import { numToText } from "../../utils";
 
 export namespace Fields {
-  export interface Props {
-    label?: DOMContent;
+  export interface Style {
     equalWidth?: boolean;
     grouped?: boolean;
     inline?: boolean;
     required?: boolean;
   }
+  export interface ContentObj {
+    main?: DOMContent;
+    label?: DOMContent;
+  }
+  export interface Args {
+    style?: Style;
+    content?: DOMContent | ContentObj;
+  }
 
-  /**
-   * Wraps multiple related Field components together.
-   * Accepts the following properties in props$:
-   *   label?: DOMContent - A label for the fields.
-   *   equalWidth?: boolean - Divides fields in equal width.
-   *   grouped?: boolean - Groups fields together for related choices.
-   *   inline?: boolean - Styles the labels to be next to the fields instead of above them.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
+  export function render(arg1?: Style | DOMContent | Args, arg2?: DOMContent, arg3?: DOMContent): VNode {
+    if (isArgs(arg1)) {
+      return fields(arg1);
+    }
+    let args: Args = {};
+    if (isDOMContent(arg1)) {
+      args.style = {};
+      args.content = { main: arg1 };
+    } else {
+      args.style = arg1 || {};
+      args.content = { main: arg2, label: arg3 };
+    }
+    return fields(args);
+  }
+
+  export function run(sources: ComponentSources<Style, ContentObj | DOMContent>, scope?: string): ComponentSinks {
+    function main(sources: ComponentSources<Style, ContentObj | DOMContent>) {
+      sources.style$ = sources.style$ ? sources.style$ : xs.of({});
       sources.content$ = sources.content$ ? sources.content$ : xs.of("");
 
-      const vTree$ = xs.combine(sources.props$, sources.content$).map(
-        ([props, content]) => render(props, content)
+      const vTree$ = xs.combine(sources.style$, sources.content$).map(
+        ([style, content]) => isDOMContent(content)
+          ? render(style, content)
+          : render(style, content.main, content.label)
       );
       return {
         DOM: vTree$,
-        Events: (type) => sources.DOM.select(".fields").events(type),
-        value$: xs.never()
+        events: (type) => sources.DOM.select(".fields").events(type),
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
 
-  /**
-   * Wraps multiple related Field components together.
-   * Accepts the following properties:
-   *   label?: DOMContent - A label for the fields.
-   *   equalWidth?: boolean - Divides fields in equal width.
-   *   grouped?: boolean - Groups fields together for related choices.
-   *   inline?: boolean - Styles the labels to be next to the fields instead of above them.
-   *   required?: boolean - Styles the the fields to make them appear mandetory.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    let lbl = props.label ? label(props.label) : "";
-    let children = (<Array<any>>content).length ? [lbl].concat(content) : [lbl, content];
-    return div({ props: { className: getClassname(props, content) } }, children);
-  }
 
-  function getClassname(props: Props, content) {
+  function getClassname(props: Style, content) {
     let className = "ui";
     if (props.equalWidth && content.length) {
       className += numToText(content.length);
@@ -77,5 +71,26 @@ export namespace Fields {
     }
     className += " fields";
     return className;
+  }
+  function isArgs(obj): obj is Args {
+    return obj && (
+      typeof (obj.style) !== "undefined" ||
+      (typeof (obj.content) !== "undefined" && (isDOMContent(obj.content) || isDOMContent(obj.content.main) || isDOMContent(obj.content.label)))
+    );
+  }
+
+  function fields(args: Args) {
+    let style = typeof (args.style) === "undefined" ? {} : args.style;
+    let lbl = "" as DOMContent;
+    let content = [] as DOMContent;
+    if (typeof (args.content) !== "undefined") {
+      if (isDOMContent(args.content)) {
+        content = args.content;
+      } else {
+        lbl = args.content.label ? args.content.label : "";
+        content = args.content.main ? args.content.main : [];
+      }
+    }
+    return div({ props: { className: getClassname(style, content) } }, [].concat(lbl ? label(lbl) : "", content));
   }
 }

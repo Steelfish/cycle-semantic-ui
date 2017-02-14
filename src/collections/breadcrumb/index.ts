@@ -1,7 +1,7 @@
 import { div, a, span, VNode } from "@cycle/dom";
 import xs from "xstream";
 import isolate from "@cycle/isolate";
-import { ComponentSources, ContentObj, DOMContent } from "../../types";
+import { ComponentSources, ComponentSinks, ContentObj, DOMContent } from "../../types";
 import { Size, SizeString } from "../../enums";
 
 export namespace Breadcrumb {
@@ -35,7 +35,7 @@ export namespace Breadcrumb {
     return breadcrumb(args);
   }
 
-  export function run(sources: ComponentSources<Style, ContentObj<Content> | Content>) {
+  export function run(sources: ComponentSources<Style, ContentObj<Content> | Content>, scope?: string) : ComponentSinks {
     function main(sources: ComponentSources<Style, ContentObj<Content> | Content>) {
       sources.style$ = sources.style$ ? sources.style$ : xs.of({ divider: "/" });
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
@@ -47,19 +47,20 @@ export namespace Breadcrumb {
       );
       return {
         DOM: breadcrumb$,
-        Events: type => sources.DOM.select(".breadcrumb").events(type),
+        events: type => sources.DOM.select(".breadcrumb").events(type),
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
   function breadcrumb(args: BreadCrumbArgs) {
-    let content = isContent(args.content) ? args.content : args.content.main;
+    let content = args.content ? isContent(args.content) ? args.content : args.content.main : [];
+    let style = typeof(args.style) !== "undefined" ? args.style : {divider: "/"};
     let children = content.map(c => [
-      section(c), divider(args.style)
+      section(c), divider(style)
     ]).reduce((a, n) => a.concat(n), []);
     children.splice(-1, 1);
-    return div({ props: { className: getClassName(args.style) } }, children);
+    return div({ props: { className: getClassName(style) } }, children);
   }
 
   function getClassName(style: Style): string {
@@ -96,7 +97,7 @@ export namespace Breadcrumb {
   function isArgs(obj): obj is BreadCrumbArgs {
     return obj && (
       typeof (obj.style) !== "undefined" ||
-      (typeof (obj.content) !== "undefined" && isContent(obj.content.main))
+      (typeof (obj.content) !== "undefined" && (isContent(obj.content) || isContent(obj.content.main)))
     );
   }
 }

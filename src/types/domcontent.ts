@@ -13,7 +13,7 @@ export function isDOMContent(content) : content is DOMContent {
       return true;
     }
     else {
-      return content[0].sel !== undefined;
+      return content[0].sel !== undefined || typeof(content[0]) === "string" ;
     };
   }
   return false;
