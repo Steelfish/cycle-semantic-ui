@@ -18,7 +18,8 @@ export namespace Textbox {
     focus?: boolean;
     loading?: boolean;
     disabled?: boolean;
-    large?: boolean;
+    readonly?: boolean;
+    rows?: number;
     type?: string;
     color?: Color;
     size?: Size;
@@ -89,9 +90,9 @@ export namespace Textbox {
   export function render(pOrC: Props | DOMContent = {}, c: DOMContent = ""): VNode {
     let props = isDOMContent(pOrC) ? {} : pOrC;
     let content = isDOMContent(pOrC) ? pOrC : c;
-    let textbox = props.large
-      ? textarea({ props: { value: props.initial, placeholder: props.placeholder } })
-      : input({ props: { type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder } });
+    let textbox = props.rows
+      ? textarea({ attrs: { rows: props.rows, readonly: props.readonly, value: props.initial, placeholder: props.placeholder } })
+      : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder}});
     return props.rightContent
       ? div({ props: { className: getClassname(props) } }, [
         textbox,

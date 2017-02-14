@@ -78,6 +78,14 @@ describe("Field", function () {
       });
       assert.equal(field.children.length, 0);
       assert.equal(field.data.props.className, "ui inline field");
+    });    
+    it("should support the disabled state", function () {
+      let field = Field.render({ disabled: true });
+      assert.equal(field.data.props.className, "ui disabled field");
+    });
+    it("should support the error state", function () {
+      let field = Field.render({ disabled: true });
+      assert.equal(field.data.props.className, "ui error field");
     });
     it("should support the inline variation", function () {
       let field = Field.render({ inline: true });
@@ -90,7 +98,7 @@ describe("Field", function () {
     it("should support the required variation", function () {
       let field = Field.render({ required: true });
       assert.equal(field.data.props.className, "ui required field");
-    })
+    });
     it("should support the width variation", function () {
       let field = Field.render({ width: 3 });
       assert.equal(field.data.props.className, "ui three wide field");

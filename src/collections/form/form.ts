@@ -6,9 +6,9 @@ import { ComponentSources, ComponentSinks, ContentObj, DOMContent, isDOMContent 
 
 export namespace Form {
   export interface Style {
-    loading?: boolean;
     equalWidth?: boolean;
     inverted?: boolean;
+    loading?: boolean;
     size?: Size | SizeString;
   }
   export interface Args {

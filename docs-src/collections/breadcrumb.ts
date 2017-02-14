@@ -1,7 +1,6 @@
 import * as UI from "../ui";
-import xs from "xstream";
-// tslint:disable-next-line:no-unused-variable
-import { div, a, pre, code, VNode } from "@cycle/dom";
+import xs, {Stream} from "xstream";
+import { div, a, VNode} from "@cycle/dom";
 import { Example } from "../components";
 
 export namespace Breadcrumb {
@@ -33,7 +32,7 @@ export namespace Breadcrumb {
     };
   }
 
-  function createBasicExamples(sources) {
+  function createBasicExamples(sources): Stream<VNode> {
     let ex1 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render([
         { text: "Home", href: "#" },
@@ -68,7 +67,7 @@ export namespace Breadcrumb {
     });
     return xs.combine(ex1.DOM, ex2.DOM);
   }
-  function createContentExamples(sources) {
+  function createContentExamples(sources) : Stream<VNode> {
     let ex1 = Example.run(sources, {
       header: "Divider",
       description: "A breadcrumb can contain a divider to show the relationship between sections, this can be formatted as an icon or text.",
@@ -145,7 +144,7 @@ content:[
     return xs.combine(ex1.DOM, ex2.DOM, ex3.DOM, ex4.DOM);
   }
 
-  function createVariationExamples(sources) {
+  function createVariationExamples(sources) : Stream<VNode> {
     let ex1 = Example.run(sources, {
       header: "Size",
       description: "A breadcrumb can vary in size.",

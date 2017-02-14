@@ -10,6 +10,8 @@ export namespace Field {
     inline?: boolean;
     centered?: boolean;
     required?: boolean;
+    error?: boolean;
+    disabled?: boolean;
   }
   export interface ContentObj {
     main?: DOMContent;
@@ -79,6 +81,12 @@ export namespace Field {
     }
     if (style.centered) {
       className += " centered";
+    }
+    if (style.error) {
+      className += " error";
+    }
+    if (style.disabled) {
+      className += " disabled";
     }
     if (style.required) {
       className += " required";

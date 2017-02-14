@@ -27,13 +27,17 @@ export namespace Example {
     });
 
     //Sliding code view
+    let codelines = args.code.split(/\r?\n/);
+    //Trim leading whitespace
+    let baseWhitespace = codelines.length > 1 ? countLeadingWhitespace(codelines[1]) - 2 : 0;
+    codelines = codelines.map((line, i) => i === 0 ? line : line.substring(baseWhitespace));
     let code$ = xs.of(
       UI.Segment.render({ attachment: UI.Attachment.Bottom }, [pre([
         code({
           props: { className: "javascript" }, hook: {
             insert: (vnode) => { hljs.highlightBlock(vnode.elm); }
           }
-        }, args.code.split(/\r?\n/).map(line => [line, br()]).reduce((acc, n) => acc.concat(n), []))
+        }, codelines.map(line => [line, br()]).reduce((acc, n) => acc.concat(n), []))
       ])
       ])
     );
@@ -68,5 +72,13 @@ export namespace Example {
     return {
       DOM: vTree$
     };
+  }
+  function countLeadingWhitespace(string: string) {
+    for (let i = 0; i < string.length; i++) {
+        if (string[i] !== " " && string[i] !== "\t") {
+            return(i);
+        }
+    }
+    return(string.length);
   }
 }

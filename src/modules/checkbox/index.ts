@@ -12,6 +12,7 @@ export namespace Checkbox {
     name?: string;
     radio?: boolean;
     toggle?: boolean;
+    slider?: boolean;
   }
   /**
   * Creates a checkbox element on the page.
@@ -97,6 +98,9 @@ export namespace Checkbox {
     }
     if (props.toggle) {
       className += " toggle";
+    }
+    if (props.slider) {
+      className += " slider";
     }
     return className + " checkbox";
   }

@@ -73,7 +73,8 @@ export namespace Dropdown {
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
 
       const props$ = sources.props$.remember();
-      const itemClick$proxy = xs.create();
+      const itemClick$proxy = xs.create() as Stream<Event>;
+      const itemClick$ = itemClick$proxy.remember();
       const value$proxy = xs.create();
 
       const dropdownClick$ = evt("click")
@@ -85,7 +86,7 @@ export namespace Dropdown {
         .map(evt => (evt as MouseEvent).type === "mouseenter" ? Direction.In : Direction.Out)
         .compose(debounce(250))
         .filter(dir => dir === Direction.Out);
-      const transition$ = xs.merge(dropdownClick$, itemClick$proxy, mouseleave$)
+      const transition$ = xs.merge(dropdownClick$, itemClick$.mapTo(Direction.Out), mouseleave$)
         .startWith(Direction.Out)
         .map(dir => ({
           animation: Animation.Fade,
@@ -113,9 +114,8 @@ export namespace Dropdown {
       const menu = Menu.run({ DOM: sources.DOM, content$ });
 
       const transitionedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, args$: transition$ as any });
-
-      let itemClick$ = evt("click").filter(x => x.target.classList.contains("item")).remember();
-      itemClick$proxy.imitate(itemClick$.mapTo(Direction.Out) as any);
+  
+      itemClick$proxy.imitate(evt("click").filter(x => x.target.classList.contains("item")));
 
       const clickedId$ = itemClick$
         .map(ev => parseInt((ev.target as HTMLElement).id))
@@ -260,7 +260,7 @@ export namespace Dropdown {
     if (typeof (props.static) !== "undefined") {
       return div({ props: { className: "text" } }, props.static);
     }
-    if (item === null) {
+    if (item === null || typeof(item) === "undefined") {
       return div({ props: { className: "default text" } }, props.default);
     }
     return div({ props: { className: "text" } }, item.body);
