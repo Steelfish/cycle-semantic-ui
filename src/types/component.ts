@@ -1,14 +1,19 @@
 import {DOMSource, VNode} from "@cycle/dom";
 import {Stream} from "xstream";
 
-export interface ContentObj<C> {
-  main?: C;
+export interface StyleAndContentArgs<S,B,C extends ContentObj<B>> {
+  style?: Partial<S>;
+  content?: Partial<C>|B;
 }
 
-export interface ComponentSources<S,C> {
+export interface ContentObj<C> {
+  main: C;
+}
+
+export interface ComponentSources<S,B,C extends ContentObj<B>> {
   DOM: DOMSource;
-  style$?: Stream<S>;
-  content$?: Stream<C>;
+  style$?: Stream<Partial<S>>;
+  content$?: Stream<Partial<C>|B>;
 }
 
 export interface ComponentSinks {

@@ -1,21 +1,21 @@
-import {capitalize} from "../utils";
+import { capitalize } from "../utils";
 export * from "./iconType";
 
 
 export enum Size {
   Mini, Tiny, Small, Medium, Large, Big, Huge, Massive, Fluid
 }
-export type SizeString = "mini"|"tiny"|"small"|"medium"|"large"|"big"|"huge"|"massive"|"fluid";
+export type SizeString = "mini" | "tiny" | "small" | "medium" | "large" | "big" | "huge" | "massive" | "fluid";
 
 export namespace Size {
-  export function ToEnum(sizeOrString: Size|SizeString) : Size {
-    return typeof(sizeOrString) === "number" 
-      ? sizeOrString 
+  export function ToEnum(sizeOrString: Size | SizeString): Size {
+    return typeof (sizeOrString) === "number"
+      ? sizeOrString
       : Size[capitalize(sizeOrString)];
   }
-  export function ToClassname(size: Size|SizeString) {
+  export function ToClassname(size: Size | SizeString) {
     size = ToEnum(size);
-    switch(size) {
+    switch (size) {
       case Size.Mini: return " mini";
       case Size.Tiny: return " tiny";
       case Size.Small: return " small";
@@ -30,12 +30,19 @@ export namespace Size {
   }
 }
 
+export type VerticalAlignmentString = "top" | "middle" | "bottom";
 export enum VerticalAlignment {
   Top, Middle, Bottom
 }
 
 export namespace VerticalAlignment {
-  export function ToClassname(alignment: VerticalAlignment) {
+  export function ToEnum(vAlignmentOrString: VerticalAlignment | VerticalAlignmentString): VerticalAlignment {
+    return typeof (vAlignmentOrString) === "number"
+      ? vAlignmentOrString
+      : VerticalAlignment[capitalize(vAlignmentOrString)];
+  }
+  export function ToClassname(alignment: VerticalAlignment | VerticalAlignmentString): string {
+    alignment = VerticalAlignment.ToEnum(alignment);
     switch (alignment) {
       case VerticalAlignment.Top: return " top aligned";
       case VerticalAlignment.Middle: return " middle aligned";
@@ -45,12 +52,19 @@ export namespace VerticalAlignment {
   }
 }
 
+export type TextAlignmentString = "left" | "right" | "center" | "justified";
 export enum TextAlignment {
   Left, Right, Center, Justified
 }
 
 export namespace TextAlignment {
-  export function ToClassname(alignment: TextAlignment) {
+  export function ToEnum(tAlignmentOrString: TextAlignment | TextAlignmentString): TextAlignment {
+    return typeof (tAlignmentOrString) === "number"
+      ? tAlignmentOrString
+      : TextAlignment[capitalize(tAlignmentOrString)];
+  }
+  export function ToClassname(alignment: TextAlignment | TextAlignmentString): string {
+    alignment = TextAlignment.ToEnum(alignment);
     switch (alignment) {
       case TextAlignment.Left: return " left aligned.";
       case TextAlignment.Right: return " right aligned.";
@@ -61,14 +75,20 @@ export namespace TextAlignment {
   }
 }
 
+export type FloatString = "none" | "right" | "left";
 export enum Float {
   None, Right, Left
 }
 
 export namespace Float {
-  export function ToClassname(float: Float) {
-    switch (float)
-    {
+  export function ToEnum(floatOrString: Float | FloatString): Float {
+    return typeof (floatOrString) === "number"
+      ? floatOrString
+      : Float[capitalize(floatOrString)];
+  }
+  export function ToClassname(float: Float | FloatString): string {
+    float = Float.ToEnum(float);
+    switch (float) {
       case Float.Left: return " left floated";
       case Float.Right: return " right floated";
       default: return "";
@@ -76,12 +96,19 @@ export namespace Float {
   }
 }
 
+export type AttachmentString = "none" | "top" | "top right" | "top left" | "bottom" | "bottom left" | "bottom right" | "right" | "left";
 export enum Attachment {
-None, Top, TopRight, TopLeft, Bottom, BottomLeft, BottomRight, Right, Left
+  None, Top, TopRight, TopLeft, Bottom, BottomLeft, BottomRight, Right, Left
 }
 
 export namespace Attachment {
-  export function ToClassname(attachment: Attachment) {
+  export function ToEnum(attachmentOrString: Attachment | AttachmentString): Attachment {
+    return typeof (attachmentOrString) === "number"
+      ? attachmentOrString
+      : Attachment[capitalize(attachmentOrString)];
+  }
+  export function ToClassname(attachment: Attachment | AttachmentString): string {
+    attachment = Attachment.ToEnum(attachment);
     switch (attachment) {
       case Attachment.None: return " attached";
       case Attachment.Top: return " top attached";
@@ -97,12 +124,19 @@ export namespace Attachment {
   }
 }
 
+export type ColorString = "none" | "primary" | "secondary" | "succes" | "info" | "warning" | "error";
 export enum Color {
   None, Primary, Secondary, Success, Info, Warning, Error
 }
 
 export namespace Color {
-  export function ToClassname(color: Color) {
+  export function ToEnum(colorOrString: Color | ColorString): Color {
+    return typeof (colorOrString) === "number"
+      ? colorOrString
+      : Color[capitalize(colorOrString)];
+  }
+  export function ToClassname(color: Color | ColorString): string {
+    color = Color.ToEnum(color);
     switch (color) {
       case Color.Primary: return " primaryColored";
       case Color.Secondary: return " secondaryColored";
@@ -115,15 +149,22 @@ export namespace Color {
   }
 }
 
+export type AnimationString = "browse" | "drop" | "fade" | "flip" | "scale" | "fly"
+  | "swing" | "flash" | "shake" | "bounce" | "tada" | "pulse" | "jiggle" | "none";
 export enum Animation {
   Browse, Drop, Fade, Flip, Scale, Fly, Slide, Swing,
   Flash, Shake, Bounce, Tada, Pulse, Jiggle,
   None
 }
 export namespace Animation {
-  export function ToClassname(anim: Animation) {
-    switch (anim)
-    {
+  export function ToEnum(animationOrString: Animation | AnimationString): Animation {
+    return typeof (animationOrString) === "number"
+      ? animationOrString
+      : Animation[capitalize(animationOrString)];
+  }
+  export function ToClassname(anim: Animation | AnimationString): string {
+    anim = Animation.ToEnum(anim);
+    switch (anim) {
       case Animation.Browse: return " browse";
       case Animation.Drop: return " drop";
       case Animation.Fade: return " fade";
@@ -140,32 +181,46 @@ export namespace Animation {
       case Animation.Jiggle: return " jiggle";
     }
   }
+  const staticAnimations = [Animation.Flash, Animation.Shake,
+  Animation.Bounce, Animation.Tada, Animation.Pulse, Animation.Jiggle];
   export function isStatic(anim: Animation): Boolean {
-    const staticAnimations = [Animation.Flash, Animation.Shake,
-      Animation.Bounce, Animation.Tada, Animation.Pulse, Animation.Jiggle];
     return staticAnimations.indexOf(anim) !== -1;
   }
+  const directionAnimations = [Animation.Browse, Animation.Fade,
+  Animation.Fly, Animation.Slide, Animation.Swing];
   export function isDirectional(anim: Animation): Boolean {
-    const directionAnimations = [Animation.Browse, Animation.Fade,
-      Animation.Fly, Animation.Slide, Animation.Swing];
     return directionAnimations.indexOf(anim) !== -1;
   }
 }
 
+export type DirectionString = "in" | "out" | "none";
 export enum Direction {
   In, Out, None
 }
 export namespace Direction {
-  export function ToClassname (direction: Direction){
+  export function ToEnum(directionOrString: Direction | DirectionString): Direction {
+    return typeof (directionOrString) === "number"
+      ? directionOrString
+      : Direction[capitalize(directionOrString)];
+  }
+  export function ToClassname(direction: Direction | DirectionString) {
+    direction = Direction.ToEnum(direction);
     return direction === Direction.In ? " in" : " out";
   }
 }
 
+export type AnimationDirectionString = "up" | "down" | "left" | "right";
 export enum AnimationDirection {
   Up, Down, Left, Right
 }
 export namespace AnimationDirection {
-  export function ToClassname(dir: AnimationDirection) {
+  export function ToEnum(animationDirectionOrString: AnimationDirection | AnimationDirectionString): AnimationDirection {
+    return typeof(animationDirectionOrString) === "number"
+      ? animationDirectionOrString
+      : AnimationDirection[capitalize(animationDirectionOrString)];
+  }
+  export function ToClassname(dir: AnimationDirection|AnimationDirectionString) : string {
+    dir = AnimationDirection.ToEnum(dir);
     switch (dir) {
       case AnimationDirection.Up: return " up";
       case AnimationDirection.Down: return " down";

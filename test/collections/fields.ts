@@ -12,11 +12,10 @@ describe("Fields", function () {
       assert.equal(fields.children.length, 0);
     });
     it("should support argument syntax", function () {
-      let fields = Fields.render({ inline: true }, ["Content"], "Label");
-      assert.equal(fields.children.length, 2);
+      let fields = Fields.render({ inline: true }, ["Content"]);
+      assert.equal(fields.children.length, 1);
       assert.equal(fields.data.props.className, "ui inline fields");
-      assert.equal((fields.children[0] as VNode).text, "Label");
-      assert.equal((fields.children[1] as VNode).text, "Content");
+      assert.equal((fields.children[0] as VNode).text, "Content");
       fields = Fields.render(["Content"]);
       assert.equal(fields.children.length, 1);
       assert.equal(fields.data.props.className, "ui fields");

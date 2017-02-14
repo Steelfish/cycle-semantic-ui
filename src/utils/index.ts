@@ -1,15 +1,15 @@
-import {VNode} from "@cycle/dom";
-import xs, {Stream} from "xstream";
-import flattenConcurrently from "xstream/extra/flattenConcurrently";
+import { VNode } from "@cycle/dom";
 
-export function capitalize(string: string) : string {
+
+
+export function capitalize(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function patchClassList(target: VNode, classes: string[], classesToAdd: string) {
   let className = "";
   if (target.data) {
-    let props = target.data.props ? target.data.props : { className: target.sel.split(".").join(" ")};
+    let props = target.data.props ? target.data.props : { className: target.sel.split(".").join(" ") };
     let classList = props.className.split(" ") as Array<string>;
     classList.forEach(item => {
       if (classes.indexOf(item) === -1) {
@@ -40,15 +40,13 @@ export function addElement(element: VNode, target: VNode, identifier: string): A
   if (target.text) {
     c.push(target.text);
   }
-  for(let i = 0; i < c.length; i++) {
+  for (let i = 0; i < c.length; i++) {
     let child = c[i];
     let cProps = child.data ? child.data.props ? child.data.props : {} : {};
-    if (typeof(child) !== "undefined" && typeof(cProps.className) !== "undefined")
-    {
+    if (typeof (child) !== "undefined" && typeof (cProps.className) !== "undefined") {
       let classList = child.data.props.className.split(" ") as Array<string>;
       for (let s of classList) {
-        if (s === identifier)
-        {
+        if (s === identifier) {
           c.splice(i, 1);
         }
       }
@@ -58,62 +56,14 @@ export function addElement(element: VNode, target: VNode, identifier: string): A
   return c;
 }
 
-/**
- * Converts anything to a stream
- * @param  {any} obj - The object.
- * @return {Stream<any>} The object as a stream.
- */
-export function asStream(obj): Stream<any> {
-  if (typeof(obj) !== "undefined") {
-    if (typeof(obj.addListener) === "function") {
-      return obj;
-    }
-    if (Object.prototype.toString.call(obj) === "[object Array]"){
-        let isStreams = true;
-        for (let subobj of obj) {
-          if (typeof(subobj.addListener) !== "function"){
-            isStreams = false;
-          }
-        }
-        if (isStreams) {
-          return xs.combine.apply(this, obj);
-        }
-    }
-    return xs.of(obj);
-  }
-  return xs.of("");
-}
-
-/**
- * Converts a number of objects to a stream of an Array.
- * @param  {any} ...objs   The objects to include in the stream
- * @return {Stream<any[]>} The objects as a stream of an array.
- */
-export function asArrayStream(...objs) : Stream<any[]> {
-  let streams = Array.from(arguments);
-  streams = streams.map(obj => asStream(obj));
-  return xs.combine.apply(this, streams);
-}
-
-/**
- * Flattens a stream of an array of streams into a stream of an array.
- * @param  {Stream<Stream<any>[]>} stream The stream to flatten
- * @return {Stream<any[]>}                The flattened stream.
- */
-export function flattenStreamArray(stream: Stream<Stream<any>[]>) : Stream<any[]> {
-  return flattenConcurrently(
-    stream.map(children => xs.combine.apply(this, children)
-  )
-  ) as Stream<any[]>;
-}
 
 /**
  * Converts a natural number between 1-16 to text.
  * @param  {number} num The number to convert.
  * @return {string}     That number as text.
  */
-export function numToText(num: number) : string {
-  switch(num) {
+export function numToText(num: number): string {
+  switch (num) {
     case 1: return " one";
     case 2: return " two";
     case 3: return " three";
@@ -132,3 +82,4 @@ export function numToText(num: number) : string {
     case 16: return " sixteen";
   }
 }
+

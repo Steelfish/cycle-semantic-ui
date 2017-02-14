@@ -113,6 +113,9 @@ describe("Breadcrumb", function () {
         next: (x) => {
           assert.equal("ui breadcrumb", x.data.props.className);
           done();
+        },
+        error: (err) => {
+          throw(err);
         }
       });
     });
@@ -122,6 +125,9 @@ describe("Breadcrumb", function () {
         next: (x) => {
           assert.equal("div.___breadcrumb", x.sel);
           done();
+        },
+        error: (err) => {
+          throw(err);
         }
       });
     });

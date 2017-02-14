@@ -12,11 +12,10 @@ describe("Field", function () {
       assert.equal(field.children.length, 0);
     });
     it("should support argument syntax", function () {
-      let field = Field.render({ inline: true }, ["Content"], "Label");
-      assert.equal(field.children.length, 2);
+      let field = Field.render({ inline: true }, ["Content"]);
+      assert.equal(field.children.length, 1);
       assert.equal(field.data.props.className, "ui inline field");
-      assert.equal((field.children[0] as VNode).text, "Label");
-      assert.equal((field.children[1] as VNode).text, "Content");
+      assert.equal((field.children[0] as VNode).text, "Content");
       field = Field.render(["Content"]);
       assert.equal(field.children.length, 1);
       assert.equal(field.data.props.className, "ui field");
@@ -84,7 +83,7 @@ describe("Field", function () {
       assert.equal(field.data.props.className, "ui disabled field");
     });
     it("should support the error state", function () {
-      let field = Field.render({ disabled: true });
+      let field = Field.render({ error: true });
       assert.equal(field.data.props.className, "ui error field");
     });
     it("should support the inline variation", function () {
