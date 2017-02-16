@@ -8,7 +8,8 @@ export namespace Example {
     VNode$: Stream<VNode>;
     code: string;
     header?: string;
-    description?: string;
+    description?: UI.DOMContent; 
+    highlighted?: boolean;
   }
   export function run(sources, args: Arguments) {
     //Show code icon
@@ -62,12 +63,12 @@ export namespace Example {
       ([btnShow, code, top]) => {
         let content = [btnShow, top, code];
         if (typeof (args.description) !== "undefined") {
-          content = [p(args.description)].concat(content);
+          content = typeof (args.description) === "string" ? [p(args.description)].concat(content) : [].concat(args.description, content);
         }
         if (typeof (args.header) !== "undefined") {
           content = [UI.Header.render(args.header)].concat(content);
         }
-        return div({ props: { className: "example" } }, content);
+        return div({ props: { className: args.highlighted ? "highlighted example" : "example" } }, content);
       });
     return {
       DOM: vTree$
@@ -75,10 +76,10 @@ export namespace Example {
   }
   function countLeadingWhitespace(string: string) {
     for (let i = 0; i < string.length; i++) {
-        if (string[i] !== " " && string[i] !== "\t") {
-            return(i);
-        }
+      if (string[i] !== " " && string[i] !== "\t") {
+        return (i);
+      }
     }
-    return(string.length);
+    return (string.length);
   }
 }

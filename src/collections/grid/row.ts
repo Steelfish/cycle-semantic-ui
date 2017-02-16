@@ -5,11 +5,13 @@ import { numToText } from "../../utils";
 
 export namespace Row {
   export interface Props {
+    width: number;
+    doubling: boolean;
     stretched: boolean;
-    mobile: boolean;
-    tablet: boolean;
-    computer: boolean;
-    largescreen: boolean;
+    mobileOnly: boolean;
+    tabletOnly: boolean;
+    computerOnly: boolean;
+    largescreenOnly: boolean;
     equalWidth: boolean;
   }
 
@@ -30,23 +32,29 @@ export namespace Row {
   }
   function getClassname(props: Partial<Props>, content: DOMContent): string {
     let className = "ui";
+    if (props.doubling) {
+      className += " doubling";
+    }
     if (props.stretched) {
       className += " stretched";
     }
-    if (props.mobile) {
+    if (props.mobileOnly) {
       className += " mobile only";
     }
-    if (props.tablet) {
+    if (props.tabletOnly) {
       className += " tablet only";
     }
-    if (props.computer) {
+    if (props.computerOnly) {
       className += " computer only";
     }
-    if (props.largescreen) {
+    if (props.largescreenOnly) {
       className += " largescreen only";
     }
     if (props.equalWidth) {
-      className += numToText(content instanceof Array ? content.length : 1) + " column";
+      className += " equal width";
+    }
+    if (props.width) {
+      className += numToText(props.width) + " column";
     }
     className += " row";
     return className;

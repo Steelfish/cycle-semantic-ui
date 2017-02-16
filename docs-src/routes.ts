@@ -2,7 +2,7 @@
 import { VNode } from "@cycle/dom";
 import { Stream } from "xstream";
 import { Index } from "./index";
-import { Breadcrumb, Form} from "./collections";
+import { Breadcrumb, Form, Grid} from "./collections";
 
 
 let prefix = "/cycle-semantic-ui";
@@ -11,4 +11,5 @@ let routes = {
 };
 routes[prefix + "/collections/breadcrumb"] = Breadcrumb.run;
 routes[prefix + "/collections/form"] = Form.run;
+routes[prefix + "/collections/grid"] = Grid.run;
 export default routes;

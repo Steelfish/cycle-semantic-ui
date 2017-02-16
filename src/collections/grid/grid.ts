@@ -6,6 +6,7 @@ import { numToText } from "../../utils";
 
 export namespace Grid {
   export interface Props {
+    width: number;
     equalWidth: boolean;
     divided: boolean;
     container: boolean;
@@ -14,6 +15,16 @@ export namespace Grid {
     padded: boolean;
     relaxed: boolean;
     centered: boolean;
+    stackable: boolean;
+    doubling: boolean;
+    reversedMobile: boolean;
+    reversedTablet: boolean;
+    reversedComputer: boolean;
+    reversedLargescreen: boolean;
+    mobileOnly: boolean;
+    tabletOnly: boolean;
+    computerOnly: boolean;
+    largescreenOnly: boolean;
     alignment: VerticalAlignment | VerticalAlignmentString;
     textAlignment: TextAlignment | TextAlignmentString;
   }
@@ -35,7 +46,7 @@ export namespace Grid {
   export function getClassname(props: Partial<Props>, content: DOMContent): string {
     let className = "ui";
     if (props.equalWidth) {
-      className += numToText(content instanceof Array ? content.length : 1) + " column";
+      className += " equal width";
     }
     if (props.divided) {
       className += " divided";
@@ -58,11 +69,44 @@ export namespace Grid {
     if (props.centered) {
       className += " centered";
     }
+    if (props.stackable) {
+      className += " stackable";
+    }
+    if (props.doubling) {
+      className += " doubling";
+    }
+    if (props.reversedMobile) {
+      className += " mobile reversed";
+    }
+    if (props.reversedTablet) {
+      className += " tablet reversed";
+    }
+    if (props.reversedComputer) {
+      className += " computer reversed";
+    }
+    if (props.reversedLargescreen) {
+      className += " largescreen reversed";
+    }
+    if (props.mobileOnly) {
+      className += " mobile only";
+    }
+    if (props.tabletOnly) {
+      className += " tablet only";
+    }
+    if (props.computerOnly) {
+      className += " computer only";
+    }
+    if (props.largescreenOnly) {
+      className += " largescreen only";
+    }
     if (typeof (props.alignment) !== "undefined") {
       className += VerticalAlignment.ToClassname(props.alignment);
     }
     if (typeof (props.textAlignment) !== "undefined") {
       className += TextAlignment.ToClassname(props.textAlignment);
+    }
+    if (props.width) {
+      className += numToText(props.width) + " column";
     }
     className += " grid";
     return className;

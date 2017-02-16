@@ -68,29 +68,37 @@ describe("Row", function () {
       assert.equal(row.children.length, 0);
       assert.equal(row.data.props.className, "ui stretched row");
     });
+    it("should support setting the width in columns", function () {
+      let row = Row.render({ width: 4 });
+      assert.equal(row.data.props.className, "ui four column row");
+    })
     it("should support the stretched variation", function () {
       let row = Row.render({ stretched: true });
       assert.equal(row.data.props.className, "ui stretched row");
     });
     it("should support the mobile only variation", function () {
-      let row = Row.render({ mobile: true });
+      let row = Row.render({ mobileOnly: true });
       assert.equal(row.data.props.className, "ui mobile only row");
     });
     it("should support the tablet only variation", function () {
-      let row = Row.render({ tablet: true });
+      let row = Row.render({ tabletOnly: true });
       assert.equal(row.data.props.className, "ui tablet only row");
     });
     it("should support the computer only variation", function () {
-      let row = Row.render({ computer: true });
+      let row = Row.render({ computerOnly: true });
       assert.equal(row.data.props.className, "ui computer only row");
     });
     it("should support the largescreen only variation", function () {
-      let row = Row.render({ largescreen: true });
+      let row = Row.render({ largescreenOnly: true });
       assert.equal(row.data.props.className, "ui largescreen only row");
     });
     it("should support the equal width variation", function () {
       let row = Row.render({ equalWidth: true });
-      assert.equal(row.data.props.className, "ui one column row");
+      assert.equal(row.data.props.className, "ui equal width row");
+    });
+    it("should support the doubling variation", function () {
+      let row = Row.render({ doubling: true });
+      assert.equal(row.data.props.className, "ui doubling row");
     });
   });
   describe("run", function () {

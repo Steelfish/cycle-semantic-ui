@@ -15,6 +15,10 @@ export namespace Column {
     tablet: number;
     computer: number;
     largescreen: number;
+    mobileOnly: boolean;
+    tabletOnly: boolean;
+    computerOnly: boolean;
+    largescreenOnly: boolean;
     size: Size | SizeString;
     alignment: VerticalAlignment | VerticalAlignmentString;
     textAlignment: TextAlignment | TextAlignmentString;
@@ -54,6 +58,18 @@ export namespace Column {
     }
     if (props.largescreen) {
       className += numToText(props.largescreen) + " wide largescreen";
+    }
+    if (props.mobileOnly) {
+      className += " mobile only";
+    }
+    if (props.tabletOnly) {
+      className += " tablet only";
+    }
+    if (props.computerOnly) {
+      className += " computer only";
+    }
+    if (props.largescreenOnly) {
+      className += " largescreen only";
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);

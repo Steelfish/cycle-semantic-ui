@@ -88,6 +88,22 @@ describe("Column", function () {
       let column = Column.render({ largescreen: 12 });
       assert.equal(column.data.props.className, "ui twelve wide largescreen column");
     });
+    it("should support the mobile only variation", function () {
+      let column = Column.render({ mobileOnly: true });
+      assert.equal(column.data.props.className, "ui mobile only column");
+    });
+    it("should support the tablet only variation", function () {
+      let column = Column.render({ tabletOnly: true });
+      assert.equal(column.data.props.className, "ui tablet only column");
+    });
+    it("should support the computer only variation", function () {
+      let column = Column.render({ computerOnly: true });
+      assert.equal(column.data.props.className, "ui computer only column");
+    });
+    it("should support the largescreen only variation", function () {
+      let column = Column.render({ largescreenOnly: true });
+      assert.equal(column.data.props.className, "ui largescreen only column");
+    });
     it("should support the Size enum", function () {
       let column = Column.render({ size: "small" });
       assert.equal(column.data.props.className, "ui small column");

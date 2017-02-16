@@ -31,6 +31,16 @@
   padding: 0em;
 }
 
+/*----------------------
+      Remove Gutters
+-----------------------*/
+
+.ui.grid {
+  margin-top: -(@rowSpacing / 2);
+  margin-bottom: -(@rowSpacing / 2);
+  margin-left: -(@gutterWidth / 2);
+  margin-right: -(@gutterWidth / 2);
+}
 .ui.relaxed.grid  {
   margin-left: -(@relaxedGutterWidth / 2);
   margin-right: -(@relaxedGutterWidth / 2);
