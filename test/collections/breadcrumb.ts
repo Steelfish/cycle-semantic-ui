@@ -26,7 +26,7 @@ describe("Breadcrumb", function () {
     });
     it("should support verbose argument object syntax", function () {
       let breadcrumb = Breadcrumb.render({
-        style: { divider: "|" },
+        props: { divider: "|" },
         content: {
           main: [{ text: "Hello" }, { text: "There" }]
         }
@@ -43,14 +43,14 @@ describe("Breadcrumb", function () {
       assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
       assert.equal((breadcrumb.children[1] as VNode).text, "/");
       breadcrumb = Breadcrumb.render({
-        style: { size: "tiny" }
+        props: { size: "tiny" }
       });
       assert.equal(breadcrumb.children.length, 0);
       assert.equal(breadcrumb.data.props.className, "ui tiny breadcrumb");
     });
     it("should support shorthand argument object syntax", function () {
       let breadcrumb = Breadcrumb.render({
-        style: { divider: "|" },
+        props: { divider: "|" },
         content: [{ text: "Hello" }, { text: "There" }]
       });
       assert.equal(breadcrumb.children.length, 3);

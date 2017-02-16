@@ -26,7 +26,7 @@ describe("Form", function () {
     });
     it("should support verbose argument object syntax", function () {
       let form = Form.render({
-        style: { loading: true },
+        props: { loading: true },
         content: {
           main: ["Content"]
         }
@@ -43,14 +43,14 @@ describe("Form", function () {
       assert.equal(form.data.props.className, "ui form");
       assert.equal((form.children[0] as VNode).text, "Content");
       form = Form.render({
-        style: { loading: true }
+        props: { loading: true }
       });
       assert.equal(form.children.length, 0);
       assert.equal(form.data.props.className, "ui loading form");
     });
     it("should support shorthand argument object syntax", function () {
       let form = Form.render({
-        style: { loading: true },
+        props: { loading: true },
         content: ["Content"]
       });
       assert.equal(form.children.length, 1);
@@ -63,7 +63,7 @@ describe("Form", function () {
       assert.equal(form.data.props.className, "ui form");
       assert.equal((form.children[0] as VNode).text, "Content");
       form = Form.render({
-        style: { loading: true }
+        props: { loading: true }
       });
       assert.equal(form.children.length, 0);
       assert.equal(form.data.props.className, "ui loading form");

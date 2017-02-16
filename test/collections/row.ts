@@ -26,7 +26,7 @@ describe("Row", function () {
     });
     it("should support verbose argument object syntax", function () {
       let row = Row.render({
-        style: { stretched: true },
+        props: { stretched: true },
         content: {
           main: ["Content"]
         }
@@ -43,14 +43,14 @@ describe("Row", function () {
       assert.equal(row.data.props.className, "ui row");
       assert.equal((row.children[0] as VNode).text, "Content");
       row = Row.render({
-        style: { stretched: true }
+        props: { stretched: true }
       });
       assert.equal(row.children.length, 0);
       assert.equal(row.data.props.className, "ui stretched row");
     });
     it("should support shorthand argument object syntax", function () {
       let row = Row.render({
-        style: { stretched: true },
+        props: { stretched: true },
         content: ["Content"]
       });
       assert.equal(row.children.length, 1);
@@ -63,7 +63,7 @@ describe("Row", function () {
       assert.equal(row.data.props.className, "ui row");
       assert.equal((row.children[0] as VNode).text, "Content");
       row = Row.render({
-        style: { stretched: true }
+        props: { stretched: true }
       });
       assert.equal(row.children.length, 0);
       assert.equal(row.data.props.className, "ui stretched row");

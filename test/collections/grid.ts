@@ -26,7 +26,7 @@ describe("Grid", function () {
     });
     it("should support verbose argument object syntax", function () {
       let grid = Grid.render({
-        style: { divided: true },
+        props: { divided: true },
         content: {
           main: ["Content"]
         }
@@ -43,14 +43,14 @@ describe("Grid", function () {
       assert.equal(grid.data.props.className, "ui grid");
       assert.equal((grid.children[0] as VNode).text, "Content");
       grid = Grid.render({
-        style: { divided: true }
+        props: { divided: true }
       });
       assert.equal(grid.children.length, 0);
       assert.equal(grid.data.props.className, "ui divided grid");
     });
     it("should support shorthand argument object syntax", function () {
       let grid = Grid.render({
-        style: { divided: true },
+        props: { divided: true },
         content: ["Content"]
       });
       assert.equal(grid.children.length, 1);
@@ -63,7 +63,7 @@ describe("Grid", function () {
       assert.equal(grid.data.props.className, "ui grid");
       assert.equal((grid.children[0] as VNode).text, "Content");
       grid = Grid.render({
-        style: { divided: true }
+        props: { divided: true }
       });
       assert.equal(grid.children.length, 0);
       assert.equal(grid.data.props.className, "ui divided grid");

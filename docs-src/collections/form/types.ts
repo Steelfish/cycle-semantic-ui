@@ -76,10 +76,10 @@ export namespace Types {
           UI.Header.render({ dividing: true }, "Billing Information"),
           UI.Field.render({ content: { label: "Card Type", main: ddlCards } }),
           UI.Fields.render([
-            UI.Field.render({ style: { width: 7 }, content: { label: "Card Number", main: [UI.Textbox.render({ placeholder: "Card #" })] } }),
-            UI.Field.render({ style: { width: 3 }, content: { label: "CVC", main: [UI.Textbox.render({ placeholder: "CVC" })] } }),
+            UI.Field.render({ props: { width: 7 }, content: { label: "Card Number", main: [UI.Textbox.render({ placeholder: "Card #" })] } }),
+            UI.Field.render({ props: { width: 3 }, content: { label: "CVC", main: [UI.Textbox.render({ placeholder: "CVC" })] } }),
             UI.Field.render({
-              style: { width: 6 }, content: {
+              props: { width: 6 }, content: {
                 label: "Expiration", main: [
                   UI.Fields.render({ equalWidth: true }, [
                     UI.Field.render([ddlMonths]),
@@ -143,9 +143,9 @@ export namespace Types {
           UI.Header.render({dividing: true}, "Billing Information"),
           UI.Field.render({content: { label: "Card Type", main: ddlCards}}),
           UI.Fields.render([
-            UI.Field.render({style: {width: 7}, content: { label: "Card Number", main: [UI.Textbox.render({placeholder: "Card #"})]}}),
-            UI.Field.render({style: {width: 3}, content: { label: "CVC", main: [UI.Textbox.render({placeholder: "CVC"})]}}),
-            UI.Field.render({style: {width: 6}, content: { label: "Expiration", main: [
+            UI.Field.render({props: {width: 7}, content: { label: "Card Number", main: [UI.Textbox.render({placeholder: "Card #"})]}}),
+            UI.Field.render({props: {width: 3}, content: { label: "CVC", main: [UI.Textbox.render({placeholder: "CVC"})]}}),
+            UI.Field.render({props: {width: 6}, content: { label: "Expiration", main: [
               UI.Fields.render({equalWidth: true}, [
                 UI.Field.render([ddlMonths]),
                 UI.Field.render([UI.Textbox.render({placeholder: "Year"})])

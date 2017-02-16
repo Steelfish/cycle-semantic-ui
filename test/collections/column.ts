@@ -26,7 +26,7 @@ describe("Column", function () {
     });
     it("should support verbose argument object syntax", function () {
       let column = Column.render({
-        style: { width: 3 },
+        props: { width: 3 },
         content: {
           main: ["Content"]
         }
@@ -43,14 +43,14 @@ describe("Column", function () {
       assert.equal(column.data.props.className, "ui column");
       assert.equal((column.children[0] as VNode).text, "Content");
       column = Column.render({
-        style: { width: 3 }
+        props: { width: 3 }
       });
       assert.equal(column.children.length, 0);
       assert.equal(column.data.props.className, "ui three wide column");
     });
     it("should support shorthand argument object syntax", function () {
       let column = Column.render({
-        style: { width: 3 },
+        props: { width: 3 },
         content: ["Content"]
       });
       assert.equal(column.children.length, 1);
@@ -63,7 +63,7 @@ describe("Column", function () {
       assert.equal(column.data.props.className, "ui column");
       assert.equal((column.children[0] as VNode).text, "Content");
       column = Column.render({
-        style: { width: 3 }
+        props: { width: 3 }
       });
       assert.equal(column.children.length, 0);
       assert.equal(column.data.props.className, "ui three wide column");

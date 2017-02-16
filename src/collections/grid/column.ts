@@ -1,7 +1,7 @@
 
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
-import { renderStyleAndContent, runStyleAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 import {
   VerticalAlignment, VerticalAlignmentString, TextAlignment,
   TextAlignmentString, Size, SizeString, Float, FloatString
@@ -9,7 +9,7 @@ import {
 import { numToText } from "../../utils";
 
 export namespace Column {
-  export interface Style {
+  export interface Props {
     width: number;
     mobile: number;
     tablet: number;
@@ -21,51 +21,51 @@ export namespace Column {
     float: Float | FloatString;
   }
 
-  export type ColumnArgs = StyleAndContentArgs<Style, DOMContent, ContentObj<DOMContent>>;
-  export type ColumnSources = ComponentSources<Style, DOMContent, ContentObj<DOMContent>>;
+  export type ColumnArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
+  export type ColumnSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
 
-  export function render(arg1?: Partial<Style> | DOMContent | ColumnArgs, arg2?: DOMContent): VNode {
-    return renderStyleAndContent(column, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  export function render(arg1?: Partial<Props> | DOMContent | ColumnArgs, arg2?: DOMContent): VNode {
+    return renderPropsAndContent(column, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
   export function run(sources: ColumnSources, scope?: string): ComponentSinks {
-    return runStyleAndContent(sources, column, ".column", scope);
+    return runPropsAndContent(sources, column, ".column", scope);
   }
 
 
   function column(args: ColumnArgs) {
-    let style = args.style ? args.style : {};
+    let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
-    return div({ props: { className: getClassname(style) } }, content);
+    return div({ props: { className: getClassname(props) } }, content);
   }
 
-  function getClassname(style: Partial<Style>): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
-    if (style.width) {
-      className += numToText(style.width) + " wide";
+    if (props.width) {
+      className += numToText(props.width) + " wide";
     }
-    if (style.mobile) {
-      className += numToText(style.mobile) + " wide mobile";
+    if (props.mobile) {
+      className += numToText(props.mobile) + " wide mobile";
     }
-    if (style.tablet) {
-      className += numToText(style.tablet) + " wide tablet";
+    if (props.tablet) {
+      className += numToText(props.tablet) + " wide tablet";
     }
-    if (style.computer) {
-      className += numToText(style.computer) + " wide computer";
+    if (props.computer) {
+      className += numToText(props.computer) + " wide computer";
     }
-    if (style.largescreen) {
-      className += numToText(style.largescreen) + " wide largescreen";
+    if (props.largescreen) {
+      className += numToText(props.largescreen) + " wide largescreen";
     }
-    if (typeof (style.size) !== "undefined") {
-      className += Size.ToClassname(style.size);
+    if (typeof (props.size) !== "undefined") {
+      className += Size.ToClassname(props.size);
     }
-    if (typeof (style.alignment) !== "undefined") {
-      className += VerticalAlignment.ToClassname(style.alignment);
+    if (typeof (props.alignment) !== "undefined") {
+      className += VerticalAlignment.ToClassname(props.alignment);
     }
-    if (typeof (style.textAlignment) !== "undefined") {
-      className += TextAlignment.ToClassname(style.textAlignment);
+    if (typeof (props.textAlignment) !== "undefined") {
+      className += TextAlignment.ToClassname(props.textAlignment);
     }
-    if (typeof (style.float) !== "undefined") {
-      className += Float.ToClassname(style.float);
+    if (typeof (props.float) !== "undefined") {
+      className += Float.ToClassname(props.float);
     }
     className += " column";
     return className;

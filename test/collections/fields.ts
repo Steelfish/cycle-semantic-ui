@@ -26,7 +26,7 @@ describe("Fields", function () {
     });
     it("should support verbose argument object syntax", function () {
       let fields = Fields.render({
-        style: { inline: true },
+        props: { inline: true },
         content: {
           label: "Label",
           main: ["Content"]
@@ -53,14 +53,14 @@ describe("Fields", function () {
       assert.equal(fields.data.props.className, "ui fields");
       assert.equal((fields.children[0] as VNode).text, "Label");
       fields = Fields.render({
-        style: { inline: true }
+        props: { inline: true }
       });
       assert.equal(fields.children.length, 0);
       assert.equal(fields.data.props.className, "ui inline fields");
     });
     it("should support shorthand argument object syntax", function () {
       let fields = Fields.render({
-        style: { inline: true },
+        props: { inline: true },
         content: ["Content"]
       });
       assert.equal(fields.children.length, 1);
@@ -73,7 +73,7 @@ describe("Fields", function () {
       assert.equal(fields.data.props.className, "ui fields");
       assert.equal((fields.children[0] as VNode).text, "Content");
       fields = Fields.render({
-        style: { inline: true }
+        props: { inline: true }
       });
       assert.equal(fields.children.length, 0);
       assert.equal(fields.data.props.className, "ui inline fields");

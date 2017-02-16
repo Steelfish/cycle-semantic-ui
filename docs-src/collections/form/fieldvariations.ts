@@ -10,7 +10,7 @@ export namespace FieldVariations {
       description: "A field can have its label next to instead of above it.",
       VNode$: xs.of(UI.Form.render([
         UI.Field.render({
-          style: { inline: true },
+          props: { inline: true },
           content: {
             label: "Full name",
             main: [UI.Textbox.render({ placeholder: "Full Name" })]
@@ -19,7 +19,7 @@ export namespace FieldVariations {
       ])),
       code: `UI.Form.render([
         UI.Field.render({
-          style: {inline: true},
+          props: {inline: true},
           content: {
             label: "Full name",
             main: [UI.Textbox.render({placeholder: "Full Name"})]
@@ -34,21 +34,21 @@ export namespace FieldVariations {
       VNode$: xs.of(UI.Form.render([
         UI.Fields.render([
           UI.Field.render({
-            style: { width: 6 },
+            props: { width: 6 },
             content: {
               label: "First name",
               main: [UI.Textbox.render({ placeholder: "First Name" })]
             }
           }),
           UI.Field.render({
-            style: { width: 4 },
+            props: { width: 4 },
             content: {
               label: "Middle",
               main: [UI.Textbox.render({ placeholder: "Middle Name" })]
             }
           }),
           UI.Field.render({
-            style: { width: 6 },
+            props: { width: 6 },
             content: {
               label: "Last name",
               main: [UI.Textbox.render({ placeholder: "Last Name" })]
@@ -69,21 +69,21 @@ export namespace FieldVariations {
       code: `UI.Form.render([
         UI.Fields.render([
           UI.Field.render({
-            style: { width: 6 },
+            props: { width: 6 },
             content: {
               label: "First name",
               main: [UI.Textbox.render({ placeholder: "First Name" })]
             }
           }),
           UI.Field.render({
-            style: { width: 4 },
+            props: { width: 4 },
             content: {
               label: "Middle",
               main: [UI.Textbox.render({ placeholder: "Middle Name" })]
             }
           }),
           UI.Field.render({
-            style: { width: 6 },
+            props: { width: 6 },
             content: {
               label: "Last name",
               main: [UI.Textbox.render({ placeholder: "Last Name" })]
@@ -108,7 +108,7 @@ export namespace FieldVariations {
       description: "A field can show that input is mandetory",
       VNode$: xs.of(UI.Form.render([
         UI.Field.render({
-          style: {required: true},
+          props: {required: true},
           content: {
             label: "Full name",
             main: [UI.Textbox.render({placeholder: "Full Name"})]
@@ -118,7 +118,7 @@ export namespace FieldVariations {
       ])),
       code: `UI.Form.render([
         UI.Field.render({
-          style: {required: true},
+          props: {required: true},
           content: {
             label: "Full name",
             main: [UI.Textbox.render({placeholder: "Full Name"})]

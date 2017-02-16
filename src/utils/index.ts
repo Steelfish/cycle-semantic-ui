@@ -3,7 +3,7 @@ import { VNode } from "@cycle/dom";
 
 
 export function capitalize(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : string;
 }
 
 export function patchClassList(target: VNode, classes: string[], classesToAdd: string) {

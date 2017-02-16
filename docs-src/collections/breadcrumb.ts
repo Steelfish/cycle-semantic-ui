@@ -49,7 +49,7 @@ export namespace Breadcrumb {
     });
     let ex2 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        props: { divider: UI.Icon.render(UI.IconType.AngleRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Store", href: "#" },
@@ -57,7 +57,7 @@ export namespace Breadcrumb {
         ]
       })),
       code: `Breadcrumb.render({
-  style: { divider: Icon.render(IconType.AngleRight) },
+  props: { divider: Icon.render(IconType.AngleRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Store", href: "#" },
@@ -72,7 +72,7 @@ export namespace Breadcrumb {
       header: "Divider",
       description: "A breadcrumb can contain a divider to show the relationship between sections, this can be formatted as an icon or text.",
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -80,7 +80,7 @@ export namespace Breadcrumb {
         ]
       })),
       code: `Breadcrumb.render({
-style: { divider: Icon.render(IconType.ArrowRight) },
+props: { divider: Icon.render(IconType.ArrowRight) },
 content:[
   { text: "Home", href: "#" },
   { text: "Registration", href: "#" },
@@ -89,7 +89,7 @@ content:[
     });
     let ex2 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { divider: "|" },
+        props: { divider: "|" },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -97,7 +97,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { divider: "|" },
+  props: { divider: "|" },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -109,14 +109,14 @@ content:[
       header: "Section",
       description: "A breadcrumb can contain sections that can either be formatted as a link or text.",
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        props: { divider: UI.Icon.render(UI.IconType.AngleRight) },
         content: [
           { text: "Home" },
           { text: "Search", active: true },
         ]
       })),
       code: `Breadcrumb.render({
-  style: { divider: Icon.render(IconType.AngleRight) },
+  props: { divider: Icon.render(IconType.AngleRight) },
   content: [
     { text: "Home" },
     { text: "Search", active: true },
@@ -127,14 +127,14 @@ content:[
       header: "Link",
       description: "A section may be linkable or contain a link.",
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { divider: UI.Icon.render(UI.IconType.AngleRight) },
+        props: { divider: UI.Icon.render(UI.IconType.AngleRight) },
         content: [
           { text: "Home", href: "#" },
           { text: ["Search for: ", a("paper towels")], active: true },
         ]
       })),
       code: `Breadcrumb.render({
-  style: { divider: Icon.render(IconType.AngleRight) },
+  props: { divider: Icon.render(IconType.AngleRight) },
   content: [
     { text: "Home", href: "#" },
     { text: ["Search for: ", a("paper towels")], active: true },
@@ -149,7 +149,7 @@ content:[
       header: "Size",
       description: "A breadcrumb can vary in size.",
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Mini, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Mini, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -157,7 +157,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Mini, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Mini, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -167,7 +167,7 @@ content:[
     });
     let ex2 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Tiny, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Tiny, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -175,7 +175,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Tiny, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Tiny, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -185,7 +185,7 @@ content:[
     });
     let ex3 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Small, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Small, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -193,7 +193,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Small, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Small, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -202,7 +202,7 @@ content:[
 })`
     }); let ex4 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Medium, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Medium, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -210,7 +210,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Medium, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Medium, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -219,7 +219,7 @@ content:[
 })`
     }); let ex5 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Large, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Large, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -227,7 +227,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Large, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Large, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -237,7 +237,7 @@ content:[
     });
     let ex6 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Big, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Big, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -245,7 +245,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Big, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Big, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -254,7 +254,7 @@ content:[
 })`
     }); let ex7 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Huge, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Huge, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -262,7 +262,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Huge, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Huge, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },
@@ -271,7 +271,7 @@ content:[
 })`
     }); let ex8 = Example.run(sources, {
       VNode$: xs.of(UI.Breadcrumb.render({
-        style: { size: UI.Size.Massive, divider: UI.Icon.render(UI.IconType.ArrowRight) },
+        props: { size: UI.Size.Massive, divider: UI.Icon.render(UI.IconType.ArrowRight) },
         content: [
           { text: "Home", href: "#" },
           { text: "Registration", href: "#" },
@@ -279,7 +279,7 @@ content:[
         ]
       })),
       code: `Breadcrumb.render({
-  style: { size: Size.Massive, divider: Icon.render(UI.IconType.ArrowRight) },
+  props: { size: Size.Massive, divider: Icon.render(UI.IconType.ArrowRight) },
   content: [
     { text: "Home", href: "#" },
     { text: "Registration", href: "#" },

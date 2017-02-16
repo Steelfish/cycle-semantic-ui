@@ -33,7 +33,7 @@ export namespace States {
         ddlGender => UI.Form.render([
           UI.Fields.render({equalWidth: true}, [
             UI.Field.render({
-              style: {error: true},
+              props: {error: true},
               content: {
                 label: "First Name",
                 main: [UI.Textbox.render({placeholder: "First Name"})]
@@ -47,11 +47,11 @@ export namespace States {
             })
           ]),
           UI.Field.render({
-            style: {error: true},
+            props: {error: true},
             content: {label: "Gender", main: ddlGender}
           }),
           UI.Field.render({
-            style: {error: true},
+            props: {error: true},
             content: [UI.Checkbox.render("I agree to the Terms and Conditions")]
           }),
         ])
@@ -68,7 +68,7 @@ export namespace States {
       ddlGender => UI.Form.render([
         UI.Fields.render({equalWidth: true}, [
           UI.Field.render({
-            style: {error: true},
+            props: {error: true},
             content: {
               label: "First Name",
               main: [UI.Textbox.render({placeholder: "First Name"})]
@@ -82,11 +82,11 @@ export namespace States {
           })
         ]),
         UI.Field.render({
-          style: {error: true},
+          props: {error: true},
           content: {label: "Gender", main: ddlGender}
         }),
         UI.Field.render({
-          style: {error: true},
+          props: {error: true},
           content: [UI.Checkbox.render("I agree to the Terms and Conditions")]
         }),
       ])
@@ -99,14 +99,14 @@ export namespace States {
       VNode$: xs.of(UI.Form.render([
         UI.Fields.render({equalWidth: true}, [
           UI.Field.render({
-            style: { disabled: true},
+            props: { disabled: true},
             content: { 
               label: "First Name",
               main: [UI.Textbox.render({disabled: true, placeholder: "Disabled"})]
             }
           }),
           UI.Field.render({
-            style: { disabled: true},
+            props: { disabled: true},
             content: { 
               label: "Last Name",
               main: [UI.Textbox.render({disabled: true, placeholder: "Disabled"})]
@@ -117,14 +117,14 @@ export namespace States {
       code: `UI.Form.render([
         UI.Fields.render({equalWidth: true}, [
           UI.Field.render({
-            style: { disabled: true},
+            props: { disabled: true},
             content: { 
               label: "First Name",
               main: [UI.Textbox.render({disabled: true, placeholder: "Disabled"})]
             }
           }),
           UI.Field.render({
-            style: { disabled: true},
+            props: { disabled: true},
             content: { 
               label: "Last Name",
               main: [UI.Textbox.render({disabled: true, placeholder: "Disabled"})]

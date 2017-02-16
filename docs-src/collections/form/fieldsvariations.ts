@@ -80,7 +80,7 @@ export namespace FieldsVariations {
       description: "Multiple fields may be inline in a row",
       VNode$: xs.of(UI.Form.render([
         UI.Fields.render({
-          style: { inline: true },
+          props: { inline: true },
           content: {
             label: "Phone Number",
             main: [
@@ -93,7 +93,7 @@ export namespace FieldsVariations {
       ])),
       code: `UI.Form.render([
         UI.Fields.render({
-          style: { inline: true },
+          props: { inline: true },
           content: {
             label: "Phone Number",
             main: [

@@ -1,10 +1,10 @@
 import { div, label, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, DOMContent, isDOMContent } from "../../types";
 import { numToText } from "../../utils";
-import { renderStyleAndContent, runStyleAndContent } from "../../common";
+import { renderPropsAndContent, runPropsAndContent } from "../../common";
 
 export namespace Field {
-  export interface Style {
+  export interface Props {
     width: number;
     inline: boolean;
     centered: boolean;
@@ -17,19 +17,19 @@ export namespace Field {
     label: DOMContent;
   }
 
-  export type FieldArgs = StyleAndContentArgs<Style, DOMContent, FieldContentObj>;
-  export type FieldSources = ComponentSources<Style, DOMContent, FieldContentObj>;
+  export type FieldArgs = StyleAndContentArgs<Props, DOMContent, FieldContentObj>;
+  export type FieldSources = ComponentSources<Props, DOMContent, FieldContentObj>;
 
-  export function render(arg1?: Partial<Style> | DOMContent | FieldArgs, arg2?: DOMContent): VNode {
-    return renderStyleAndContent(field, isArgs, isDOMContent, arg1, arg2);
+  export function render(arg1?: Partial<Props> | DOMContent | FieldArgs, arg2?: DOMContent): VNode {
+    return renderPropsAndContent(field, isArgs, isDOMContent, arg1, arg2);
   }
 
   export function run(sources: FieldSources, scope?: string): ComponentSinks {
-    return runStyleAndContent(sources, field, ".field", scope);
+    return runPropsAndContent(sources, field, ".field", scope);
   }
 
   function field(args: FieldArgs): VNode {
-    let style = typeof (args.style) === "undefined" ? {} : args.style;
+    let props = typeof (args.props) === "undefined" ? {} : args.props;
     let lbl = "" as DOMContent;
     let content = [] as DOMContent;
     if (typeof (args.content) !== "undefined") {
@@ -40,27 +40,27 @@ export namespace Field {
         content = args.content.main ? args.content.main : [];
       }
     }
-    return div({ props: { className: getClassname(style) } }, [].concat(lbl ? label(lbl) : "", content));
+    return div({ props: { className: getClassname(props) } }, [].concat(lbl ? label(lbl) : "", content));
   }
 
-  function getClassname(style: Partial<Style>) {
+  function getClassname(props: Partial<Props>) {
     let className = "ui";
-    if (style.width) {
-      className += numToText(style.width) + " wide";
+    if (props.width) {
+      className += numToText(props.width) + " wide";
     }
-    if (style.inline) {
+    if (props.inline) {
       className += " inline";
     }
-    if (style.centered) {
+    if (props.centered) {
       className += " centered";
     }
-    if (style.error) {
+    if (props.error) {
       className += " error";
     }
-    if (style.disabled) {
+    if (props.disabled) {
       className += " disabled";
     }
-    if (style.required) {
+    if (props.required) {
       className += " required";
     }
     className += " field";
@@ -69,7 +69,7 @@ export namespace Field {
 
   function isArgs(obj): obj is FieldArgs {
     return obj && (
-      typeof (obj.style) !== "undefined" ||
+      typeof (obj.props) !== "undefined" ||
       (typeof (obj.content) !== "undefined" && 
         (isDOMContent(obj.content) || isDOMContent(obj.content.main) || isDOMContent(obj.content.label))
       )

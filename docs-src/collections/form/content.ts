@@ -74,15 +74,15 @@ export namespace Content {
       VNode$: xs.of(UI.Form.render([
         UI.Fields.render({ inline: true }, [
           UI.Field.render({
-            style: { width: 8 },
+            props: { width: 8 },
             content: { label: "Name", main: [UI.Textbox.render({ placeholder: "First Name" })] }
           }),
           UI.Field.render({
-            style: { width: 3 },
+            props: { width: 3 },
             content: [UI.Textbox.render({ placeholder: "Middle Name" })]
           }),
           UI.Field.render({
-            style: { width: 5 },
+            props: { width: 5 },
             content: [UI.Textbox.render({ placeholder: "Last Name" })]
           })
         ])
@@ -90,15 +90,15 @@ export namespace Content {
       code: `UI.Form.render([
         UI.Fields.render({inline: true}, [
           UI.Field.render({
-            style: {width: 8},
+            props: {width: 8},
             content: { label: "Name", main: [UI.Textbox.render({placeholder: "First Name"})]}
           }),
           UI.Field.render({
-            style: {width: 3},
+            props: {width: 3},
             content: [UI.Textbox.render({placeholder: "Middle Name"})]
           }),
           UI.Field.render({
-            style: {width: 5},
+            props: {width: 5},
             content: [UI.Textbox.render({placeholder: "Last Name"})]
           })
         ])
@@ -161,7 +161,7 @@ export namespace Content {
       description: "A form can contain a radio checkbox",
       VNode$: xs.of(UI.Form.render([
         UI.Fields.render({
-          style: { inline: true },
+          props: { inline: true },
           content: {
             label: "Select your favourite fruit:",
             main: [
@@ -173,7 +173,7 @@ export namespace Content {
           }
         }),
         UI.Fields.render({
-          style: { grouped: true },
+          props: { grouped: true },
           content: {
             label: "Select your favourite fruit:",
             main: [
@@ -187,7 +187,7 @@ export namespace Content {
       ])),
       code: `UI.Form.render([
         UI.Fields.render({
-          style: { inline: true },
+          props: { inline: true },
           content: {
             label: "Select your favourite fruit:",
             main: [
@@ -199,7 +199,7 @@ export namespace Content {
           }
         }),
         UI.Fields.render({
-          style: { grouped: true },
+          props: { grouped: true },
           content: {
             label: "Select your favourite fruit:",
             main: [
