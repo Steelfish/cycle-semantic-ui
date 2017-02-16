@@ -66,8 +66,8 @@ export namespace TextAlignment {
   export function ToClassname(alignment: TextAlignment | TextAlignmentString): string {
     alignment = TextAlignment.ToEnum(alignment);
     switch (alignment) {
-      case TextAlignment.Left: return " left aligned.";
-      case TextAlignment.Right: return " right aligned.";
+      case TextAlignment.Left: return " left aligned";
+      case TextAlignment.Right: return " right aligned";
       case TextAlignment.Center: return " center aligned";
       case TextAlignment.Justified: return " justified";
       default: return "";

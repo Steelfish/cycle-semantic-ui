@@ -80,6 +80,7 @@ export function numToText(num: number): string {
     case 14: return " fourteen";
     case 15: return " fifteen";
     case 16: return " sixteen";
+    default: return " one";
   }
 }
 

@@ -1,85 +1,52 @@
-import {
-  DOMContent, VNode, IInteractiveComponentSources,
-  IInteractiveComponentSinks, isDOMContent
-} from "../../interfaces";
+import { div, VNode } from "@cycle/dom";
+import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
+import { renderStyleAndContent, runStyleAndContent, makeIsArgs } from "../../common";
 import { numToText } from "../../utils";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
 
 export namespace Row {
-  export interface Props {
-    stretched?: boolean;
-    mobile?: boolean;
-    tablet?: boolean;
-    computer?: boolean;
-    largescreen?: boolean;
-    equallyDivided?: boolean;
+  export interface Style {
+    stretched: boolean;
+    mobile: boolean;
+    tablet: boolean;
+    computer: boolean;
+    largescreen: boolean;
+    equalWidth: boolean;
   }
 
-  /**
-   * Creates a Row component that wraps Column content.
-   * Accepts the following properties in props$:
-   *   stretched?: boolean - Ensures the columns are stretched to equal height.
-   *   mobile?: boolean - Makes the row visible only on mobile devices.
-   *   tablet?: boolean - Makes the row visible only on tablet devices.
-   *   computer?: boolean - Makes the row visible only on computer devices.
-   *   largescreen?: boolean - Makes the row visible only on largescreen devices.
-   *   equallyDivided?: boolean - Makes each column of the row equal in width.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
+  export type RowArgs = StyleAndContentArgs<Style, DOMContent, ContentObj<DOMContent>>;
+  export type RowSources = ComponentSources<Style, DOMContent, ContentObj<DOMContent>>;
 
-      const vTree$ = xs.combine(sources.props$, sources.content$).map(
-        ([props, content]) => render(props, content)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".row").events(type),
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export function render(arg1?: Partial<Style>|DOMContent|RowArgs, arg2?: DOMContent) : VNode {
+    return renderStyleAndContent(row, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+  export function run(sources: RowSources, scope?: string) : ComponentSinks {
+    return runStyleAndContent(sources, row, ".row", scope);
   }
 
-  /**
-   * Creates a Row component that wraps Column content.
-   * Accepts the following properties:
-   *   stretched?: boolean - Ensures the columns are stretched to equal height.
-   *   mobile?: boolean - Makes the row visible only on mobile devices.
-   *   tablet?: boolean - Makes the row visible only on tablet devices.
-   *   computer?: boolean - Makes the row visible only on computer devices.
-   *   largescreen?: boolean - Makes the row visible only on largescreen devices.
-   *   equallyDivided?: boolean - Makes each column of the row equal in width.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props|DOMContent = {}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    return div({ props: { className: getClassname(props, content) } }, content);
+  export function row(args): VNode {
+    let style = args.style ? args.style : {};
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main: [];
+    return div({ props: { className: getClassname(style, content) } }, content);
   }
-  function getClassname(props: Props, content): string {
+  function getClassname(style: Partial<Style>, content: DOMContent): string {
     let className = "ui";
-    if (props.stretched) {
+    if (style.stretched) {
       className += " stretched";
     }
-    if (props.mobile) {
+    if (style.mobile) {
       className += " mobile only";
     }
-    if (props.tablet) {
+    if (style.tablet) {
       className += " tablet only";
     }
-    if (props.computer) {
+    if (style.computer) {
       className += " computer only";
     }
-    if (props.largescreen) {
+    if (style.largescreen) {
       className += " largescreen only";
     }
-    if (props.equallyDivided) {
-      className += numToText(content.length ? content.length : 1) + " column";
+    if (style.equalWidth) {
+      className += numToText(content instanceof Array ? content.length : 1) + " column";
     }
     className += " row";
     return className;

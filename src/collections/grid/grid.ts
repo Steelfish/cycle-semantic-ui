@@ -1,110 +1,68 @@
-import {
-  DOMContent, VNode, IInteractiveComponentSources,
-  IInteractiveComponentSinks, isDOMContent
-} from "../../interfaces";
-import { VerticalAlignment, TextAlignment } from "../../enums";
+import { div, VNode } from "@cycle/dom";
+import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
+import { renderStyleAndContent, runStyleAndContent, makeIsArgs } from "../../common";
+import { VerticalAlignment, VerticalAlignmentString, TextAlignment, TextAlignmentString } from "../../enums";
 import { numToText } from "../../utils";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
 
 export namespace Grid {
-  export interface Props {
-    equallyDivided?: boolean;
-    divided?: boolean;
-    container?: boolean;
-    celled?: boolean;
-    intCelled?: boolean;
-    padded?: boolean;
-    relaxed?: boolean;
-    centered?: boolean;
-    alignment?: VerticalAlignment;
-    textAlignment?: TextAlignment;
+  export interface Style {
+    equalWidth: boolean;
+    divided: boolean;
+    container: boolean;
+    celled: boolean;
+    intCelled: boolean;
+    padded: boolean;
+    relaxed: boolean;
+    centered: boolean;
+    alignment: VerticalAlignment | VerticalAlignmentString;
+    textAlignment: TextAlignment | TextAlignmentString;
   }
 
-  /**
-   * Wraps content in a column suitable for the Grid component.
-   * Accepts the following properties in props$:
-   *   equallyDivided?: boolean - Styles grid content to take up equal amounts of space.
-   *   divided?: boolean - Use dividers to seperate content in the Grid.
-   *   container? : boolean - Wraps the grid in a container.
-   *   celled?: boolean - Divides the grid into cells.
-   *   intCelled?: boolean - Divides the grid into cells with only internal dividers.
-   *   padded?: boolean - Adds vertical and horizontal gutters to the grid.
-   *   relaxed?: boolean - Increases the amount of negative space.
-   *   centered?: boolean - Centers the content of the Grid.
-   *   alignment?: VerticalAlignment: Determines the alignment of content in the Grid.
-   *   textAlignment?: TextAlignment: Determines the text alignment of content in the Grid.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
-
-      const vTree$ = xs.combine(sources.props$, sources.content$)
-        .map(([props, content]) => render(props, content)
-        );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".grid").events(type),
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export type GridArgs = StyleAndContentArgs<Style, DOMContent, ContentObj<DOMContent>>;
+  export type GridSources = ComponentSources<Style, DOMContent, ContentObj<DOMContent>>;
+  export function render(arg1?: Partial<Style> | DOMContent | GridArgs, arg2?: DOMContent): VNode {
+    return renderStyleAndContent(grid, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+  export function run(sources: GridSources, scope?: string): ComponentSinks {
+    return runStyleAndContent(sources, grid, ".grid", scope);
   }
 
-  /**
-   * Wraps content in a column suitable for the Grid component.
-   * Accepts the following properties:
-   *   equallyDivided?: boolean - Styles grid content to take up equal amounts of space.
-   *   divided?: boolean - Use dividers to seperate content in the Grid.
-   *   container? : boolean - Wraps the grid in a container.
-   *   celled?: boolean - Divides the grid into cells.
-   *   intCelled?: boolean - Divides the grid into cells with only internal dividers.
-   *   padded?: boolean - Adds vertical and horizontal gutters to the grid.
-   *   relaxed?: boolean - Increases the amount of negative space.
-   *   centered?: boolean - Centers the content of the Grid.
-   *   alignment?: VerticalAlignment: Determines the alignment of content in the Grid.
-   *   textAlignment?: TextAlignment: Determines the text alignment of content in the Grid.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    return div({ props: { className: getClassname(props, content) } }, content);
+  export function grid(args: GridArgs): VNode {
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
+    let style = typeof (args.style) !== "undefined" ? args.style : {};
+    return div({ props: { className: getClassname(style, content) } }, content);
   }
-  export function getClassname(props: Props, content): string {
+  export function getClassname(style: Partial<Style>, content: DOMContent): string {
     let className = "ui";
-    if (props.equallyDivided) {
-      className += numToText(content.length ? content.length : 1) + " column";
+    if (style.equalWidth) {
+      className += numToText(content instanceof Array ? content.length : 1) + " column";
     }
-    if (props.divided) {
+    if (style.divided) {
       className += " divided";
     }
-    if (props.container) {
+    if (style.container) {
       className += " container";
     }
-    if (props.celled) {
+    if (style.celled) {
       className += " celled";
     }
-    if (props.intCelled) {
+    if (style.intCelled) {
       className += " internally celled";
     }
-    if (props.padded) {
+    if (style.padded) {
       className += " padded";
     }
-    if (props.relaxed) {
+    if (style.relaxed) {
       className += " relaxed";
     }
-    if (props.centered) {
+    if (style.centered) {
       className += " centered";
     }
-    if (typeof (props.alignment) !== "undefined") {
-      className += VerticalAlignment.ToClassname(props.alignment);
+    if (typeof (style.alignment) !== "undefined") {
+      className += VerticalAlignment.ToClassname(style.alignment);
     }
-    if (typeof (props.textAlignment) !== "undefined") {
-      className += TextAlignment.ToClassname(props.textAlignment);
+    if (typeof (style.textAlignment) !== "undefined") {
+      className += TextAlignment.ToClassname(style.textAlignment);
     }
     className += " grid";
     return className;
