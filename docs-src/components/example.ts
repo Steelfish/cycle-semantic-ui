@@ -7,7 +7,7 @@ export namespace Example {
   export interface Arguments {
     VNode$: Stream<VNode>;
     code: string;
-    header?: string;
+    header?: UI.DOMContent;
     description?: UI.DOMContent; 
     highlighted?: boolean;
   }

@@ -1,7 +1,7 @@
-import * as UI from "../../ui";
+import * as UI from "../../../ui";
 import xs, { Stream } from "xstream";
 import { VNode } from "@cycle/dom";
-import { Example } from "../../components";
+import { Example } from "../../../components";
 
 export namespace Columns {
   export function run(sources): Stream<VNode> {

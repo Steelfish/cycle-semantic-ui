@@ -57,7 +57,7 @@ export namespace Column {
       className += numToText(props.computer) + " wide computer";
     }
     if (props.largescreen) {
-      className += numToText(props.largescreen) + " wide largescreen";
+      className += numToText(props.largescreen) + " wide large screen";
     }
     if (props.mobileOnly) {
       className += " mobile only";
@@ -69,7 +69,7 @@ export namespace Column {
       className += " computer only";
     }
     if (props.largescreenOnly) {
-      className += " largescreen only";
+      className += " large screen only";
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);

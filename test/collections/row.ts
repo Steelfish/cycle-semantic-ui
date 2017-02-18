@@ -71,10 +71,14 @@ describe("Row", function () {
     it("should support setting the width in columns", function () {
       let row = Row.render({ width: 4 });
       assert.equal(row.data.props.className, "ui four column row");
-    })
+    });
     it("should support the stretched variation", function () {
       let row = Row.render({ stretched: true });
       assert.equal(row.data.props.className, "ui stretched row");
+    });
+    it("should support the centered variation", function () {
+      let row = Row.render({ centered: true });
+      assert.equal(row.data.props.className, "ui centered row");
     });
     it("should support the mobile only variation", function () {
       let row = Row.render({ mobileOnly: true });
@@ -99,6 +103,14 @@ describe("Row", function () {
     it("should support the doubling variation", function () {
       let row = Row.render({ doubling: true });
       assert.equal(row.data.props.className, "ui doubling row");
+    });
+    it("should support the text alignment enum", function () {
+      let row = Row.render({ textAlignment: "center" });
+      assert.equal(row.data.props.className, "ui center aligned row");
+    });
+    it("should support the vertical alignment enum", function () {
+      let row = Row.render({ alignment: "middle" });
+      assert.equal(row.data.props.className, "ui middle aligned row");
     });
   });
   describe("run", function () {

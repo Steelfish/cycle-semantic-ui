@@ -5,3 +5,4 @@ export * from "./modal";
 export * from "./popup";
 export * from "./progress";
 export * from "./transition";
+export * from "./tabs";

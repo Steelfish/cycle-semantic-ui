@@ -1,18 +1,22 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { TextAlignment, TextAlignmentString, VerticalAlignment, VerticalAlignmentString} from "../../enums";
 import { numToText } from "../../utils";
 
 export namespace Row {
   export interface Props {
     width: number;
     doubling: boolean;
+    centered: boolean;
     stretched: boolean;
     mobileOnly: boolean;
     tabletOnly: boolean;
     computerOnly: boolean;
     largescreenOnly: boolean;
     equalWidth: boolean;
+    alignment: VerticalAlignment | VerticalAlignmentString;
+    textAlignment: TextAlignment | TextAlignmentString;
   }
 
   export type RowArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
@@ -35,6 +39,9 @@ export namespace Row {
     if (props.doubling) {
       className += " doubling";
     }
+    if (props.centered) {
+      className += " centered";
+    }
     if (props.stretched) {
       className += " stretched";
     }
@@ -48,13 +55,19 @@ export namespace Row {
       className += " computer only";
     }
     if (props.largescreenOnly) {
-      className += " largescreen only";
+      className += " large screen only";
     }
     if (props.equalWidth) {
       className += " equal width";
     }
     if (props.width) {
       className += numToText(props.width) + " column";
+    }
+    if (typeof(props.textAlignment) !== "undefined") {
+      className += TextAlignment.ToClassname(props.textAlignment);
+    }
+    if (typeof(props.alignment) !== "undefined") {
+      className += VerticalAlignment.ToClassname(props.alignment);
     }
     className += " row";
     return className;
