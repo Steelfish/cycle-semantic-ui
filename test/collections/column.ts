@@ -86,7 +86,7 @@ describe("Column", function () {
     });
     it("should support setting the width for largescreens", function () {
       let column = Column.render({ largescreen: 12 });
-      assert.equal(column.data.props.className, "ui twelve wide largescreen column");
+      assert.equal(column.data.props.className, "ui twelve wide large screen column");
     });
     it("should support the mobile only variation", function () {
       let column = Column.render({ mobileOnly: true });
@@ -102,7 +102,7 @@ describe("Column", function () {
     });
     it("should support the largescreen only variation", function () {
       let column = Column.render({ largescreenOnly: true });
-      assert.equal(column.data.props.className, "ui largescreen only column");
+      assert.equal(column.data.props.className, "ui large screen only column");
     });
     it("should support the Size enum", function () {
       let column = Column.render({ size: "small" });

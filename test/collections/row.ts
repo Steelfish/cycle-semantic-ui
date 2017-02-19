@@ -94,7 +94,7 @@ describe("Row", function () {
     });
     it("should support the largescreen only variation", function () {
       let row = Row.render({ largescreenOnly: true });
-      assert.equal(row.data.props.className, "ui largescreen only row");
+      assert.equal(row.data.props.className, "ui large screen only row");
     });
     it("should support the equal width variation", function () {
       let row = Row.render({ equalWidth: true });

@@ -142,7 +142,7 @@ describe("Grid", function () {
     });
     it("should support the largescreen reversed variation", function () {
       let grid = Grid.render({ reversedLargescreen: true });
-      assert.equal(grid.data.props.className, "ui largescreen reversed grid");
+      assert.equal(grid.data.props.className, "ui large screen reversed grid");
     });
     it("should support the mobile vertically reversed variation", function () {
       let grid = Grid.render({ vertReversedMobile: true });
@@ -157,8 +157,8 @@ describe("Grid", function () {
       assert.equal(grid.data.props.className, "ui computer vertically reversed grid");
     });
     it("should support the largescreen vertically reversed variation", function () {
-      let grid = Grid.render({ reversedLargescreen: true });
-      assert.equal(grid.data.props.className, "ui largescreen vertically reversed grid");
+      let grid = Grid.render({ vertReversedLargescreen: true });
+      assert.equal(grid.data.props.className, "ui large screen vertically reversed grid");
     });
     it("should support the mobile only variation", function () {
       let grid = Grid.render({ mobileOnly: true });
@@ -174,7 +174,7 @@ describe("Grid", function () {
     });
     it("should support the largescreen only variation", function () {
       let grid = Grid.render({ largescreenOnly: true });
-      assert.equal(grid.data.props.className, "ui largescreen only grid");
+      assert.equal(grid.data.props.className, "ui large screen only grid");
     });
     it("should support the vertical alignment enum", function () {
       let grid = Grid.render({ alignment: "top" });
