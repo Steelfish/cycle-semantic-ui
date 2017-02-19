@@ -33,7 +33,7 @@ export namespace Dropdown {
   }
   export type Content<V> = Array<DropdownItem<V>>;
   export interface DropdownItem<V> {
-    body: DOMContent;
+    main: DOMContent;
     value: V;
     header?: boolean;
     fitted?: boolean;
@@ -263,7 +263,7 @@ export namespace Dropdown {
     if (item === null || typeof(item) === "undefined") {
       return div({ props: { className: "default text" } }, props.default);
     }
-    return div({ props: { className: "text" } }, item.body);
+    return div({ props: { className: "text" } }, item.main);
   }
   function filterContent<V>(item: DropdownItem<V>, filter: string): boolean {
     function f(node: VNode) {
@@ -279,13 +279,13 @@ export namespace Dropdown {
         return false;
       }
     }
-    if (typeof (item.body === "string")) {
-      return (item.body as string).indexOf(filter) !== -1 || !filter;
+    if (typeof (item.main === "string")) {
+      return (item.main as string).indexOf(filter) !== -1 || !filter;
     }
-    if (!(item.body as any).push) {
-      return f(item.body as VNode);
+    if (!(item.main as any).push) {
+      return f(item.main as VNode);
     }
-    for (let c in (item.body as VNode).children) {
+    for (let c in (item.main as VNode).children) {
       if (f(c)) {
         return true;
       }

@@ -21,4 +21,8 @@ export interface ComponentSinks {
   events: EventSelector;
 }
 
+export interface ValueComponentSinks<V> extends ComponentSinks {
+  value$: Stream<V>;
+}
+
 export type EventSelector = (type:string) => Stream<Event>;

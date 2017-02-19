@@ -1,30 +1,31 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IValueComponentSinks } from "../../interfaces";
-import { Color, Size, Attachment, Float } from "../../enums";
+import { ComponentSources, ValueComponentSinks, StyleAndContentArgs, DOMContent, ContentObj,  } from "../../types";
+import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
+import { renderPropsAndContent, makeIsArgs } from "../../common";
 import { numToText } from "../../utils";
 import isolate from "@cycle/isolate";
-import { div, a } from "@cycle/dom";
+import { div, a, VNode } from "@cycle/dom";
 import xs from "xstream";
 
 export namespace Menu {
   export interface Props {
-    submenu?: boolean;
-    secondary?: boolean;
-    pointing?: boolean;
-    tabular?: boolean;
-    text?: boolean;
-    vertical?: boolean;
-    pagination?: boolean;
-    fixed?: boolean;
-    stackable?: boolean;
-    inverted?: boolean;
-    icon?: boolean;
-    labelled?: boolean;
-    compact?: boolean;
-    evenlyDivided?: boolean;
-    borderless?: boolean;
-    color?: Color;
-    attachment?: Attachment;
-    size?: Size;
+    submenu: boolean;
+    secondary: boolean;
+    pointing: boolean;
+    tabular: boolean;
+    text: boolean;
+    vertical: boolean;
+    pagination: boolean;
+    fixed: boolean;
+    stackable: boolean;
+    inverted: boolean;
+    icon: boolean;
+    labelled: boolean;
+    compact: boolean;
+    equalWidth: boolean;
+    borderless: boolean;
+    color: Color | ColorString;
+    attachment: Attachment | AttachmentString;
+    size: Size | SizeString;
   }
   export type Content = Array<MenuItem>;
   export interface MenuItem {
@@ -34,52 +35,28 @@ export namespace Menu {
     disabled?: boolean;
     header?: boolean;
     fitted?: boolean;
+    verticallyFitted?: boolean;
+    horizontallyFitted?: boolean;
     icon?: boolean;
     color?: Color;
-    float?: Float;
+    float?: Float | FloatString;
     href?: string;
-    body: DOMContent;
+    main: DOMContent;
   }
-  /**
-   * A menu component for displaying an assortment of items.
-   * Accepts the following properties:
-   * 	secondary?: boolean - Styles the menu to de-emphasize its content.
-   * 	pointing?: boolean - Styles the menu to be pointing to nearby content.
-   * 	tabular?: boolean - Styles the menu to be suited for tabs.
-   * 	text?: boolean - Styles the menu for text content.
-   * 	vertical?: boolean - Styles the menu to display its content vertically.
-   * 	pagination?: boolean - Formats the menu content to present links to pages of content.
-   * 	fixed?: boolean - Styles the menu to appear fixed to its context.
-   * 	stackable?: boolean - Ensures the menu content stacks on mobile resolutions.
-   * 	inverted?: boolean - Styles the menu to have its colors inverted.
-   * 	icon?: boolean - Styles the menu for icon content.
-   * 	labelled?: boolean - Styles the menu for labelled icon content.
-   * 	compact?: boolean - Styles the menu so that it takes only the amount of space neccesary.
-   * 	evenlyDivided?: boolean - Styles the menu so that its content is evenly divided.
-   * 	borderless?: boolean - Styles the menu so that there are no borders between its content.
-   * 	color?: Color - The color of the menu.
-   * 	attachment?: Attachment - The attachment of the menu.
-   * 	size?: Size - The size of the menu.
-   * Expects the following type of content: Array of {}
-   * 	link?: boolean - Styles the item to appear clickable.
-   * 	down?: boolean - Styles the item to appear pressed.
-   * 	active?: boolean - Styles the item to be more pronounced.
-   * 	disabled?: boolean - Styles the item to appear disabled.
-   * 	header?: boolean - Styles the item text to be more pronounced.
-   * 	fitted?: boolean - Removes the padding of the item.
-   *         icon?: boolean - Styles the item for icon content.
-   * 	color?: Color - The color of the item.
-   * 	float? Float - The alignment of the item.
-   * 	href?: string - The link for the item.
-   * 	body: DOMContent - The content of the item.
-   */
-  export function run(sources: IInteractiveComponentSources<Props, Content>): IValueComponentSinks<Content> {
-    function main(sources: IInteractiveComponentSources<Props, Content>) {
+
+  export type MenuArgs = StyleAndContentArgs<Props, Content, ContentObj<Content>>;
+  export type MenuSources = ComponentSources<Props, Content, ContentObj<Content>>; 
+
+  export function render(arg1?: MenuArgs | Partial<Props> | Content, arg2: Content = []): VNode {
+    return renderPropsAndContent(menu, makeIsArgs(isContent), isContent, arg1, arg2);
+  }
+  export function run<V extends MenuItem>(sources: MenuSources, scope?: string) : ValueComponentSinks<V> {
+    function main(sources: MenuSources) {
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
 
-      const click$ = sources.DOM.select(".ui.menu > .item").events("click");
-      const items$ = sources.content$.remember();
+      const click$ = sources.DOM.select(".menu > .item").events("click");
+      const items$ = sources.content$.map(c => isContent(c) ? c : c.main).remember();
       const clickedId$ = click$.map(ev => parseInt((ev as any).currentTarget.id))
         .filter(n => !isNaN(n) && typeof (n) !== "undefined");
       const clickedItem$ = items$.map(items => clickedId$.map(id => items[id])).flatten()
@@ -90,61 +67,26 @@ export namespace Menu {
       );
       return {
         DOM: vtree$,
-        Events: (type) => sources.DOM.select(".menu").events(type),
+        events: (type) => sources.DOM.select(".menu").events(type),
         value$: clickedItem$
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
 
-  /**
-   * A menu component for displaying an assortment of items.
-   * Accepts the following properties:
-   * 	secondary?: boolean - Styles the menu to de-emphasize its content.
-   * 	pointing?: boolean - Styles the menu to be pointing to nearby content.
-   * 	tabular?: boolean - Styles the menu to be suited for tabs.
-   * 	text?: boolean - Styles the menu for text content.
-   * 	vertical?: boolean - Styles the menu to display its content vertically.
-   * 	pagination?: boolean - Formats the menu content to present links to pages of content.
-   * 	fixed?: boolean - Styles the menu to appear fixed to its context.
-   * 	stackable?: boolean - Ensures the menu content stacks on mobile resolutions.
-   * 	inverted?: boolean - Styles the menu to have its colors inverted.
-   * 	icon?: boolean - Styles the menu for icon content.
-   * 	labelled?: boolean - Styles the menu for labelled icon content.
-   * 	compact?: boolean - Styles the menu so that it takes only the amount of space neccesary.
-   * 	evenlyDivided?: boolean - Styles the menu so that its content is evenly divided.
-   * 	borderless?: boolean - Styles the menu so that there are no borders between its content.
-   * 	color?: Color - The color of the menu.
-   * 	attachment?: Attachment - The attachment of the menu.
-   * 	size?: Size - The size of the menu.
-   * Expects the following type of content: Array of {}
-   * 	link?: boolean - Styles the item to appear clickable.
-   * 	down?: boolean - Styles the item to appear pressed.
-   * 	active?: boolean - Styles the item to be more pronounced.
-   * 	disabled?: boolean - Styles the item to appear disabled.
-   * 	header?: boolean - Styles the item text to be more pronounced.
-   * 	fitted?: boolean - Removes the padding of the item.
-   *  icon?: boolean - Styles the item for icon content.
-   * 	color?: Color - The color of the item.
-   * 	float? Float - The alignment of the item.
-   * 	href?: string - The link for the item.
-   * 	body: DOMContent - The content of the item.
-   */
-  export function render(pOrC: Props | Content = {}, c: Content = []): VNode {
-    let props = (pOrC instanceof Array) ? {} : pOrC;
-    let content = (pOrC instanceof Array) ? pOrC : c;
+  function menu(args: MenuArgs) {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isContent(args.content) ? args.content : args.content.main : [];
     let items = content.map(item => item.href
-      ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.body)
-      : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.body)
+      ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
+      : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main)
     );
     return div({ props: { className: getClassname(props, content.length) } }, items);
   }
-  function getClassname(props: Props, length: number) {
-    let className;
-    if (!props.submenu) {
-      className = "ui";
-    }
+
+  function getClassname(props: Partial<Props>, length: number) {
+    let className = "ui";
     if (props.secondary) {
       className += " secondary";
     }
@@ -184,7 +126,7 @@ export namespace Menu {
     if (props.borderless) {
       className += " borderless";
     }
-    if (props.evenlyDivided) {
+    if (props.equalWidth) {
       className += numToText(length) + " item";
     }
     if (typeof (props.color) !== "undefined") {
@@ -195,8 +137,11 @@ export namespace Menu {
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
-    }
+    }    
     className += " menu";
+    if (props.submenu) {
+      className = className.substring(3);
+    }
     return className;
   }
   function getItemClassname(item: MenuItem) {
@@ -211,7 +156,13 @@ export namespace Menu {
       className += " header";
     }
     if (item.fitted) {
+      className += " fitted";
+    }
+    if (item.verticallyFitted) {
       className += " vertically fitted";
+    }
+    if (item.horizontallyFitted) {
+      className += " horizontally fitted";
     }
     if (item.link) {
       className += " link";
@@ -229,6 +180,11 @@ export namespace Menu {
       className += Color.ToClassname(item.color);
     }
     className += " item";
+    className = className.substring(1);
     return className;
+  }
+
+  function isContent(obj) : obj is Content  {
+    return obj instanceof Array && (obj.length === 0 || typeof(obj[0].main) !== "undefined");
   }
 }
