@@ -25,25 +25,25 @@ export namespace Types {
     let ddlStates = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true }),
-      content$: xs.of(states.map(state => ({ body: state, value: state })))
+      content$: xs.of(states.map(state => ({ main: state, value: state })))
     });
     let countries = ["United States", "The Netherlands", "Belgium", "Germany", "France"];
     let ddlCountries = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true, search: true }),
-      content$: xs.of(countries.map(country => ({ body: country, value: country })))
+      content$: xs.of(countries.map(country => ({ main: country, value: country })))
     });
     let cards = ["Visa", "American Express", "Discover"];
     let ddlCards = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true }),
-      content$: xs.of(cards.map(card => ({ body: card, value: card })))
+      content$: xs.of(cards.map(card => ({ main: card, value: card })))
     });
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let ddlMonths = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true, search: true, size: UI.Size.Fluid }),
-      content$: xs.of(months.map(month => ({ body: month, value: month })))
+      content$: xs.of(months.map(month => ({ main: month, value: month })))
     });
     let ex2 = Example.run(sources, {
       VNode$: xs.combine(ddlStates.DOM, ddlCountries.DOM, ddlCards.DOM, ddlMonths.DOM).map(
@@ -101,25 +101,25 @@ export namespace Types {
       let ddlStates = UI.Dropdown.run({
         DOM: sources.DOM,
         props$: xs.of({selection: true}),
-        content$: xs.of(states.map(state => ({body: state, value: state})))
+        content$: xs.of(states.map(state => ({main: state, value: state})))
       });
       let countries = ["United States", "The Netherlands", "Belgium", "Germany", "France"];
       let ddlCountries = UI.Dropdown.run({
         DOM: sources.DOM,
         props$: xs.of({selection: true, search: true}),
-        content$: xs.of(countries.map(country => ({body: country, value: country})))
+        content$: xs.of(countries.map(country => ({main: country, value: country})))
       });
       let cards = ["Visa", "American Express", "Discover"];
       let ddlCards = UI.Dropdown.run({
         DOM: sources.DOM,
         props$: xs.of({selection: true}),
-        content$: xs.of(cards.map(card => ({body: card, value: card})))
+        content$: xs.of(cards.map(card => ({main: card, value: card})))
       });
       let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       let ddlMonths = UI.Dropdown.run({
         DOM: sources.DOM,
         props$: xs.of({selection: true, search: true, size: UI.Size.Fluid}),
-        content$: xs.of(months.map(month => ({body: month, value: month})))
+        content$: xs.of(months.map(month => ({main: month, value: month})))
       });
       let vTree$: xs.combine(ddlStates.DOM, ddlCountries.DOM, ddlCards.DOM, ddlMonths.DOM).map(
         ([ddlStates, ddlCountries, ddlCards, ddlMonths]) => UI.Form.render([

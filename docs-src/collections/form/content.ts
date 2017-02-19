@@ -219,8 +219,8 @@ export namespace Content {
       DOM: sources.DOM,
       props$: xs.of({ default: "Gender", selection: true }),
       content$: xs.of([
-        { body: "Male", value: "Male" },
-        { body: "Female", value: "Female" }
+        { main: "Male", value: "Male" },
+        { main: "Female", value: "Female" }
       ])
     });
     let ex1 = Example.run(sources, {
@@ -233,8 +233,8 @@ export namespace Content {
       DOM: sources.DOM,
       props$: xs.of({default: "Gender", selection: true}),
       content$: xs.of([
-        {body: "Male", value: "Male"},
-        {body: "Female", value: "Female"}
+        {main: "Male", value: "Male"},
+        {main: "Female", value: "Female"}
       ])
     });
     let vTree$ = ddlGender.DOM.map(
@@ -248,7 +248,7 @@ export namespace Content {
     let ddlCountries = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true, search: true }),
-      content$: xs.of(countries.map(country => ({ body: country, value: country })))
+      content$: xs.of(countries.map(country => ({ main: country, value: country })))
     });
     let ex2 = Example.run(sources, {
       VNode$: ddlCountries.DOM.map(ddlCountries => UI.Form.render([
@@ -258,7 +258,7 @@ export namespace Content {
     let ddlCountries = UI.Dropdown.run({
       DOM: sources.DOM,
       props$: xs.of({ selection: true, search: true }),
-      content$: xs.of(countries.map(country => ({ body: country, value: country })))
+      content$: xs.of(countries.map(country => ({ main: country, value: country })))
     })
     let vTree$: ddlCountries.DOM.map(
       ddlCountries => UI.Form.render([
@@ -288,7 +288,7 @@ export namespace Content {
       code: `UI.Form.render([
         UI.Message.render({color: UI.Color.Error}, {
           header: "We had some issues",
-          body: [UI.List.render({bulleted: true},[
+          main: [UI.List.render({bulleted: true},[
             {content: "Please enter your first name"},
             {content: "Please enter your last name"}
           ])]

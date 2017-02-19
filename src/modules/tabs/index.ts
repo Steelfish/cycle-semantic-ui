@@ -9,7 +9,7 @@ export namespace Tabs {
     DOM: DOMSource;
     labels: string[];
     content: Stream<VNode>[];
-    menuProps$?: Stream<Menu.Props>;
+    menuProps$?: Stream<Partial<Menu.Props>>;
     segmentProps$?: Stream<Segment.Props>;
   }
   export function run(sources: TabsSources) {

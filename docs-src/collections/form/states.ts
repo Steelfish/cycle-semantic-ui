@@ -22,8 +22,8 @@ export namespace States {
       DOM: sources.DOM,
       props$: xs.of({ default: "Gender", selection: true }),
       content$: xs.of([
-        { body: "Male", value: "Male" },
-        { body: "Female", value: "Female" }
+        { main: "Male", value: "Male" },
+        { main: "Female", value: "Female" }
       ])
     });
     let fieldErrorEx = Example.run(sources, {
@@ -60,8 +60,8 @@ export namespace States {
       DOM: sources.DOM,
       props$: xs.of({ default: "Gender", selection: true }),
       content$: xs.of([
-        { body: "Male", value: "Male" },
-        { body: "Female", value: "Female" }
+        { main: "Male", value: "Male" },
+        { main: "Female", value: "Female" }
       ])
     });
     let vTree$ = ddlGender.DOM.map(

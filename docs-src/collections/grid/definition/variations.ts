@@ -499,19 +499,19 @@ export namespace Variations {
         UI.Row.render({ width: 3 }, [
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ])
@@ -520,19 +520,19 @@ export namespace Variations {
         UI.Row.render({width: 3}, [
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ])
@@ -544,19 +544,19 @@ export namespace Variations {
         UI.Row.render({ width: 3 }, [
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render({ textAlignment: "left" }, [
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ]),
@@ -568,19 +568,19 @@ export namespace Variations {
         UI.Row.render({width: 3}, [
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render({textAlignment: "left"}, [
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ]), 
@@ -595,19 +595,19 @@ export namespace Variations {
         UI.Row.render([
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ])
@@ -616,19 +616,19 @@ export namespace Variations {
         UI.Row.render([
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Cats" }
+              { header: true, main: "Cats" }
             ])
           ]),
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Dogs" },
-              { body: "Poodle" },
-              { body: "Cockerspaniel" }
+              { header: true, main: "Dogs" },
+              { main: "Poodle" },
+              { main: "Cockerspaniel" }
             ])
           ]), 
           UI.Column.render([
             UI.Menu.render({ size: UI.Size.Fluid, vertical: true }, [
-              { header: true, body: "Monkeys" }
+              { header: true, main: "Monkeys" }
             ])
           ])
         ])
