@@ -1,80 +1,39 @@
-import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "../../interfaces";
-import { Size, VerticalAlignment, Float } from "../../enums";
-import isolate from "@cycle/isolate";
-import { a, img } from "@cycle/dom";
-import xs from "xstream";
-
+import { VNode, a, img } from "@cycle/dom";
+import { StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
+import { Size, SizeString, VerticalAlignment, VerticalAlignmentString, Float, FloatString } from "../../enums";
+import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
 export namespace Image {
   export interface Props {
-    href?: string;
-    hidden?: boolean;
-    disabled?: boolean;
-    avatar?: boolean;
-    bordered?: boolean;
-    spaced?: boolean;
-    circular?: boolean;
-    rounded?: boolean;
-    float?: Float;
-    size?: Size;
-    verticalAlignment?: VerticalAlignment;
+    href: string;
+    hidden: boolean;
+    disabled: boolean;
+    avatar: boolean;
+    bordered: boolean;
+    spaced: boolean;
+    circular: boolean;
+    rounded: boolean;
+    float: Float | FloatString;
+    size: Size | SizeString;
+    alignment: VerticalAlignment | VerticalAlignmentString;
   }
 
-  /**
-   * An image component for displaying images.
-   * Accepts the following properties in props$:
-   *   href?: string - Styles the image as a link towards the location.
-   *   hidden?: boolean - Hides the image.
-   *   disabled?: boolean - Styles the image to appear disabled.
-   *   avatar?: boolean - Styles the image for usage as an avatar.
-   *   bordered?: boolean - Styles the image with a border.
-   *   spaced?: boolean - Styles the image with extra spacing to seperate it from nearby content.
-   *   circular?: boolean - Styles the image to be circular.
-   *   rounded?: boolean - Styles the image to have rounded edges.
-   *   float?: Float - The float orientation of the image.
-   *   size?: Size - The size of the image.
-   *   verticalAlignment?: VerticalAlignment - The vertical alignment of text nearby the image.
-   * Expects the following type of content in content$: string - The src url.
-   */
-  export function run(sources: IInteractiveComponentSources<Props, string>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, string>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
+  export type ImageArgs = StyleAndContentArgs<Props, string, ContentObj<string>>;
+  export type ImageSources = ComponentSources<Props, string, ContentObj<string>>;
 
-      const vTree$ = xs.combine(sources.props$, sources.content$).map(
-        ([props, content]) => render(props, content)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".image").events(type),
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export function run(sources: ImageSources, scope?: string): ComponentSinks{
+    return runPropsAndContent(sources, image, ".image", scope);
   }
+  export function render(arg1?: ImageArgs | Partial<Props>|string, arg2?: string) {
+    return renderPropsAndContent(image, makeIsArgs(isUrl), isUrl, arg1, arg2);
+  } 
 
-  /**
-   * An image component for displaying images.
-   * Accepts the following properties:
-   *   link?: boolean - Styles the image as a link.
-   *   hidden?: boolean - Hides the image.
-   *   disabled?: boolean - Styles the image to appear disabled.
-   *   avatar?: boolean - Styles the image for usage as an avatar.
-   *   bordered?: boolean - Styles the image with a border.
-   *   spaced?: boolean - Styles the image with extra spacing to seperate it from nearby content.
-   *   circular?: boolean - Styles the image to be circular.
-   *   rounded?: boolean - Styles the image to have rounded edges.
-   *   float?: Float - The float orientation of the image.
-   *   size?: Size - The size of the image.
-   *   verticalAlignment?: VerticalAlignment - The vertical alignment of text nearby the image.
-   * Expects the following type of content: string - The src url.
-   */
-  export function render(pOrC: Props | string = {}, c: string = ""): VNode {
-    let props = typeof (pOrC) === "string" ? {} : pOrC;
-    let content = typeof (pOrC) === "string" ? pOrC : c;
+  export function image(args: ImageArgs): VNode {
+    let props =  args.props ? args.props : {};
+    let content = args.content ? isUrl(args.content) ? args.content : args.content.main : "";
     let image = img({ props: { className: getClassname(props), src: content } });
     return props.href ? a({ props: { href: props.href } }, image) : image;
   }
-  function getClassname(props: Props): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.href) {
       className += " link";
@@ -106,9 +65,13 @@ export namespace Image {
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
     }
-    if (typeof (props.verticalAlignment) !== "undefined") {
-      className += VerticalAlignment.ToClassname(props.verticalAlignment);
+    if (typeof (props.alignment) !== "undefined") {
+      className += VerticalAlignment.ToClassname(props.alignment);
     }
     return className + " image";
+  }
+
+  function isUrl(obj): obj is string {
+    return typeof(obj) === "string";
   }
 }
