@@ -47,6 +47,13 @@ describe("Button", function () {
       assert.equal((button.children[0] as VNode).text, "Content");
       assert.equal((button.children[1] as VNode).text, "Hidden");
       button = Button.render({
+        content: {
+          hidden: "Hidden"
+        }
+      });
+      assert.equal(button.children.length, 2);
+      assert.equal((button.children[1] as VNode).text, "Hidden");
+      button = Button.render({
         props: { loading: true }
       });
       assert.equal(button.children.length, 0);

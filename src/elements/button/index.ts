@@ -1,7 +1,7 @@
 import { div, a, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs ,ComponentSinks, ComponentSources } from "../../types";
 import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
-import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
+import { runPropsAndContent, renderPropsAndContent} from "../../common";
 
 export namespace Button {
   export interface Props {
@@ -34,7 +34,7 @@ export namespace Button {
   export type ButtonSources = ComponentSources<Props, DOMContent, ContentObj>;
 
   export function render(arg1?: ButtonArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
-    return renderPropsAndContent(button, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+    return renderPropsAndContent(button, isArgs, isDOMContent, arg1, arg2);
   }
   export function run(sources: ButtonSources, scope?: string) : ComponentSinks {
     return runPropsAndContent(sources, button, ".button", scope);
@@ -107,5 +107,14 @@ export namespace Button {
     }
     className += " button";
     return className;
+  }
+
+  function isArgs(obj): obj is ButtonArgs {
+    return typeof(obj) !== "undefined" && (
+      typeof(obj.props) !== "undefined" ||
+      isDOMContent(obj.content) || ( typeof(obj.content) !== "undefined" && (
+        isDOMContent(obj.content.main) || isDOMContent(obj.content.hidden)
+      ))
+    );
   }
 }
