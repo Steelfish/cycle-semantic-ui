@@ -14,7 +14,7 @@ import { Transition } from "../../modules/transition";
 
 export namespace Dropdown {
   export interface Props {
-    static?: string;
+    static?: DOMContent;
     rightAligned?: boolean;
     active?: boolean;
     initial?: any;
@@ -33,8 +33,8 @@ export namespace Dropdown {
   }
   export type Content<V> = Array<DropdownItem<V>>;
   export interface DropdownItem<V> {
-    main: DOMContent;
-    value: V;
+    main?: DOMContent;
+    value?: V;
     header?: boolean;
     fitted?: boolean;
     disabled?: boolean;
@@ -279,7 +279,10 @@ export namespace Dropdown {
         return false;
       }
     }
-    if (typeof (item.main === "string")) {
+    if (typeof(item.main) === "undefined") {
+      return true;
+    }
+    if (typeof (item.main) === "string") {
       return (item.main as string).indexOf(filter) !== -1 || !filter;
     }
     if (!(item.main as any).push) {

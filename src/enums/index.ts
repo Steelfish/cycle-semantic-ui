@@ -124,7 +124,7 @@ export namespace Attachment {
   }
 }
 
-export type ColorString = "none" | "primary" | "secondary" | "succes" | "info" | "warning" | "error";
+export type ColorString = "none" | "primary" | "secondary" | "success" | "info" | "warning" | "error";
 export enum Color {
   None, Primary, Secondary, Success, Info, Warning, Error
 }

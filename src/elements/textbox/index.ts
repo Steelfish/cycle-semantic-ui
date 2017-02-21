@@ -92,16 +92,10 @@ export namespace Textbox {
     let content = isDOMContent(pOrC) ? pOrC : c;
     let textbox = props.rows
       ? textarea({ attrs: { rows: props.rows, readonly: props.readonly, value: props.initial, placeholder: props.placeholder } })
-      : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder}});
+      : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder } });
     return props.rightContent
-      ? div({ props: { className: getClassname(props) } }, [
-        textbox,
-        content
-      ])
-      : div({ props: { className: getClassname(props) } }, [
-        content,
-        textbox
-      ]);
+      ? div({ props: { className: getClassname(props) } }, [].concat(textbox, content))
+      : div({ props: { className: getClassname(props) } }, [].concat(content, textbox));
   }
 
   function getClassname(props: Props): string {

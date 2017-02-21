@@ -104,6 +104,10 @@ describe("Column", function () {
       let column = Column.render({ largescreenOnly: true });
       assert.equal(column.data.props.className, "ui large screen only column");
     });
+    it("should support the stretched variation", function () {
+      let column = Column.render({ stretched: true });
+      assert.equal(column.data.props.className, "ui stretched column");
+    });
     it("should support the Size enum", function () {
       let column = Column.render({ size: "small" });
       assert.equal(column.data.props.className, "ui small column");

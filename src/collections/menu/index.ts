@@ -1,4 +1,4 @@
-import { ComponentSources, ValueComponentSinks, StyleAndContentArgs, DOMContent, ContentObj,  } from "../../types";
+import { ComponentSources, ValueComponentSinks, StyleAndContentArgs, DOMContent, ContentObj, } from "../../types";
 import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
 import { numToText } from "../../utils";
@@ -9,6 +9,7 @@ import xs from "xstream";
 export namespace Menu {
   export interface Props {
     submenu: boolean;
+    right: boolean;
     secondary: boolean;
     pointing: boolean;
     tabular: boolean;
@@ -19,10 +20,11 @@ export namespace Menu {
     stackable: boolean;
     inverted: boolean;
     icon: boolean;
-    labelled: boolean;
+    labeledIcons: boolean;
     compact: boolean;
     equalWidth: boolean;
     borderless: boolean;
+    fluid: boolean;
     color: Color | ColorString;
     attachment: Attachment | AttachmentString;
     size: Size | SizeString;
@@ -30,27 +32,29 @@ export namespace Menu {
   export type Content = Array<MenuItem>;
   export interface MenuItem {
     link?: boolean;
-    down?: boolean;
     active?: boolean;
     disabled?: boolean;
+    headerOnly?: boolean;
     header?: boolean;
     fitted?: boolean;
+    divider?: boolean;
+    rightMenu?: boolean;
     verticallyFitted?: boolean;
     horizontallyFitted?: boolean;
     icon?: boolean;
-    color?: Color;
+    color?: Color | ColorString;
     float?: Float | FloatString;
     href?: string;
-    main: DOMContent;
+    main?: DOMContent | Content;
   }
 
   export type MenuArgs = StyleAndContentArgs<Props, Content, ContentObj<Content>>;
-  export type MenuSources = ComponentSources<Props, Content, ContentObj<Content>>; 
+  export type MenuSources = ComponentSources<Props, Content, ContentObj<Content>>;
 
   export function render(arg1?: MenuArgs | Partial<Props> | Content, arg2: Content = []): VNode {
     return renderPropsAndContent(menu, makeIsArgs(isContent), isContent, arg1, arg2);
   }
-  export function run<V extends MenuItem>(sources: MenuSources, scope?: string) : ValueComponentSinks<V> {
+  export function run<V extends MenuItem>(sources: MenuSources, scope?: string): ValueComponentSinks<V> {
     function main(sources: MenuSources) {
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
@@ -78,17 +82,28 @@ export namespace Menu {
   function menu(args: MenuArgs) {
     let props = args.props ? args.props : {};
     let content = args.content ? isContent(args.content) ? args.content : args.content.main : [];
-    let items = content.map(item => item.href
-      ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
-      : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main)
-    );
-    return div({ props: { className: getClassname(props, content.length) } }, items);
+    let renderItem = (item) => item.divider
+      ? div({ props: { className: "divider" } })
+      : item.headerOnly
+        ? div({ props: { className: "header" } }, item.main)
+        : item.rightMenu 
+          ? div({props: {className: "right menu"}}, item.main.map(renderItem)) 
+          : item.href
+          ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
+          : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main);
+    return div({ props: { className: getClassname(props, content.length) } }, content.map(renderItem));
   }
 
   function getClassname(props: Partial<Props>, length: number) {
     let className = "ui";
     if (props.secondary) {
       className += " secondary";
+    }
+    if(props.fluid) {
+      className += " fluid";
+    }
+    if (props.right) {
+      className += " right";
     }
     if (props.pointing) {
       className += " pointing";
@@ -117,8 +132,8 @@ export namespace Menu {
     if (props.icon) {
       className += " icon";
     }
-    if (props.labelled) {
-      className += " labelled icon";
+    if (props.labeledIcons) {
+      className += " labeled icon";
     }
     if (props.compact) {
       className += " compact";
@@ -137,7 +152,7 @@ export namespace Menu {
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
-    }    
+    }
     className += " menu";
     if (props.submenu) {
       className = className.substring(3);
@@ -146,9 +161,6 @@ export namespace Menu {
   }
   function getItemClassname(item: MenuItem) {
     let className = "";
-    if (item.down) {
-      className += " down";
-    }
     if (item.active) {
       className += " active";
     }
@@ -184,7 +196,8 @@ export namespace Menu {
     return className;
   }
 
-  function isContent(obj) : obj is Content  {
-    return obj instanceof Array && (obj.length === 0 || typeof(obj[0].main) !== "undefined");
+  function isContent(obj): obj is Content {
+    return obj instanceof Array &&
+      (obj.length === 0 || typeof (obj[0].main) !== "undefined" || typeof (obj[0].divider) !== "undefined");
   }
 }

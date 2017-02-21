@@ -9,6 +9,8 @@ export namespace Label {
     circular?: boolean;
     empty?: boolean;
     pointing?: boolean;
+    leftPointing?: boolean;
+    rightPointing?: boolean;
     basic?: boolean;
     leftCorner?: boolean;
     rightCorner?: boolean;
@@ -78,7 +80,7 @@ export namespace Label {
    *   color?: Color - The color of the label.
    * Expects the following type of content and extras: DOMContent
    */
-export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = ""): VNode {
+  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = ""): VNode {
     let props = isDOMContent(pOrC) ? {} : pOrC;
     let content = isDOMContent(pOrC) ? pOrC : c;
     let detail = isDOMContent(pOrC) ? c : e;
@@ -103,6 +105,12 @@ export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOM
     }
     if (props.pointing) {
       className += " pointing";
+    }
+    if (props.leftPointing) {
+      className += " left pointing";
+    }
+    if (props.rightPointing) {
+      className += " right pointing";
     }
     if (props.basic) {
       className += " basic";

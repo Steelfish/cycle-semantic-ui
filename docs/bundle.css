@@ -4097,6 +4097,7 @@ input[type="password"] {
 /* Fixed */
 /* Floated */
 /* Attached */
+/* ~"calc(100% + "-@attachedHorizontalOffset * 2~")"; */
 /* Sizes */
 /*******************************
             Standard
@@ -5770,9 +5771,9 @@ Floated Menu / Item
   top: 0px;
   bottom: 0px;
   border-radius: 0px;
-  margin: 0em;
-  width: calc(100% +  2px );
-  max-width: calc(100% +  2px );
+  margin: 0em -1px;
+  width: 100%;
+  max-width: 100%;
   box-shadow: none;
 }
 .ui.attached + .ui.attached.menu:not(.top) {
@@ -27991,11 +27992,6 @@ select.ui.dropdown {
 .left.menu .ui.menu .item:not(.active):hover {
   background: rgba(0, 0, 0, 0.25);
 }
-.top.menu {
-  width: 100%;
-  position: relative;
-  height: 70px;
-}
 .fixed {
   width: 250px;
   height: 100%;
@@ -28037,13 +28033,6 @@ select.ui.dropdown {
   align-items: center;
   min-height: 100%;
   width: 100%;
-}
-.top.menu > .ui.menu {
-  background-color: #1B1C1D;
-  border: none;
-  position: fixed;
-  height: 70px;
-  z-index: 100;
 }
 .ui.disabled.transparent.input,
 .ui.input input[disabled] {

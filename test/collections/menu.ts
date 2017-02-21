@@ -69,6 +69,10 @@ describe("Menu", function () {
       let menu = Menu.render({ submenu: true });
       assert.equal(menu.data.props.className, "menu");
     });
+    it("should support the right variation", function () {
+      let menu = Menu.render({ right: true });
+      assert.equal(menu.data.props.className, "ui right menu");
+    });
     it("should support the secondary variation", function () {
       let menu = Menu.render({ secondary: true });
       assert.equal(menu.data.props.className, "ui secondary menu");
@@ -109,9 +113,9 @@ describe("Menu", function () {
       let menu = Menu.render({ icon: true });
       assert.equal(menu.data.props.className, "ui icon menu");
     });
-    it("should support the labelled icon variation", function () {
-      let menu = Menu.render({ labelled: true });
-      assert.equal(menu.data.props.className, "ui labelled icon menu");
+    it("should support the labeled icon variation", function () {
+      let menu = Menu.render({ labeledIcons: true });
+      assert.equal(menu.data.props.className, "ui labeled icon menu");
     });
     it("should support the compact variation", function () {
       let menu = Menu.render({ compact: true });
@@ -124,6 +128,10 @@ describe("Menu", function () {
     it("should support the borderless variation", function () {
       let menu = Menu.render({ borderless: true });
       assert.equal(menu.data.props.className, "ui borderless menu");
+    });
+    it("should support the fluid variation", function () {
+      let menu = Menu.render({ fluid: true });
+      assert.equal(menu.data.props.className, "ui fluid menu");
     });
     it("should support the size enum", function () {
       let menu = Menu.render({ size: "massive" });
@@ -140,10 +148,6 @@ describe("Menu", function () {
     it("should support the link item variation", function () {
       let menu = Menu.render([{ main: "Hello", link: true }]);
       assert.equal((menu.children[0] as VNode).data.props.className, "link item");
-    });
-    it("should support the down item variation", function () {
-      let menu = Menu.render([{ main: "Hello", down: true }]);
-      assert.equal((menu.children[0] as VNode).data.props.className, "down item");
     });
     it("should support the active item variation", function () {
       let menu = Menu.render([{ main: "Hello", active: true }]);
@@ -231,7 +235,7 @@ describe("Menu", function () {
       });
     });
     it("should return clicked menu items in the value$", function (done) {
-      let menu = Menu.run({
+      let menu = Menu.run<Menu.MenuItem>({
         DOM: dom,
         content$: xs.of([{ main: "Clicked" }])
       }, "menu");

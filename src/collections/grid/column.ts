@@ -10,6 +10,7 @@ import { numToText } from "../../utils";
 
 export namespace Column {
   export interface Props {
+    stretched: true;
     width: number;
     mobile: number;
     tablet: number;
@@ -70,6 +71,9 @@ export namespace Column {
     }
     if (props.largescreenOnly) {
       className += " large screen only";
+    }
+    if (props.stretched) {
+      className += " stretched";
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
