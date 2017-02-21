@@ -1,95 +1,55 @@
-import {DOMContent, VNode, IInteractiveExtraComponentSources,IInteractiveComponentSinks, isDOMContent} from "../../interfaces";
-import { Size, Attachment, Float, TextAlignment, Color } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
+import { div, VNode } from "@cycle/dom";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
+import {
+  Size, SizeString, Attachment, AttachmentString, Float,
+  FloatString, TextAlignment, TextAlignmentString, Color, ColorString
+} from "../../enums";
+import { renderPropsAndContent, runPropsAndContent } from "../../common";
 
 export namespace Header {
   export interface Props {
-    icon?: boolean;
-    divider?: boolean;
-    dividing?: boolean;
-    block?: boolean;
-    disabled?: boolean;
-    inverted?: boolean;
-    attachment?: Attachment;
-    float?: Float;
-    textAlignment?: TextAlignment;
-    size?: Size;
-    color?: Color;
+    icon: boolean;
+    divider: boolean;
+    dividing: boolean;
+    block: boolean;
+    disabled: boolean;
+    inverted: boolean;
+    attachment: Attachment | AttachmentString;
+    float: Float | FloatString;
+    textAlignment: TextAlignment | TextAlignmentString;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
-  export interface Extras {
-    subtext?: DOMContent;
-    icon?: DOMContent;
-  }
-
-  /**
-   * Creates a header for important text.
-   * Accepts the following properties in props$:
-   *   icon?: boolean - Adds styling for icon headers.
-   *   divider?: boolean - Adds styling for headers to seperate content.
-   *   block?: boolean - Wraps header in a block.
-   *   disabled?: boolean - Styling for disabled content.
-   *   inverted?: boolean - Styling for dark backgrounds.
-   *   attachment?: Attachment - Styling for headers attached to other content.
-   *   float?: Float - Floats the header to the left or right.
-   *   textAlignment?: TextAlignment - Text alignment of the header text.
-   *   size?: Size - Determines the size of the header.
-   *   color?: Color - The color of the header.
-   * Expects the following type of content in content$: {} of
-   *   text: DOMContent - The header text.
-   *   subtext?: DOMContent- An optional sub-header to accompany the header.
-   *   icon?: DOMContent - Optional image/icon content for the header.
-   */
-  export function run(sources: IInteractiveExtraComponentSources<Props, DOMContent, Extras>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveExtraComponentSources<Props, DOMContent, Extras>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
-      sources.extras$ = sources.extras$ ? sources.extras$ : xs.of({});
-
-      const vTree$ = xs.combine(sources.props$, sources.content$, sources.extras$).map(
-        ([props, content, extras]) => render(props, content, extras)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".header").events(type),
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export interface ContentObj {
+    main: DOMContent;
+    subtext: DOMContent;
+    icon: DOMContent;
   }
 
-  /**
-   * Creates a header for important text.
-   * Accepts the following properties:
-   *   icon?: boolean - Adds styling for icon headers.
-   *   divider?: boolean - Adds styling for headers to seperate content.
-   *   block?: boolean - Wraps header in a block.
-   *   disabled?: boolean - Styling for disabled content.
-   *   inverted?: boolean - Styling for dark backgrounds.
-   *   attachment?: Attachment - Styling for headers attached to other content.
-   *   float?: Float - Floats the header to the left or right.
-   *   textAlignment?: TextAlignment - Text alignment of the header text.
-   *   size?: Size - Determines the size of the header.
-   *   color?: Color - The color of the header.
-   * Expects the following type of content: {} of
-   *   text: DOMContent - The header text.
-   *   subtext?: DOMContent- An optional sub-header to accompany the header.
-   *   icon?: DOMContent - Optional image/icon content for the header.
-   */
-  export function render(pOrCorE: Props | DOMContent | Extras = {}, cOrE: DOMContent | Extras = {}, e: Extras = {}): VNode {
-    let props = isDOMContent(pOrCorE) ? {} : isExtras(pOrCorE) ? {} : pOrCorE;
-    let content = isDOMContent(pOrCorE) ? pOrCorE : isDOMContent(cOrE) ? cOrE : "";
-    let extras = isExtras(pOrCorE) ? pOrCorE : isExtras(cOrE) ? cOrE : e;
-    return div({ props: { className: getClassname(props) } }, [
-      extras.icon ? extras.icon : "",
-      div({ props: { className: "content" } }, [].concat(
-        content,
-        extras.subtext ? div({ props: { className: "sub header" } }, extras.subtext) : ""
-      ))
-    ]);
+  export type HeaderArgs = StyleAndContentArgs<Props, DOMContent, ContentObj>;
+  export type HeaderSources = ComponentSources<Props, DOMContent, ContentObj>;
+
+  export function run(sources: HeaderSources, scope?: string): ComponentSinks {
+    return runPropsAndContent(sources, header, ".header", scope);
   }
-  function getClassname(props: Props): string {
+
+  export function render(arg1?: HeaderArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
+    return renderPropsAndContent(header, isArgs, isDOMContent, arg1, arg2);
+  }
+
+  function header(args: HeaderArgs): VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
+    let children = [].concat(
+      content.main,
+      content.subtext ? div({ props: { className: "sub header" } }, content.subtext) : []
+    );
+    return div({ props: { className: getClassname(props) } }, content.icon
+      ? [].concat(content.icon, div({ props: { className: "content" } }, children))
+      : children);
+  }
+
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.icon) {
       className += " icon";
@@ -128,8 +88,15 @@ export namespace Header {
     return className;
   }
 
-  function isExtras(extra): extra is Extras {
-    return extra !== undefined && ((<Extras>extra).subtext !== undefined
-      || ((<Extras>extra).icon !== undefined && typeof ((<Extras>extra).icon) !== "boolean"));
+  function isArgs(obj): obj is HeaderArgs {
+    return (typeof (obj) !== "undefined") && (
+      isDOMContent(obj.content) || (
+        typeof (obj.content) !== "undefined" && (
+          isDOMContent(obj.content.main) ||
+          isDOMContent(obj.content.icon) ||
+          isDOMContent(obj.content.subtext)
+        )
+      )
+    );
   }
 }
