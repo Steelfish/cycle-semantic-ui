@@ -1,84 +1,41 @@
-import { VNode, IInteractiveComponentSources, IInteractiveComponentSinks } from "../../interfaces";
-import { Color, Size, IconType } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { i } from "@cycle/dom";
+import { VNode, i } from "@cycle/dom";
+import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj } from "../../types";
+import { Color, ColorString, Size, SizeString, IconType } from "../../enums";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs} from "../../common";
 
 export namespace Icon {
   export interface Props {
-    button?: boolean;
-    bordered?: boolean;
-    circular?: boolean;
-    disabled?: boolean;
-    loading?: boolean;
-    fitted?: boolean;
-    link?: boolean;
-    flipped?: boolean;
-    rotated?: boolean;
-    inverted?: boolean;
-    color?: Color;
-    size?: Size;
-  }
-  /**
-   * An icon component for displaying icons.
-   * Accepts the following properties in props$:
-   *  button?: boolean - Styles the icon to display well on buttons
-   * 	bordered?: boolean - Adds a border around the icon.
-   * 	circular?: boolean - Styles the icon to appear circular.
-   * 	disabled?: boolean - Styles the icon to appear disabled.
-   * 	loading?: boolean - Rotates the icon to allow it to be used for loaders.
-   * 	fitted?: boolean - Styles the icon for tight fits.
-   * 	link?: boolean - Styles the icon to appear clickable.
-   * 	flipped?: boolean - Flips the icon.
-   * 	rotated?: boolean - Rotates the icon.
-   * 	inverted?: boolean - Styles the icon to appear on dark background.
-   * 	color?: Color - The color of the icon.
-   * 	size?: Size - The size of the icon.
-   * Accepts the following type of content in content$: IconType
-   * @param  {ComponentSources} sources - The component's sources.
-   * @return {ComponentSinks} The Icon component.
-   */
-  export function run(sources: IInteractiveComponentSources<Props, IconType>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, IconType>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({ type: "" });
-      sources.content$ = sources.content$ ? sources.content$ : xs.of(0);
-
-      return {
-        DOM: xs.combine(sources.props$, sources.content$)
-          .map(([props, content]) => render(props, content)),
-        Events: (type) => sources.DOM.select(".icon").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+    button: boolean;
+    bordered: boolean;
+    circular: boolean;
+    disabled: boolean;
+    loading: boolean;
+    fitted: boolean;
+    link: boolean;
+    flipped: boolean;
+    rotated: boolean;
+    inverted: boolean;
+    color: Color | ColorString;
+    size: Size | SizeString;
   }
 
-  /**
-   * An icon component for displaying icons.
-   * Accepts the following properties:
-   *  button?: boolean - Styles the icon to display well on buttons
-   * 	bordered?: boolean - Adds a border around the icon.
-   * 	circular?: boolean - Styles the icon to appear circular.
-   * 	disabled?: boolean - Styles the icon to appear disabled.
-   * 	loading?: boolean - Rotates the icon to allow it to be used for loaders.
-   * 	fitted?: boolean - Styles the icon for tight fits.
-   * 	link?: boolean - Styles the icon to appear clickable.
-   * 	flipped?: boolean - Flips the icon.
-   * 	rotated?: boolean - Rotates the icon.
-   * 	inverted?: boolean - Styles the icon to appear on dark background.
-   * 	color?: Color - The color of the icon.
-   * 	size?: Size - The size of the icon.
-   * Accepts the following type of content: IconType
-   * @param  {ComponentSources} sources - The component's sources.
-   * @return {ComponentSinks} The Icon component.
-   */
-  export function render(pOrC: Props | IconType = {}, c: IconType = -1): VNode {
-    let props = isProps(pOrC) ? pOrC : {};
-    let content = isProps(pOrC) ? c : pOrC;
+  export type IconArgs = StyleAndContentArgs<Props, IconType|string, ContentObj<IconType|string>>;
+  export type IconSources = ComponentSources<Props, IconType|string, ContentObj<IconType|string>>;
+
+  export function run(sources: IconSources, scope?: string) : ComponentSinks{
+    return runPropsAndContent(sources, icon, ".icon", scope);
+  }
+  export function render(arg1?: IconArgs|Partial<Props>|IconType|string, arg2?: IconType|string) {
+    return renderPropsAndContent(icon, makeIsArgs(isIconType), isIconType, arg1, arg2);
+  }
+
+  function icon(args: IconArgs): VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isIconType(args.content) ? args.content : args.content.main : -1;
     const className = getClassname(props, content);
-    return className !== "ui icon" ? i({ props: { className: className } }) : "";
+    return className !== "ui icon" ? i({ props: { className: className } }) : undefined;
   }
-  function getClassname(props: Props, content: IconType): string {
+  function getClassname(props: Partial<Props>, content: IconType|string): string {
     let className = "ui";
     if (props.button) {
       className += " button";
@@ -120,7 +77,7 @@ export namespace Icon {
     return className + " icon";
   }
 
-  function isProps(props): props is Props {
-    return typeof (props) === "object";
+  function isIconType(obj): obj is IconType|string {
+    return typeof (obj) === "string" || typeof(obj) === "number";
   }
 }

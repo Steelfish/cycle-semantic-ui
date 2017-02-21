@@ -43,8 +43,8 @@ export namespace Message {
 
       let vTree$, active$;
       if (sources.args && sources.args.closeable) {
-        const icon = Icon.run({ DOM: sources.DOM, props$: xs.of(IconType.Close) });
-        const close$ = icon.Events("click").mapTo(false);
+        const icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) });
+        const close$ = icon.events("click").mapTo(false);
         vTree$ = xs.combine(props$, content$, icon.DOM)
           .map(([props, content, closeIcon]) => message({ props, content }, closeIcon));
         active$ = xs.merge(on$, close$);

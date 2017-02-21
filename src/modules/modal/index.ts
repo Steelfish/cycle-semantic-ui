@@ -36,7 +36,7 @@ export namespace Modal {
       sources.target$ = sources.target$ ? sources.target$ : xs.of("page");
 
       const closeIcon = Icon.run({ DOM: sources.DOM, props$: xs.of({ link: true }), content$: xs.of(IconType.Close) });
-      const close$ = closeIcon.Events("click").mapTo(false);
+      const close$ = closeIcon.events("click").mapTo(false);
 
       /*** Render modal ***/
       let dimmerclick$proxy = xs.create() as Stream<boolean>;

@@ -1,20 +1,14 @@
 export namespace IconType {
-  export function ToClassname(type: IconType) {
+  export function ToClassname(type: IconType | string) {
+    if (typeof(type) === "string") {
+      return " " + type;
+    }
     if (type < 0)
     {
       return "";
     }
     let name = IconType[type];
     return " " + name.match(/[A-Z][a-z]+/g).join(" ").toLowerCase();
-  }
-  export function GetNames() {
-    let names: string[] = [];
-    for(let n in IconType) {
-      if(typeof IconType[n] === "number") {
-        names.push(n);
-      }
-    }
-    return names;
   }
 }
 
