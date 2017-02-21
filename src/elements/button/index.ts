@@ -1,116 +1,64 @@
-import { DOMContent, VNode, IInteractiveExtraComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
-import { Color, Size, Attachment, Float } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div, a } from "@cycle/dom";
+import { div, a, VNode } from "@cycle/dom";
+import { DOMContent, isDOMContent, StyleAndContentArgs ,ComponentSinks, ComponentSources } from "../../types";
+import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
+import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Button {
   export interface Props {
-    animated?: boolean;
-    verticalAnimated?: boolean;
-    labeled?: boolean;
-    rightlabeled?: boolean;
-    icon?: boolean;
-    basic?: boolean;
-    inverted?: boolean;
-    active?: boolean;
-    disabled?: boolean;
-    loading?: boolean;
-    compact?: boolean;
-    circular?: boolean;
-    fluid?: boolean;
-    href?: string;
-    attachment?: Attachment;
-    size?: Size;
-    float?: Float;
-    color?: Color;
-  }
-  /**
-   * An interactive button component for user interaction through clicking.
-   * Accepts the following type of properties in props$:
-   *   animated? : boolean - Allows for an animation in the button to show hidden content.
-   *   verticalAnimated?: boolean - See animated. This animation is vertical.
-   *   labeled?: boolean - Adds styling for labeled buttons.
-   *   icon?: boolean - Adds styling for buttons with an icon.
-   *   basic?: boolean - Styles the button to appear simpler.
-   *   inverted?: boolean - Styles the button to appear on dark backgrounds.
-   *   active?: boolean - Sets the button to the active state.
-   *   disabled?: boolean - Styles the button to appear disabled.
-   *   loading?: boolean - Styles the button show that it is loading / working.
-   *   compact?: boolean - Styles the button for a tight fit.
-   *   circular?: boolean - Styles the button to appear circular.
-   *   fluid?: boolean - Styles the button to be as wide as possible.
-   *   href?: string - Outputs the button as a link to to the href.
-   *   attachment?: Attachment - Where the button should be attached to.
-   *   size?: Size - The size of the button.
-   *   float?: Float - The left or right float of the button.
-   *   color?: Color - The color of the button.
-   * Expects the following type of content in content$: {} of
-   *   body?: DOMContent - The body content to display on the button.
-   *   hidden?: DOMContent - The hidden content to display for animated buttons.
-   */
-  export function run(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) : IInteractiveComponentSinks {
-    function main(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
-      sources.extras$ = sources.extras$ ? sources.extras$ : xs.of("");
-
-      const vtree$ = xs.combine(sources.props$, sources.content$, sources.extras$).map(
-        ([props, content, extras]) => render(props, content, extras)
-      );
-      return {
-        DOM: vtree$,
-        Events: (type) => sources.DOM.select(".ui.button").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+    animated: boolean;
+    verticalAnimated: boolean;
+    labeled: boolean;
+    rightlabeled: boolean;
+    icon: boolean;
+    basic: boolean;
+    inverted: boolean;
+    active: boolean;
+    disabled: boolean;
+    loading: boolean;
+    compact: boolean;
+    circular: boolean;
+    fluid: boolean;
+    href: string;
+    attachment: Attachment | AttachmentString;
+    size: Size | SizeString;
+    float: Float | FloatString;
+    color: Color | ColorString;
   }
 
-  /**
-   * A static button component for user interaction through clicking.
-   * Accepts the following type of properties:
-   *   animated? : boolean - Allows for an animation in the button to show hidden content.
-   *   verticalAnimated?: boolean - See animated. This animation is vertical.
-   *   labeled?: boolean - Adds styling for labeled buttons.
-   *   icon?: boolean - Adds styling for buttons with an icon.
-   *   basic?: boolean - Styles the button to appear simpler.
-   *   inverted?: boolean - Styles the button to appear on dark backgrounds.
-   *   active?: boolean - Sets the button to the active state.
-   *   disabled?: boolean - Styles the button to appear disabled.
-   *   loading?: boolean - Styles the button show that it is loading / working.
-   *   compact?: boolean - Styles the button for a tight fit.
-   *   circular?: boolean - Styles the button to appear circular.
-   *   fluid?: boolean - Styles the button to be as wide as possible.
-   *   href?: string - Outputs the button as a link to to the href.
-   *   attachment?: Attachment - Where the button should be attached to.
-   *   size?: Size - The size of the button.
-   *   float?: Float - The left or right float of the button.
-   *   color?: Color - The color of the button.
-   * Expects the following type of content: {} of
-   *   body?: DOMContent - The body content to display on the button.
-   *   hidden?: DOMContent - The hidden content to display for animated buttons.
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    let extra = isDOMContent(pOrC) ? (c !== "") ? c : e : e;
-    let children = extra
-      ? [div({ props: { className: "visible content" } }, content),
-      div({ props: { className: "hidden content" } }, extra)]
-      : content;
+  export interface ContentObj {
+    main: DOMContent;
+    hidden: DOMContent;
+  }
+
+  export type ButtonArgs = StyleAndContentArgs<Props, DOMContent, ContentObj>;
+  export type ButtonSources = ComponentSources<Props, DOMContent, ContentObj>;
+
+  export function render(arg1?: ButtonArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
+    return renderPropsAndContent(button, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+  export function run(sources: ButtonSources, scope?: string) : ComponentSinks {
+    return runPropsAndContent(sources, button, ".button", scope);
+  }
+
+  function button(args: ButtonArgs): VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isDOMContent(args.content) ? {main: args.content} : args.content : {main: []};
+    let children = content.hidden
+      ? [div({ props: { className: "visible content" } }, content.main),
+      div({ props: { className: "hidden content" } }, content.hidden)]
+      : content.main;
     return props.href
       ? a({ props: { href: props.href, className: getClassname(props) } }, children)
       : div({ props: { className: getClassname(props) } }, children);
   }
 
-  function getClassname(props: Props): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.animated) {
       className += " animated";
     }
     if (props.verticalAnimated) {
-      className += " vertical.animated";
+      className += " vertical animated";
     }
     if (props.labeled) {
       className += " labeled";
