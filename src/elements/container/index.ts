@@ -1,36 +1,21 @@
-import {DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent} from "../../interfaces";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import {div} from "@cycle/dom";
+import {div, VNode} from "@cycle/dom";
+import {DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
+import {renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Container {
-  /**
-  * A responsive container component to host other content.
-  * Does not accept any properties in props$.
-  * Expects the following type of content in content$: DOMContent
-  */
-  export function run(sources: IInteractiveComponentSources<any, DOMContent>) : IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<any, DOMContent>) {
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
+  export type ContainerArgs = StyleAndContentArgs<Object, DOMContent, ContentObj<DOMContent>>;
+  export type ContainerSources = ComponentSources<Object, DOMContent, ContentObj<DOMContent>>;
 
-      const vTree$ = sources.content$.map(content => render(content));
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".container").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export function run(sources, scope?: string) : ComponentSinks {
+    return runPropsAndContent(sources, container, ".container", scope);
   }
 
-  /**
-  * A responsive container component to host other content.
-  * Does not accept any properties.
-  * Expects the following type of content: DOMContent
-  */
-  export function render(pOrC: Object|DOMContent = {}, c: DOMContent = "") : VNode {
-    // let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC: c;
+  export function render(arg1?: ContainerArgs | DOMContent) : VNode {
+    return renderPropsAndContent(container, makeIsArgs(isDOMContent), isDOMContent, arg1);
+  }
+
+  function container(args: ContainerArgs) : VNode {
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
     return div({ props: { className: "ui container"}}, content);
   }
 }
