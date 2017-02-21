@@ -1,63 +1,57 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
-import { IconType, Size, Color, Animation, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
+import { div, VNode } from "@cycle/dom";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
+import { Size, SizeString, Color, ColorString, Attachment, AttachmentString, Animation, Direction, IconType } from "../../enums";
+import { renderPropsAndContent } from "../../common";
 
 export namespace Message {
   export interface Props {
-    on$?: Stream<boolean>;
-    closeable?: boolean;
-    icon?: boolean;
-    floating?: boolean;
-    compact?: boolean;
-    attached?: boolean;
-    size?: Size;
-    color?: Color;
+    icon: boolean;
+    floating: boolean;
+    compact: boolean;
+    attachment: Attachment | AttachmentString;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
   export interface Content {
-    icon?: IconType;
-    header?: DOMContent;
-    body?: DOMContent;
+    icon: DOMContent;
+    header: DOMContent;
+    main: DOMContent;
   }
-  /**
-   * A message component to present messages to users.
-   * Accepts the following properties in props$:
-   *   on$?: Stream<boolean> - When to show/hide the message.
-   *   closeable?: boolean - Provides a close icon for the message for dismissal.
-   *   icon?: boolean - Formats the message to support an icon.
-   *   floating?: boolean - Formats the message to float above related content.
-   *   compact?: boolean - Formats a message to only occupy width needed by its content.
-   *   attached?: boolean - Formats the message to appear attached to other content.
-   *   size?: Size - The size of the message.
-   *   color?: Color - The color of the message.
-   * Expects the following type of content in content$: {}
-   *   icon?: String|VNode - A message can have an icon signifying the type of message.
-   *   header?: String|VNode - A message can have a header text.
-   *   body?: String|VNode - A message can have additionaly body content.
-   */
-  export function run(sources: IInteractiveComponentSources<Props, Content>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, Content>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
 
-      const icon = Icon.run({ DOM: sources.DOM, props$: xs.of({ type: "close" }) });
-      const close$ = icon.Events("click").mapTo(false);
-      const vTree$ = xs.combine(sources.props$, sources.content$, icon.DOM)
-        .map(([props, content, closeIcon]) =>
-          div({ props: { className: getClassname(props) } }, [
-            content.icon,
-            props.closeable ? closeIcon : "",
-            div({ props: { className: "content" } }, [].concat(
-              content.header ? div({ props: { className: "header" } }, content.header) : "",
-              content.body
-            ))
-          ])
-        );
-      const on$ = sources.props$.map(props => props.on$ ? props.on$ : xs.of(true)).flatten();
-      const active$ = xs.merge(on$, close$);
+  export type MessageArgs = StyleAndContentArgs<Props, DOMContent, Content>;
+
+  export interface MessageSources extends ComponentSources<Props, DOMContent, Content> {
+    args?: {
+      closeable?: true,
+      on$?: Stream<boolean>
+    };
+  }
+
+  export function render(arg1?: Partial<Props> | DOMContent | MessageArgs, arg2?: DOMContent): VNode {
+    return renderPropsAndContent(message, isArgs, isDOMContent, arg1, arg2);
+  }
+
+  export function run(sources: MessageSources, scope?: string): ComponentSinks {
+    function main(sources: MessageSources) {
+      let props$ = sources.props$ ? sources.props$ : xs.of({});
+      let content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
+      let on$ = sources.args && sources.args.on$ ? sources.args.on$ : xs.of(true);
+
+      let vTree$, active$;
+      if (sources.args && sources.args.closeable) {
+        const icon = Icon.run({ DOM: sources.DOM, props$: xs.of(IconType.Close) });
+        const close$ = icon.Events("click").mapTo(false);
+        vTree$ = xs.combine(props$, content$, icon.DOM)
+          .map(([props, content, closeIcon]) => message({ props, content }, closeIcon));
+        active$ = xs.merge(on$, close$);
+      } else {
+        vTree$ = xs.combine(props$, content$).map(([props, content]) => message({ props, content }));
+        active$ = on$;
+      }
       const transition$ = active$.fold((prevAnim, active) => prevAnim.direction === Direction.None
         ? { animation: Animation.None, direction: active ? Direction.In : Direction.Out }
         : { animation: Animation.Fade, direction: active ? Direction.In : Direction.Out }
@@ -65,44 +59,27 @@ export namespace Message {
       const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, args$: transition$ }).DOM;
       return {
         DOM: animatedVTree$,
-        Events: (type) => sources.DOM.select(".message").events(type)
+        events: (type) => sources.DOM.select(".message").events(type)
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
 
-  /**
-   * A message component to present messages to users.
-   * Accepts the following properties:
-   *   on$?: Stream<boolean> - When to show/hide the message.
-   *   closeable?: boolean - Provides a close icon for the message for dismissal.
-   *   icon?: boolean - Formats the message to support an icon.
-   *   floating?: boolean - Formats the message to float above related content.
-   *   compact?: boolean - Formats a message to only occupy width needed by its content.
-   *   attached?: boolean - Formats the message to appear attached to other content.
-   *   size?: Size - The size of the message.
-   *   color?: Color - The color of the message.
-   * Expects the following type of content: {}
-   *   icon?: String|VNode - A message can have an icon signifying the type of message.
-   *   header?: String|VNode - A message can have a header text.
-   *   body?: String|VNode - A message can have additionaly body content.
-   */
-  export function render(pOrC: Props | Content = {}, c: Content = {}): VNode {
-    let props = isContent(pOrC) ? {} : pOrC;
-    let content = isContent(pOrC) ? pOrC : c;
-    const closeIcon = Icon.render({}, IconType.Close);
-    return div({ props: { className: getClassname(props) } }, [
-      content.icon ? Icon.render(content.icon) : "",
-      props.closeable ? closeIcon : "",
+  function message(args: MessageArgs, closeIcon?: VNode) {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
+    closeIcon = closeIcon ? closeIcon : [];
+    return div({ props: { className: getClassname(props) } }, [].concat(
+      content.icon ? content.icon : [], closeIcon,
       div({ props: { className: "content" } }, [].concat(
-        content.header ? div({ props: { className: "header" } }, content.header) : "",
-        content.body
+        content.header ? div({ props: { className: "header" } }, content.header) : [],
+        content.main
       ))
-    ]);
+    ));
   }
 
-  function getClassname(props: Props): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.icon) {
       className += " icon";
@@ -113,8 +90,8 @@ export namespace Message {
     if (props.compact) {
       className += " compact";
     }
-    if (props.attached) {
-      className += " attached";
+    if (typeof (props.attachment) !== "undefined") {
+      className += Attachment.ToClassname(props.attachment);
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
@@ -126,7 +103,11 @@ export namespace Message {
     return className;
   }
 
+  function isArgs(obj): obj is MessageArgs {
+    return typeof (obj) !== "undefined" && (typeof (obj.props) !== "undefined" || isContent(obj.content) || isDOMContent(obj.content));
+  }
+
   function isContent(content): content is Content {
-    return content !== undefined && (isDOMContent(content.icon) || isDOMContent(content.header) || isDOMContent(content.body));
+    return content !== undefined && (isDOMContent(content.icon) || isDOMContent(content.header) || isDOMContent(content.main));
   }
 }

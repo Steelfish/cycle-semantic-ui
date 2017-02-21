@@ -21,7 +21,6 @@ export namespace Transition {
    * Disregards any content.
    */
   export function run(sources: ITargettingComponentSources<VNode, Transition, any>): IInteractiveComponentSinks {
-    function main(sources: ITargettingComponentSources<VNode, Transition, any>) {
       const evt = (type) => sources.DOM.select(".transition").events(type);
       sources.args$ = sources.args$ ? sources.args$ : xs.of({ animation: Animation.None, direction: Direction.Out });
 
@@ -38,9 +37,6 @@ export namespace Transition {
         DOM: vTree$,
         Events: (type) => sources.DOM.select(".transition").events(type)
       };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
   }
 
   /**
