@@ -28,20 +28,24 @@ describe("Button", function () {
       let button = Button.render({
         props: { loading: true },
         content: {
-          main: ["Content"]
+          main: "Content",
+          hidden: "Hidden"
         }
       });
-      assert.equal(button.children.length, 1);
+      assert.equal(button.children.length, 2);
       assert.equal(button.data.props.className, "ui loading button");
       assert.equal((button.children[0] as VNode).text, "Content");
+      assert.equal((button.children[1] as VNode).text, "Hidden");
       button = Button.render({
         content: {
-          main: ["Content"]
+          main: "Content",
+          hidden: "Hidden"
         }
       });
-      assert.equal(button.children.length, 1);
+      assert.equal(button.children.length, 2);
       assert.equal(button.data.props.className, "ui button");
       assert.equal((button.children[0] as VNode).text, "Content");
+      assert.equal((button.children[1] as VNode).text, "Hidden");
       button = Button.render({
         props: { loading: true }
       });
