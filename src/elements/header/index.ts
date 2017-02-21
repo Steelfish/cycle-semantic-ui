@@ -90,6 +90,7 @@ export namespace Header {
 
   function isArgs(obj): obj is HeaderArgs {
     return (typeof (obj) !== "undefined") && (
+      typeof(obj.props) !== "undefined" ||
       isDOMContent(obj.content) || (
         typeof (obj.content) !== "undefined" && (
           isDOMContent(obj.content.main) ||
