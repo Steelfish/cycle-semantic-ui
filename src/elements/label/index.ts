@@ -1,101 +1,52 @@
-import { DOMContent, VNode, IInteractiveExtraComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
-import { Size, Attachment, Color } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
+import { Size, SizeString, Attachment, AttachmentString, Color, ColorString } from "../../enums";
+import { VNode, div } from "@cycle/dom";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
+import { renderPropsAndContent, runPropsAndContent} from "../../common";
 
 export namespace Label {
   export interface Props {
-    circular?: boolean;
-    empty?: boolean;
-    pointing?: boolean;
-    leftPointing?: boolean;
-    rightPointing?: boolean;
-    basic?: boolean;
-    leftCorner?: boolean;
-    rightCorner?: boolean;
-    tag?: boolean;
-    ribbon?: boolean;
-    invRibbon?: boolean;
-    horizontal?: boolean;
-    floating?: boolean;
-    attachment?: Attachment;
-    size?: Size;
-    color?: Color;
+    circular: boolean;
+    empty: boolean;
+    pointing: boolean;
+    leftPointing: boolean;
+    rightPointing: boolean;
+    basic: boolean;
+    leftCorner: boolean;
+    rightCorner: boolean;
+    tag: boolean;
+    ribbon: boolean;
+    rightRibbon: boolean;
+    horizontal: boolean;
+    floating: boolean;
+    attachment: Attachment | AttachmentString;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
 
-  /**
-   * Creates a Label component to add information to certain content.
-   * Accepts the following properties in props$:
-   *   circular?: boolean - Styles the label to be circular.
-   *   empty?: boolean - Styles the label for empty content.
-   *   pointing?: boolean - Styles the label to be pointing towards nearby content.
-   *   basic?: boolean - Styles the label to be minimalistic.
-   *   leftCorner?: boolean - Attaches the label to the top-left corner of nearby content.
-   *   rightCorner?: boolean - Attaches the label to the top-right corner of nearby content.
-   *   tag?: boolean - Styles the label to look like a tag.
-   *   ribbon?: boolean - Styles the label to look like a ribbon over the left side of content.
-   *   invRibbon?: boolean - Styles the label to look like a ribbon over the right side of content.
-   *   horizontal?: boolean - Styles the label for horizontal content.
-   *   floating?: boolean - Styles the label to be floating over nearby content.
-   *   attachment?: Attachment - Where the label should be attached to.
-   *   size?: Size - The size of the label.
-   *   color?: Color - The color of the label.
-   * Expects the following type of content and extras: DOMContent
-   */
-  export function run(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveExtraComponentSources<Props, DOMContent, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
-      sources.extras$ = sources.extras$ ? sources.extras$ : xs.of([]);
-
-      const vTree$ = xs.combine(sources.props$, sources.content$, sources.extras$).map(
-        ([props, content, extras]) => render(props, content, extras)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".label").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+  export interface ContentObj {
+    main: DOMContent;
+    detail: DOMContent;
   }
 
-  /**
-   * Creates a Label component to add information to certain content.
-   * Accepts the following properties:
-   *   circular?: boolean - Styles the label to be circular.
-   *   empty?: boolean - Styles the label for empty content.
-   *   pointing?: boolean - Styles the label to be pointing towards nearby content.
-   *   basic?: boolean - Styles the label to be minimalistic.
-   *   leftCorner?: boolean - Attaches the label to the top-left corner of nearby content.
-   *   rightCorner?: boolean - Attaches the label to the top-right corner of nearby content.
-   *   tag?: boolean - Styles the label to look like a tag.
-   *   ribbon?: boolean - Styles the label to look like a ribbon over the left side of content.
-   *   invRibbon?: boolean - Styles the label to look like a ribbon over the right side of content.
-   *   horizontal?: boolean - Styles the label for horizontal content.
-   *   floating?: boolean - Styles the label to be floating over nearby content.
-   *   attachment?: Attachment - Where the label should be attached to.
-   *   size?: Size - The size of the label.
-   *   color?: Color - The color of the label.
-   * Expects the following type of content and extras: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = "", e: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
-    let detail = isDOMContent(pOrC) ? c : e;
-    if (content instanceof Array) {
-      content = content.concat(detail ? div({ props: { className: "detail" } }, detail) : "");
-    } else {
-      content = [
-        content,
-        detail ? div({ props: { className: "detail" } }, detail) : ""
-      ];
-    }
-    return div({ props: { className: getClassname(props) } }, content);
+  export type LabelArgs = StyleAndContentArgs<Props, DOMContent, ContentObj>;
+  export type LabelSources = ComponentSources<Props, DOMContent, ContentObj>;
+
+  export function run(sources: LabelSources, scope?: string): ComponentSinks {
+    return runPropsAndContent(sources, label, ".label", scope);
+  }
+  
+  export function render(arg1?: LabelArgs|Partial<Props>|DOMContent, arg2?: DOMContent) {
+    return renderPropsAndContent(label, isArgs, isDOMContent, arg1, arg2);
   }
 
-  function getClassname(props: Props): string {
+  function label(args: LabelArgs):  VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isDOMContent(args.content) ? {main: args.content} : args.content : {main: []};
+    let children = [].concat(content.main, content.detail ? div({ props: { className: "detail" } }, content.detail) : []);
+    return div({ props: { className: getClassname(props) } }, children);
+  }
+
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.circular) {
       className += " circular";
@@ -127,14 +78,14 @@ export namespace Label {
     if (props.ribbon) {
       className += " ribbon";
     }
-    if (props.invRibbon) {
+    if (props.rightRibbon) {
       className += " right ribbon";
     }
     if (props.horizontal) {
       className += " horizontal";
     }
     if (props.floating) {
-      className += " floating ";
+      className += " floating";
     }
     if (typeof (props.attachment) !== "undefined") {
       className += Attachment.ToClassname(props.attachment);
@@ -147,5 +98,16 @@ export namespace Label {
     }
     className += " label";
     return className;
+  }
+
+  function isArgs(obj): obj is LabelArgs {
+    return typeof(obj) !== "undefined" && (
+      typeof(obj.props) !== "undefined" ||
+      typeof(obj.content) !== "undefined" && (
+        isDOMContent(obj.content) || (
+          isDOMContent(obj.content.main) || isDOMContent(obj.content.detail)
+        )
+      )
+    );
   }
 }
