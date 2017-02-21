@@ -1,115 +1,65 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
-import { Size, Color } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { table, tr, th, td, thead, tbody, tfoot } from "@cycle/dom";
+import { VNode, table, tr, th, td, thead, tbody, tfoot } from "@cycle/dom";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
+import { Size, SizeString, Color, ColorString } from "../../enums";
+import { renderPropsAndContent, runPropsAndContent} from "../../common";
 
 export namespace Table {
   export interface Props {
-    singleline?: boolean;
-    fixed?: boolean;
-    selectable?: boolean;
-    striped?: boolean;
-    celled?: boolean;
-    basic?: boolean;
-    verybasic?: boolean;
-    collapsing?: boolean;
-    padded?: boolean;
-    verypadded?: boolean;
-    compact?: boolean;
-    verycompact?: boolean;
-    size?: Size;
-    color?: Color;
+    singleLine: boolean;
+    fixed: boolean;
+    selectable: boolean;
+    striped: boolean;
+    celled: boolean;
+    basic: boolean;
+    veryBasic: boolean;
+    collapsing: boolean;
+    padded: boolean;
+    veryPadded: boolean;
+    compact: boolean;
+    veryCompact: boolean;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
   export interface Content {
-    header?: Array<DOMContent>;
-    body: Array<Array<DOMContent>>;
-    footer?: Array<DOMContent> | DOMContent;
+    header: Array<DOMContent>;
+    main: Array<Array<DOMContent>>;
+    footer: Array<DOMContent> | DOMContent;
+  }
+
+  export type TableArgs = StyleAndContentArgs<Props, Array<Array<DOMContent>>, Content>;
+  export type TableSources = ComponentSources<Props, Array<Array<DOMContent>>, Content>;
+
+  export function render(arg1?: Partial<Props> | Array<Array<DOMContent>> | TableArgs, arg2?: Array<Array<DOMContent>>): VNode {
+    return renderPropsAndContent(tableR, isArgs, isMain, arg1, arg2);
+  }
+
+  export function run(sources: TableSources, scope?: string): ComponentSinks {
+    return runPropsAndContent(sources, tableR, ".table", scope);
   }
 
 
-  /**
-   * A table component to show content in a table.
-   * Accepts the following properties in props$:
-   *   singleline?: boolean - Formats the content of the table to fit on a single line.
-   *   fixed?: boolean - Stops resizing of table cells based on content.
-   *   selectable?: boolean - Styles the rows of the table to be selectable.
-   *   striped?: boolean - Styles the rows of the table to alternate colors.
-   *   celled?: boolean - Divides each row into seperate cells.
-   *   basic?: boolean - Reduces the complexity of the table.
-   *   verybasic?: boolean - Reduces the complexity of the table by a lot.
-   *   collapsing?: boolean - Makes the table only take up as much space as needed.
-   *   padded?: boolean - Adds extra padding to the table content.
-   *   verypadded?: boolean - Adds a lot of extra padding to the table content.
-   *   compact?: boolean - Styles the table content to be more compact, to allow for more rows.
-   *   verycompact?: boolean - Styles the table content to be greatly compacted.
-   *   size?: Size - The size of the table content.
-   *   color?: Color - The colour of the table.
-   * Expects the following type of content in content$: {} of
-   * 	headers: [DOMContent]
-   * 	body: [[DomContent]]
-   */
-  export function run(sources: IInteractiveComponentSources<Props, Content>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, Content>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of({ body: [] });
-
-      const vTree$ = xs.combine(sources.props$, sources.content$).map(
-        ([props, content]) => render(props, content)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".table").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
-  }
-
-  /**
-   * A table component to show content in a table.
-   * Accepts the following properties in props$:
-   *   singleline?: boolean - Formats the content of the table to fit on a single line.
-   *   fixed?: boolean - Stops resizing of table cells based on content.
-   *   selectable?: boolean - Styles the rows of the table to be selectable.
-   *   striped?: boolean - Styles the rows of the table to alternate colors.
-   *   celled?: boolean - Divides each row into seperate cells.
-   *   basic?: boolean - Reduces the complexity of the table.
-   *   verybasic?: boolean - Reduces the complexity of the table by a lot.
-   *   collapsing?: boolean - Makes the table only take up as much space as needed.
-   *   padded?: boolean - Adds extra padding to the table content.
-   *   verypadded?: boolean - Adds a lot of extra padding to the table content.
-   *   compact?: boolean - Styles the table content to be more compact, to allow for more rows.
-   *   verycompact?: boolean - Styles the table content to be greatly compacted.
-   *   size?: Size - The size of the table content.
-   *   color?: Color - The colour of the table.
-   * Expects the following type of content in content$: {} of
-   * 	headers: [DOMContent]
-   * 	body: [[DomContent]]
-   */
-  export function render(pOrC: Props | Content = {}, c: Content = { body: [] }): VNode {
-    let props = isContent(pOrC) ? {} : pOrC;
-    let content = isContent(pOrC) ? pOrC : c;
-
-    let header = content.header ? thead([tr(content.header.map(h => th(h)))]) : "";
+  function tableR(args: TableArgs): VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isContent(args.content) ? args.content : {main: args.content}  : {main: []};
+    let header = content.header ? thead([tr(content.header.map(h => th(h)))]) : [];
     let footer;
     if (isDOMContent(content.footer)) {
       footer = tfoot(content.footer);
     }
     else {
-      footer = content.footer ? tfoot([tr(content.footer.map(f => th(f)))]) : "";
+      footer = content.footer ? tfoot([tr(content.footer.map(f => th(f)))]) : [];
     }
 
-    return table({ props: { className: getClassname(props) } }, [
+    return table({ props: { className: getClassname(props) } }, [].concat(
       header,
-      tbody(content.body.map(r => tr(r.map(c => td(c))))),
+      tbody(content.main.map(r => tr(r.map(c => td(c))))),
       footer
-    ]);
+    ));
   }
 
-  function getClassname(props: Props) {
+  function getClassname(props: Partial<Props>) {
     let className = "ui";
-    if (props.singleline) {
+    if (props.singleLine) {
       className += " single line";
     }
     if (props.fixed) {
@@ -127,7 +77,7 @@ export namespace Table {
     if (props.basic) {
       className += " basic";
     }
-    if (props.verybasic) {
+    if (props.veryBasic) {
       className += " very basic";
     }
     if (props.collapsing) {
@@ -136,13 +86,13 @@ export namespace Table {
     if (props.padded) {
       className += " padded";
     }
-    if (props.verypadded) {
+    if (props.veryPadded) {
       className += " very padded";
     }
     if (props.compact) {
       className += " compact";
     }
-    if (props.verycompact) {
+    if (props.veryCompact) {
       className += " very compact";
     }
     if (typeof (props.size) !== "undefined") {
@@ -155,10 +105,21 @@ export namespace Table {
     return className;
   }
 
-  function isContent(content): content is Content {
+  function isArgs(obj): obj is TableArgs {
+    return typeof(obj) !== "undefined" && (
+      typeof(obj.props) !== "undefined" || 
+        (typeof(obj.content) !== "undefined" && (isContent(obj.content) || isMain(obj.content)))
+    );
+  }
+
+  function isContent(content): content is Partial<Content> {
     return content !== undefined && (
-      (<Content>content).body !== undefined &&
+      (<Content>content).main !== undefined ||
       ((<Content>content).header !== undefined ||
         (<Content>content).footer !== undefined));
+  }
+
+  function isMain(obj): obj is Array<Array<DOMContent>> {
+    return typeof(obj) !== "undefined" && obj instanceof Array;
   }
 }

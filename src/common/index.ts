@@ -36,7 +36,7 @@ export function runPropsAndContent<P, B, C extends ContentObj<B>>(
 ): ComponentSinks {
   function main(sources: ComponentSources<P, B, C>) {
     sources.props$ = sources.props$ ? sources.props$ : xs.of({} as Partial<P>);
-    sources.content$ = sources.content$ ? sources.content$ : xs.of({} as Partial<C>);
+    sources.content$ = sources.content$ ? sources.content$ : xs.of(undefined as Partial<C>);
     const vTree$ = xs.combine(sources.props$, sources.content$)
       .map(([props, content]) => render({props,content})
       );
