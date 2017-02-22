@@ -8,5 +8,5 @@ export * from "./label";
 export * from "./list";
 export * from "./loader";
 export * from "./segment";
-export * from "./step";
+export * from "./steps";
 export * from "./textbox";
