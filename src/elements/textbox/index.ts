@@ -1,95 +1,63 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IValueComponentSinks, isDOMContent } from "../../interfaces";
-import { Color, Size } from "../../enums";
-import xs from "xstream";
+import { VNode, div, input, textarea } from "@cycle/dom";
 import isolate from "@cycle/isolate";
-import { div, input, textarea } from "@cycle/dom";
+import xs from "xstream";
+import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ValueComponentSinks } from "../../types";
+import { Color, ColorString, Size, SizeString } from "../../enums";
+import { renderPropsAndContent, makeIsArgs} from "../../common";
 
 export namespace Textbox {
   export interface Props {
-    initial?: string;
-    placeholder?: string;
-    icon?: boolean;
-    labeled?: boolean;
-    action?: boolean;
-    leftContent?: boolean;
-    rightContent?: boolean;
-    transparent?: boolean;
-    inverted?: boolean;
-    focus?: boolean;
-    loading?: boolean;
-    disabled?: boolean;
-    readonly?: boolean;
-    rows?: number;
-    type?: string;
-    color?: Color;
-    size?: Size;
+    initial: string;
+    placeholder: string;
+    icon: boolean;
+    labeled: boolean;
+    action: boolean;
+    leftContent: boolean;
+    rightContent: boolean;
+    transparent: boolean;
+    inverted: boolean;
+    focus: boolean;
+    loading: boolean;
+    disabled: boolean;
+    readonly: boolean;
+    rows: number;
+    type: string;
+    color: Color | ColorString;
+    size: Size | SizeString;
   }
 
-  /**
-   * A textbox component for capturing user input.
-   * Accepts the following properties in props$:
-   *   initial?: string - The initial value of the textbox.
-   *   placeholder?: string - The placeholder text of the textbox.
-   *   icon?: boolean - Styles the textbox for displaying an icon in the textbox.
-   *   labeled?: boolean - Styles the textbox for displaying a label in the textbox.
-   *   action?: boolean - Styles the textbox for displaying an action component in the textbox.
-   *   leftContent?: boolean - Adds content to the left side of the textbox.
-   *   rightContent?: boolean - Adds content to the right side of the textbox.
-   *   transparent?: boolean - Styles the textbox to appear transparent.
-   *   inverted?: boolean - Styles the textbox for darker backgrounds.
-   *   focus?: boolean - Styles the textbox to show it has focus.
-   *   loading?: boolean - Styles the textbox with a loading icon.
-   *   disabled?: boolean - Styles the textbox to appear disabled.
-   *   color?: Color - The color of the textbox.
-   *   size?: Size - The size of the textbox.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IValueComponentSinks<string> {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
+  export type TextboxArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
+  export type TextboxSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
+
+  export function render(arg1?: TextboxArgs|Partial<Props>|DOMContent, arg2?: DOMContent) : VNode {
+    return renderPropsAndContent(textbox, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+
+  export function run(sources: TextboxSources, scope?: string): ValueComponentSinks<string> {
+    function main(sources: TextboxSources) {
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
+      sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
 
       const evt = (type) => sources.DOM.select(".input").events(type);
       const props$ = sources.props$.remember();
-      // const initialValue$ = props$.map(props => props.initial);
       const newValue$ = evt("input").map(ev => (ev.target as HTMLInputElement).value).remember();
-      // const value$ = xs.merge(initialValue$, newValue$);
       const vtree$ = xs.combine(props$, sources.content$).map(
-        ([props, content]) => render(props, content)
+        ([props, content]) => textbox({props, content})
       );
 
       return {
         DOM: vtree$,
-        Events: evt,
+        events: evt,
         value$: newValue$
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
-
-  /**
-   * A textbox component for capturing user input.
-   * Accepts the following properties:
-   *   initial?: string - The initial value of the textbox.
-   *   placeholder?: string - The placeholder text of the textbox.
-   *   icon?: boolean - Styles the textbox for displaying an icon in the textbox.
-   *   labeled?: boolean - Styles the textbox for displaying a label in the textbox.
-   *   action?: boolean - Styles the textbox for displaying an action component in the textbox.
-   *   leftContent?: boolean - Adds content to the left side of the textbox.
-   *   rightContent?: boolean - Adds content to the right side of the textbox.
-   *   transparent?: boolean - Styles the textbox to appear transparent.
-   *   inverted?: boolean - Styles the textbox for darker backgrounds.
-   *   focus?: boolean - Styles the textbox to show it has focus.
-   *   loading?: boolean - Styles the textbox with a loading icon.
-   *   disabled?: boolean - Styles the textbox to appear disabled.
-   *   color?: Color - The color of the textbox.
-   *   size?: Size - The size of the textbox.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? {} : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
+  
+  function textbox(args: TextboxArgs): VNode {
+    let props = args.props ? args.props : {};
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
     let textbox = props.rows
       ? textarea({ attrs: { rows: props.rows, readonly: props.readonly, value: props.initial, placeholder: props.placeholder } })
       : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder } });
@@ -98,7 +66,7 @@ export namespace Textbox {
       : div({ props: { className: getClassname(props) } }, [].concat(content, textbox));
   }
 
-  function getClassname(props: Props): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.leftContent) {
       className += " left";
