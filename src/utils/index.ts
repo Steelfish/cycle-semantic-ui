@@ -1,7 +1,5 @@
 import { VNode } from "@cycle/dom";
 
-
-
 export function capitalize(string: string): string {
   return string ? string.charAt(0).toUpperCase() + string.slice(1) : string;
 }
@@ -18,6 +16,7 @@ export function patchClassList(target: VNode, classes: string[], classesToAdd: s
     });
   }
   className += classesToAdd;
+  console.log(classesToAdd);
   return Object.assign({}, target.data, {
     "props": {
       className

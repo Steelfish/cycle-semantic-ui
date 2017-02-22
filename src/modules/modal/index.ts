@@ -63,13 +63,17 @@ export namespace Modal {
 
       /*** Activate dimmer ***/
       let dimmerContent$ = animatedContent.DOM.map(x => [x]);
-      const dimmer = Dimmer.run({ DOM: sources.DOM, target$: sources.target$, args$: on$, content$: dimmerContent$ }, sources.props$.map(x => x.inverted));
-      const dimmerclick$ = dimmer.Events("mousedown")
+      const dimmer = Dimmer.run({ DOM: sources.DOM, 
+        props$: sources.props$.map(x => ({inverted: x.inverted})),
+        content$: dimmerContent$, 
+        args: {target$: sources.target$, on$}
+      });
+      const dimmerclick$ = dimmer.events("mousedown")
         .filter(evt => evt.srcElement === (evt as MouseEvent).currentTarget)
         .mapTo(false);
       dimmerclick$proxy.imitate(dimmerclick$);
 
-      const fadeOutEnd$ = on$.map(active => !active ? dimmer.Events("animationend") : xs.never()).flatten().mapTo(false);
+      const fadeOutEnd$ = on$.map(active => !active ? dimmer.events("animationend") : xs.never()).flatten().mapTo(false);
       // const active$ = xs.merge(sources.on$, fadeOutEnd$).remember();
       return {
         active$: xs.merge(sources.on$, fadeOutEnd$),

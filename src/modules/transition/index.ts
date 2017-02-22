@@ -1,8 +1,8 @@
-import { VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
-import { Animation, AnimationDirection, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import { h } from "@cycle/dom";
-import isolate from "@cycle/isolate";
+import { VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
+import { Animation, AnimationDirection, Direction } from "../../enums";
+import { patchClassList} from "../../utils";
 
 export namespace Transition {
   export interface Transition {
@@ -49,21 +49,8 @@ export namespace Transition {
    * Disregards any content.
    */
   export function render(target: VNode, args: Transition = { animation: Animation.None }): VNode {
-    let className = "", c;
-    if (target.data) {
-      let classList = target.data.props.className.split(" ") as Array<string>;
-      classList.forEach(item => {
-        if (["hidden", "visible", "animating", "transition"].indexOf(item) === -1) {
-          className += item + " ";
-        }
-      });
-    }
-    className += getClassName(args);
-    const data = Object.assign({}, target.data, {
-      "props": {
-        className
-      }
-    });
+    let c;
+    let data = patchClassList(target, ["hidden", "visible", "animating", "transition"], getClassName(args));
     if (target.children) {
       c = target.children;
     }

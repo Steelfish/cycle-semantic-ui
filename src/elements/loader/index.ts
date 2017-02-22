@@ -44,7 +44,12 @@ export namespace Loader {
         .map(([props, content]) => [loader({ props, content })]
       );
       const target$ = props$.map(props => props.type === LoaderType.Page ? xs.of("page") : sources.args.element$).flatten();
-      const dimmer = Dimmer.run({ DOM: sources.DOM, args$: on$, target$, content$: vTree$ }, props$.map(props => props.inverted));
+      const dimmer = Dimmer.run({ 
+        DOM: sources.DOM, 
+        props$: props$.map(props => ({inverted: props.inverted})), 
+        content$: vTree$, 
+        args: {on$, target$} 
+      });
       const result$ = props$.map(
         props => props.type === LoaderType.Inline ? vTree$ : dimmer.DOM
       ).flatten();
