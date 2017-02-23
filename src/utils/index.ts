@@ -16,7 +16,6 @@ export function patchClassList(target: VNode, classes: string[], classesToAdd: s
     });
   }
   className += classesToAdd;
-  console.log(classesToAdd);
   return Object.assign({}, target.data, {
     "props": {
       className
