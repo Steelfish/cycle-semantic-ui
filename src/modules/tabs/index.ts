@@ -9,14 +9,15 @@ export namespace Tabs {
     DOM: DOMSource;
     labels: string[];
     content: Stream<VNode>[];
+    active?: string;
     menuProps$?: Stream<Partial<Menu.Props>>;
-    segmentProps$?: Stream<Segment.Props>;
+    segmentProps$?: Stream<Partial<Segment.Props>>;
   }
   export function run(sources: TabsSources) {
     let menuProps$ = sources.menuProps$ ? sources.menuProps$ : xs.of({ tabular: true, attachment: Attachment.Top });
-    let segmentProps$ = sources.segmentProps$ ? sources.segmentProps$ : xs.of({attachment: Attachment.None});
+    let segmentProps$ = sources.segmentProps$ ? sources.segmentProps$ : xs.of({attachment: Attachment.Bottom});
     let menuValue$ = xs.create() as Stream<string>;
-    let activeTab$ = menuValue$.startWith(sources.labels[0]).compose(dropRepeats()).remember();
+    let activeTab$ = menuValue$.startWith(sources.active ? sources.active: sources.labels[0]).compose(dropRepeats()).remember();
     let menu = Menu.run({
       DOM: sources.DOM,
       props$: menuProps$,
@@ -25,7 +26,7 @@ export namespace Tabs {
           ({
             link: true,
             active: activeTab === label,
-            body: label
+            main: label
           })
         )
       )
@@ -43,7 +44,7 @@ export namespace Tabs {
     );
     return {
       DOM: vTree$,
-      value$: activeTab$
+      active$: activeTab$
     };
   }
 }

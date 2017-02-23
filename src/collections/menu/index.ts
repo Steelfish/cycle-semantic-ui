@@ -67,7 +67,7 @@ export namespace Menu {
         .filter(item => !item.disabled);
 
       const vtree$ = xs.combine(sources.props$, items$).map(
-        ([props, content]) => render(props, content)
+        ([props, content]) => menu({ props, content })
       );
       return {
         DOM: vtree$,
@@ -86,11 +86,11 @@ export namespace Menu {
       ? div({ props: { className: "divider" } })
       : item.headerOnly
         ? div({ props: { className: "header" } }, item.main)
-        : item.rightMenu 
-          ? div({props: {className: "right menu"}}, item.main.map(renderItem)) 
+        : item.rightMenu
+          ? div({ props: { className: "right menu" } }, item.main.map(renderItem))
           : item.href
-          ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
-          : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main);
+            ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
+            : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main);
     return div({ props: { className: getClassname(props, content.length) } }, content.map(renderItem));
   }
 
@@ -99,7 +99,7 @@ export namespace Menu {
     if (props.secondary) {
       className += " secondary";
     }
-    if(props.fluid) {
+    if (props.fluid) {
       className += " fluid";
     }
     if (props.right) {
@@ -197,7 +197,11 @@ export namespace Menu {
   }
 
   function isContent(obj): obj is Content {
-    return obj instanceof Array &&
-      (obj.length === 0 || typeof (obj[0].main) !== "undefined" || typeof (obj[0].divider) !== "undefined");
+    return obj instanceof Array && (
+      obj.length === 0 || 
+      typeof (obj[0].main) !== "undefined" || 
+      typeof (obj[0].divider) !== "undefined" || 
+      typeof (obj[0].headerOnly) !== "undefined"
+    );
   }
 }
