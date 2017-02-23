@@ -1,46 +1,61 @@
-import { DOMContent, VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
-import { Size, Animation, Direction } from "../../enums";
-import { Transition } from "../../modules/transition";
-import { div } from "@cycle/dom";
+import { VNode, div } from "@cycle/dom";
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";
 import debounce from "xstream/extra/debounce";
 import dropRepeats from "xstream/extra/dropRepeats";
 import delay from "xstream/extra/delay";
+import * as Tether from "tether";
+
+import { DOMContent, isDOMContent, ComponentSources, ComponentSinks } from "../../types";
+import { Size, SizeString, Animation, Direction } from "../../enums";
+import { Transition } from "../../modules/transition";
+import { capitalize } from "../../utils";
+
 
 export namespace Popup {
-  export interface Args {
-    active: boolean;
-    attachment: PopupAttachment;
-    header?: string;
-    wide?: boolean;
-    veryWide?: boolean;
-    flowing?: boolean;
-    inverted?: boolean;
-    size?: Size;
+  export interface Props {
+    wide: boolean;
+    veryWide: boolean;
+    flowing: boolean;
+    inverted: boolean;
+    size: Size | SizeString;
+    attachment: Popup.Attachment | Popup.AttachmentString;
+  }
+  export interface ContentObj {
+    main: DOMContent;
+    header: DOMContent;
+  }
+  export interface PopupSources extends ComponentSources<Props, DOMContent, ContentObj> {
+    args: {
+      target$: Stream<VNode | Element>,
+      on$?: Stream<boolean>
+    };
   }
 
-  export interface ITetheredInteractiveComponentSinks extends IInteractiveComponentSinks {
-    tether: any;
-  }
+  export function run(sources: PopupSources, scope?: string): ComponentSinks {
+    function main(sources: PopupSources) {
+      if (!(sources.args && sources.args.target$)) {
+        throw ("Popups must be attached to an element");
+      }
+      const props$ = sources.props$ ? sources.props$ : xs.of({ attachment: Attachment.BottomLeft });
+      const content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
+      const on$ = sources.args.on$ ? sources.args.on$ : xs.of(true);
+      const evt = (type) => sources.DOM.select(".popup").events(type) as Stream<Event>;
 
-  export function run(sources: ITargettingComponentSources<VNode, Args, DOMContent>): ITetheredInteractiveComponentSinks {
-    function main(sources: ITargettingComponentSources<VNode, Args, DOMContent>) {
-      sources.args$ = sources.args$ ? sources.args$ : xs.of({ active: false, attachment: PopupAttachment.BottomLeft });
-      sources.content$ = sources.content$ ? sources.content$ : xs.of("");
-
-      const args$ = sources.args$.remember();
-      const vTree$ = xs.combine(args$, sources.content$).map(
-        ([args, content]) => render(args, content)
+      const vTree$ = xs.combine(props$, content$, sources.args.target$).map(
+        ([props, content, target]) => popup(props, content, target)
       );
 
-      const mouseleave$proxy = xs.create();
-      const mouseenter$proxy = xs.create();
-      const active$ = args$.map(arg => arg.active ? Direction.In : Direction.Out).drop(1);
+      const mouseenter$ = evt("mouseenter");
+      const mouseleave$ = xs.merge(evt("mouseleave"), mouseenter$)
+        .map(evt => evt.type === "mouseenter" ? Direction.In : Direction.Out)
+        .compose(debounce(200))
+        .filter(dir => dir === Direction.Out);
+      const active$ = on$.map(active => active ? Direction.In : Direction.Out).drop(1);
       const timer$ = active$.map(dir => dir === Direction.Out ? xs.of(Direction.Out)
-        : xs.of(Direction.Out).compose(delay(1000)).endWhen(mouseenter$proxy)
+        : xs.of(Direction.Out).compose(delay(1000)).endWhen(mouseenter$)
       ).flatten();
-      const transition$ = xs.merge(active$, mouseleave$proxy, timer$)
+      const transition$ = xs.merge(active$, mouseleave$, timer$)
         .map(dir => ({
           animation: Animation.Fade,
           direction: dir
@@ -51,34 +66,34 @@ export namespace Popup {
         ))
         .startWith({ animation: Animation.None, direction: Direction.Out }) as Stream<any>;
       const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, args$: transition$ });
-      const mouseenter$ = animatedPopup.Events("mouseenter");
-      const mouseleave$ = xs.merge(animatedPopup.Events("mouseleave"), mouseenter$)
-        .map(evt => evt.type === "mouseenter" ? Direction.In : Direction.Out)
-        .compose(debounce(200))
-        .filter(dir => dir === Direction.Out);
-      mouseleave$proxy.imitate(mouseleave$);
-      mouseenter$proxy.imitate(mouseenter$);
-
-      const popup$ = animatedPopup.DOM.remember();
       return {
-        DOM: popup$,
-        Events: animatedPopup.Events,
-        tether: xs.combine(popup$, sources.target$, args$)
-          .map(([element, target, args]) => ({ element, target, args }))
+        DOM: animatedPopup.DOM,
+        events: evt
       };
     }
-    const isolatedMain = isolate(main);
+    const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
 
-  export function render(args: Args = { active: true, attachment: PopupAttachment.BottomLeft }, content: DOMContent = ""): VNode {
-    return div({ props: { className: getClassname(args) } }, [
-      args.header ? div({ props: { className: "header" } }, args.header) : "",
-      content
-    ]);
+  function popup(props: Partial<Props>, content: Partial<ContentObj>, target: VNode | Element): VNode {
+    return div({
+      props: { className: getClassname(props) }, hook: {
+        insert: (vnode) => {
+          new Tether({
+            element: vnode.elm,
+            target: target.hasOwnProperty("elm") ? target["elm"] : target,
+            attachment: Attachment.ToOppositeTether(props.attachment),
+            targetAttachment: Attachment.ToTether(props.attachment)
+          });
+        }
+      }
+    }, [].concat(
+      content.header ? div({ props: { className: "header" } }, content.header) : [],
+      content.main
+    ));
   }
 
-  function getClassname(props: Args): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.wide) {
       className += " wide";
@@ -95,54 +110,66 @@ export namespace Popup {
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
     }
-    className += PopupAttachment.ToClassname(props.attachment) + " popup";
+    className += Attachment.ToClassname(props.attachment) + " popup";
     return className;
   }
-  export enum PopupAttachment {
+  export enum Attachment {
     TopLeft, TopMiddle, TopRight, LeftCenter, RightCenter,
     BottomLeft, BottomMiddle, BottomRight,
     Center
   }
-  export namespace PopupAttachment {
-    export function ToClassname(attachment: PopupAttachment) {
+  export type AttachmentString =
+    "top left" | "top middle" | "top right" | "left center" | "right center" |
+    "bottom left" | "bottom middle" | "bottom right" | "center";
+  export namespace Attachment {
+    export function ToEnum(attachmentOrString: Attachment | AttachmentString): Attachment {
+      if (typeof (attachmentOrString) === "number") {
+        return attachmentOrString;
+      }
+      return Attachment[attachmentOrString.split(" ").map(capitalize).join("")];
+    }
+    export function ToClassname(attachment: Attachment | AttachmentString) {
+      attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
-        case PopupAttachment.TopLeft: return " top left";
-        case PopupAttachment.TopMiddle: return " top center";
-        case PopupAttachment.TopRight: return " top right";
-        case PopupAttachment.LeftCenter: return " left center";
-        case PopupAttachment.RightCenter: return " right center";
-        case PopupAttachment.BottomLeft: return " bottom left";
-        case PopupAttachment.BottomMiddle: return " bottom center";
-        case PopupAttachment.BottomRight: return " bottom right";
-        case PopupAttachment.Center: return " center";
+        case Attachment.TopLeft: return " top left";
+        case Attachment.TopMiddle: return " top center";
+        case Attachment.TopRight: return " top right";
+        case Attachment.LeftCenter: return " left center";
+        case Attachment.RightCenter: return " right center";
+        case Attachment.BottomLeft: return " bottom left";
+        case Attachment.BottomMiddle: return " bottom center";
+        case Attachment.BottomRight: return " bottom right";
+        case Attachment.Center: return " center";
         default: return " bottom left";
       }
     }
-    export function ToTether(attachment: PopupAttachment) {
+    export function ToTether(attachment: Attachment | AttachmentString) {
+      attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
-        case PopupAttachment.TopLeft: return "top left";
-        case PopupAttachment.TopMiddle: return "top center";
-        case PopupAttachment.TopRight: return "top right";
-        case PopupAttachment.LeftCenter: return "left middle";
-        case PopupAttachment.RightCenter: return "right middle";
-        case PopupAttachment.BottomLeft: return "bottom left";
-        case PopupAttachment.BottomMiddle: return "bottom center";
-        case PopupAttachment.BottomRight: return "bottom right";
-        case PopupAttachment.Center: return "center";
+        case Attachment.TopLeft: return "top left";
+        case Attachment.TopMiddle: return "top center";
+        case Attachment.TopRight: return "top right";
+        case Attachment.LeftCenter: return "left middle";
+        case Attachment.RightCenter: return "right middle";
+        case Attachment.BottomLeft: return "bottom left";
+        case Attachment.BottomMiddle: return "bottom center";
+        case Attachment.BottomRight: return "bottom right";
+        case Attachment.Center: return "center";
         default: return "bottom left";
       }
     }
-    export function ToOppositeTether(attachment: PopupAttachment) {
+    export function ToOppositeTether(attachment: Attachment | AttachmentString) {
+      attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
-        case PopupAttachment.TopLeft: return "bottom right";
-        case PopupAttachment.TopMiddle: return "bottom center";
-        case PopupAttachment.TopRight: return "bottom left";
-        case PopupAttachment.LeftCenter: return "right middle";
-        case PopupAttachment.RightCenter: return "left middle";
-        case PopupAttachment.BottomLeft: return "top right";
-        case PopupAttachment.BottomMiddle: return "top center";
-        case PopupAttachment.BottomRight: return "top left";
-        case PopupAttachment.Center: return "center";
+        case Attachment.TopLeft: return "bottom right";
+        case Attachment.TopMiddle: return "bottom center";
+        case Attachment.TopRight: return "bottom left";
+        case Attachment.LeftCenter: return "right middle";
+        case Attachment.RightCenter: return "left middle";
+        case Attachment.BottomLeft: return "top right";
+        case Attachment.BottomMiddle: return "top center";
+        case Attachment.BottomRight: return "top left";
+        case Attachment.Center: return "center";
         default: return "bottom left";
       }
     }

@@ -29,6 +29,7 @@
     "@cycle/xstream-run": "^4.2.0",
     "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.39",
+    "@types/tether": "^1.4.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
     "cyclic-router": "^3.0.1",

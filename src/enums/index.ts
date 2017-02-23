@@ -96,9 +96,9 @@ export namespace Float {
   }
 }
 
-export type AttachmentString = "none" | "top" | "top right" | "top left" | "bottom" | "bottom left" | "bottom right" | "right" | "left";
+export type AttachmentString = "none" | "top" | "bottom";
 export enum Attachment {
-  None, Top, TopRight, TopLeft, Bottom, BottomLeft, BottomRight, Right, Left
+  None, Top, Bottom
 }
 
 export namespace Attachment {
@@ -113,12 +113,6 @@ export namespace Attachment {
       case Attachment.None: return " attached";
       case Attachment.Top: return " top attached";
       case Attachment.Bottom: return " bottom attached";
-      case Attachment.Left: return " left attached";
-      case Attachment.Right: return " right attached";
-      case Attachment.TopRight: return " top right attached";
-      case Attachment.TopLeft: return " top left attached";
-      case Attachment.BottomLeft: return " bottom left attached";
-      case Attachment.BottomRight: return " bottom right attached";
       default: return "";
     }
   }
