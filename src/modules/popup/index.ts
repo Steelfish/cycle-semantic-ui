@@ -65,7 +65,7 @@ export namespace Popup {
             && (a as any).animation === (b as any).animation
         ))
         .startWith({ animation: Animation.None, direction: Direction.Out }) as Stream<any>;
-      const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, args$: transition$ });
+      const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ });
       return {
         DOM: animatedPopup.DOM,
         events: evt

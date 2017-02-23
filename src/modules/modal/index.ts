@@ -59,7 +59,7 @@ export namespace Modal {
             animation: Animation.Fade, direction: active ? Direction.In : Direction.Out
           }
         , ({ animation: Animation.None, direction: Direction.None }));
-      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, args$: transition$ });
+      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ });
 
       /*** Activate dimmer ***/
       let dimmerContent$ = animatedContent.DOM.map(x => [x]);

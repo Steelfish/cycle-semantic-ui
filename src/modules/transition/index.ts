@@ -1,53 +1,40 @@
 import xs, { Stream } from "xstream";
-import { h } from "@cycle/dom";
-import { VNode, ITargettingComponentSources, IInteractiveComponentSinks } from "../../interfaces";
-import { Animation, AnimationDirection, Direction } from "../../enums";
-import { patchClassList} from "../../utils";
+import { VNode, h, DOMSource } from "@cycle/dom";
+import { ComponentSinks } from "../../types";
+import { Animation, AnimationString, AnimationDirection, AnimationDirectionString, Direction, DirectionString } from "../../enums";
+import { patchClassList } from "../../utils";
 
 export namespace Transition {
   export interface Transition {
-    animation: Animation;
-    direction?: Direction;
-    animationDirection?: AnimationDirection;
+    animation: Animation|string;
+    direction?: Direction|string;
+    animationDirection?: AnimationDirection|string;
   }
 
-  /**
-   * A transition wrapper for animating dom content.
-   * Accepts the following targets: VNode
-   * Expects the following arguments: {} of
-   *   animation: Animation - The animation to use.
-   *   direction?: Direction - Wether to animate to visible or invisible.
-   *   animationDirection?: AnimationDirection - The direction for the animation.
-   * Disregards any content.
-   */
-  export function run(sources: ITargettingComponentSources<VNode, Transition, any>): IInteractiveComponentSinks {
-      const evt = (type) => sources.DOM.select(".transition").events(type);
-      sources.args$ = sources.args$ ? sources.args$ : xs.of({ animation: Animation.None, direction: Direction.Out });
-
-      let animationEnd$ = evt("animationend").map(evt => ({
-        animation: Animation.None,
-        direction: (evt.currentTarget as HTMLElement).classList.contains("out") ? Direction.Out : Direction.In
-      })) as Stream<Transition>;
-      let animation$ = xs.merge(sources.args$, animationEnd$);
-
-      let vTree$ = xs.combine(animation$, sources.target$).map(
-        ([transition, target]) => render(target, transition)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".transition").events(type)
-      };
+  export interface TransitionSources {
+    DOM: DOMSource;
+    target$: Stream<VNode>;
+    transition$: Stream<Transition>;
   }
 
-  /**
-   * A transition wrapper for animating dom content.
-   * Accepts the following targets: VNode
-   * Expects the following arguments: {} of
-   *   animation: Animation - The animation to use.
-   *   direction?: Direction - Wether to animate to visible or invisible.
-   *   animationDirection?: AnimationDirection - The direction for the animation.
-   * Disregards any content.
-   */
+  export function run(sources: TransitionSources): ComponentSinks {
+    const evt = (type) => sources.DOM.select(".transition").events(type);
+
+    let animationEnd$ = evt("animationend").map(evt => ({
+      animation: Animation.None,
+      direction: (evt.currentTarget as HTMLElement).classList.contains("out") ? Direction.Out : Direction.In
+    })) as Stream<Transition>;
+    let animation$ = xs.merge(sources.transition$, animationEnd$);
+
+    let vTree$ = xs.combine(animation$, sources.target$).map(
+      ([transition, target]) => render(target, transition)
+    );
+    return {
+      DOM: vTree$,
+      events: evt
+    };
+  }
+
   export function render(target: VNode, args: Transition = { animation: Animation.None }): VNode {
     let c;
     let data = patchClassList(target, ["hidden", "visible", "animating", "transition"], getClassName(args));

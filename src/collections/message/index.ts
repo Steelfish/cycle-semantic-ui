@@ -56,7 +56,7 @@ export namespace Message {
         ? { animation: Animation.None, direction: active ? Direction.In : Direction.Out }
         : { animation: Animation.Fade, direction: active ? Direction.In : Direction.Out }
         , { animation: Animation.None, direction: Direction.None });
-      const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, args$: transition$ }).DOM;
+      const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }).DOM;
       return {
         DOM: animatedVTree$,
         events: (type) => sources.DOM.select(".message").events(type)

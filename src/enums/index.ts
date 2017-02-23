@@ -151,12 +151,12 @@ export enum Animation {
   None
 }
 export namespace Animation {
-  export function ToEnum(animationOrString: Animation | AnimationString): Animation {
+  export function ToEnum(animationOrString: Animation | string): Animation {
     return typeof (animationOrString) === "number"
       ? animationOrString
       : Animation[capitalize(animationOrString)];
   }
-  export function ToClassname(anim: Animation | AnimationString): string {
+  export function ToClassname(anim: Animation | string): string {
     anim = Animation.ToEnum(anim);
     switch (anim) {
       case Animation.Browse: return " browse";
@@ -177,13 +177,13 @@ export namespace Animation {
   }
   const staticAnimations = [Animation.Flash, Animation.Shake,
   Animation.Bounce, Animation.Tada, Animation.Pulse, Animation.Jiggle];
-  export function isStatic(anim: Animation): Boolean {
-    return staticAnimations.indexOf(anim) !== -1;
+  export function isStatic(anim: Animation|string): Boolean {
+    return staticAnimations.indexOf(Animation.ToEnum(anim)) !== -1;
   }
   const directionAnimations = [Animation.Browse, Animation.Fade,
   Animation.Fly, Animation.Slide, Animation.Swing];
-  export function isDirectional(anim: Animation): Boolean {
-    return directionAnimations.indexOf(anim) !== -1;
+  export function isDirectional(anim: Animation|string): Boolean {
+    return directionAnimations.indexOf(Animation.ToEnum(anim)) !== -1;
   }
 }
 
@@ -192,12 +192,12 @@ export enum Direction {
   In, Out, None
 }
 export namespace Direction {
-  export function ToEnum(directionOrString: Direction | DirectionString): Direction {
+  export function ToEnum(directionOrString: Direction | string): Direction {
     return typeof (directionOrString) === "number"
       ? directionOrString
       : Direction[capitalize(directionOrString)];
   }
-  export function ToClassname(direction: Direction | DirectionString) {
+  export function ToClassname(direction: Direction | string) {
     direction = Direction.ToEnum(direction);
     return direction === Direction.In ? " in" : " out";
   }
@@ -208,12 +208,12 @@ export enum AnimationDirection {
   Up, Down, Left, Right
 }
 export namespace AnimationDirection {
-  export function ToEnum(animationDirectionOrString: AnimationDirection | AnimationDirectionString): AnimationDirection {
+  export function ToEnum(animationDirectionOrString: AnimationDirection | string): AnimationDirection {
     return typeof(animationDirectionOrString) === "number"
       ? animationDirectionOrString
       : AnimationDirection[capitalize(animationDirectionOrString)];
   }
-  export function ToClassname(dir: AnimationDirection|AnimationDirectionString) : string {
+  export function ToClassname(dir: AnimationDirection|string) : string {
     dir = AnimationDirection.ToEnum(dir);
     switch (dir) {
       case AnimationDirection.Up: return " up";

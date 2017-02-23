@@ -118,7 +118,7 @@ export namespace Dropdown {
       );
     }
     const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, content$: menuContent$ });
-    const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, args$: transition$ as any });
+    const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ });
     return {
       DOM: animatedMenu.DOM,
       events: menu.events,

@@ -39,7 +39,7 @@ export namespace Dimmer {
       /*** Animate content ***/
       const children$ = xs.combine(content$, props$, target$)
         .map(([content, props, target]) => dimmer(content, props, target));
-      const animatedContent = Transition.run({ DOM: sources.DOM, args$: transition$, target$: children$ });
+      const animatedContent = Transition.run({ DOM: sources.DOM, transition$, target$: children$ });
 
       /*** Render view ***/
       const vTree$ = xs.combine(target$, animatedContent.DOM, on$)
