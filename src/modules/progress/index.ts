@@ -1,72 +1,43 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IInteractiveComponentSinks, isDOMContent } from "../../interfaces";
-import { Size, Attachment, Color } from "../../enums";
-import xs from "xstream";
-import isolate from "@cycle/isolate";
-import { div } from "@cycle/dom";
+import { VNode, div } from "@cycle/dom";
 
-export namespace ProgressBar {
+import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks  } from "../../types";
+import { Size, SizeString, Attachment, AttachmentString, Color, ColorString } from "../../enums";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+
+export namespace Progress {
   export interface Props {
     progress: number;
-    active?: boolean;
-    disabled?: boolean;
-    inverted?: boolean;
-    attachment?: Attachment;
-    size?: Size;
-    color?: Color;
-  }
-  /**
-   * Creates a Label component to add information to certain content.
-   * Accepts the following properties in props$:
-   *   progress: number - The % of progress the progress bar should reflect.
-   *   active?: boolean - Styles the progress bar to reflect activitiy.
-   *   disabled?: boolean - Styles the progress bar to appear disabled.
-   *   inverted?: boolean - Styles the progress bar for dark backgrounds.
-   *   attachment?: Attachment - Where the progress bar should be attached to.
-   *   size?: Size - The size of the progress bar.
-   *   color?: Color - The color of the progress bar.
-   * Expects the following type of content in content$: DOMContent
-   */
-  export function run(sources: IInteractiveComponentSources<Props, DOMContent>): IInteractiveComponentSinks {
-    function main(sources: IInteractiveComponentSources<Props, DOMContent>) {
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({ progress: 0 });
-      sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
-
-      const vTree$ = xs.combine(sources.props$, sources.content$).map(
-        ([props, content]) => render(props, content)
-      );
-      return {
-        DOM: vTree$,
-        Events: (type) => sources.DOM.select(".progress").events(type)
-      };
-    }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+    active: boolean;
+    disabled: boolean;
+    inverted: boolean;
+    attachment: Attachment | AttachmentString;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
 
-  /**
-   * Creates a Label component to add information to certain content.
-   * Accepts the following propertiea:
-   *   progress: number - The % of progress the progress bar should reflect.
-   *   active?: boolean - Styles the progress bar to reflect activitiy.
-   *   disabled?: boolean - Styles the progress bar to appear disabled.
-   *   inverted?: boolean - Styles the progress bar for dark backgrounds.
-   *   attachment?: Attachment - Where the progress bar should be attached to.
-   *   size?: Size - The size of the progress bar.
-   *   color?: Color - The color of the progress bar.
-   * Expects the following type of content: DOMContent
-   */
-  export function render(pOrC: Props | DOMContent = {progress: 0}, c: DOMContent = ""): VNode {
-    let props = isDOMContent(pOrC) ? { progress: 0 } : pOrC;
-    let content = isDOMContent(pOrC) ? pOrC : c;
+  export type ProgressBarArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
+  export type ProgressBarSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
+
+  export function render(arg1?: ProgressBarArgs|Partial<Props>|DOMContent, arg2?: DOMContent) {
+    return renderPropsAndContent(progress, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+
+  export function run(sources: ProgressBarSources, scope?: string): ComponentSinks {
+    return runPropsAndContent(sources, progress, ".progress", scope);
+  }
+
+  function progress(args: ProgressBarArgs): VNode {
+    let props = args.props ? args.props: {progress: 0};
+    let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
     return div({ props: { className: getClassname(props) } }, [
-      div({ props: { className: "bar" } }, { style: { width: props.progress + "%" } }, [
+      div({ props: { className: "bar" }, style: { width: props.progress + "%" } }, [
         div({ props: { className: "progress" } }, [props.progress + "%"])
       ]),
       div({ props: { className: "label" } }, content)
     ]);
   }
 
-  function getClassname(props: Props): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.active) {
       className += " active";
