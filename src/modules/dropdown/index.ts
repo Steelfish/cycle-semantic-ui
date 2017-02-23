@@ -1,226 +1,170 @@
-import { DOMContent, VNode, IInteractiveComponentSources, IValueComponentSinks } from "../../interfaces";
-import { IconType, Color, Size, Animation, Direction } from "../../enums";
 import xs, { Stream } from "xstream";
 import dropRepeats from "xstream/extra/dropRepeats";
 import debounce from "xstream/extra/debounce";
 import concat from "xstream/extra/concat";
 import isolate from "@cycle/isolate";
 import delay from "xstream/extra/delay";
-import { div, input } from "@cycle/dom";
+import { VNode, div, input } from "@cycle/dom";
 
 import { Menu } from "../../collections/menu";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
+import { DOMContent, EventSelector, ContentObj, ComponentSources, ValueComponentSinks } from "../../types";
+import { IconType, Color, ColorString, Size, SizeString, Animation, Direction } from "../../enums";
 
 export namespace Dropdown {
   export interface Props {
-    static?: DOMContent;
-    rightAligned?: boolean;
-    active?: boolean;
-    initial?: any;
-    default?: string;
-    selection?: boolean;
-    inline?: boolean;
-    floating?: boolean;
-    loading?: boolean;
-    disabled?: boolean;
-    scrolling?: boolean;
-    compact?: boolean;
-    search?: boolean;
-    pointing?: boolean;
-    size?: Size;
-    color?: Color;
+    rightAligned: boolean;
+    active: boolean;
+    initial: any;
+    selection: boolean;
+    inline: boolean;
+    floating: boolean;
+    loading: boolean;
+    disabled: boolean;
+    scrolling: boolean;
+    compact: boolean;
+    pointing: boolean;
+    default: DOMContent;
+    size: Size | SizeString;
+    color: Color | ColorString;
   }
-  export type Content<V> = Array<DropdownItem<V>>;
-  export interface DropdownItem<V> {
-    main?: DOMContent;
-    value?: V;
-    header?: boolean;
-    fitted?: boolean;
-    disabled?: boolean;
-    active?: boolean;
+  export type Content<V> = Array<Partial<DropdownItem<V>>>;
+  export interface DropdownItem<V> extends Menu.MenuItem {
+    value: V;
+  }
+  export interface DropdownSources<V> extends ComponentSources<Props, Content<V>, ContentObj<Content<V>>> {
+    args?: {
+      search?: boolean;
+      static?: boolean;
+    };
   }
 
-  /**
-   * A dropdown component for capturing user input.
-   * Accepts the following properties in props$:
-   *  active?: boolean,
-   *  initial?: any
-   *  default?: string
-   *  selection?: boolean
-   *  inline?: boolean
-   *  floating?: boolean
-   *  loading?: boolean
-   *  disabled?: boolean
-   *  scrolling?: boolean
-   *  search?: boolean
-   *  compact?: boolean
-   *  size?: Size
-   *  color?: Color
-   * Expects the following type of content in content$: Array of {
-   *  body: DOMContent,
-   *  value: any,
-   *  header?: boolean,
-   *  fitted?: boolean,
-   *  disabled?: boolean,
-   *  active?: boolean
-   * }
-   */
-  export function run<V>(sources: IInteractiveComponentSources<Props, Content<V>>): IValueComponentSinks<V> {
-    function main(sources: IInteractiveComponentSources<Props, Content<V>>) {
+  export function run<V>(sources: DropdownSources<V>, scope?: string): ValueComponentSinks<V> {
+    function main(sources: DropdownSources<V>) {
+      /*** Main streams ***/
       const evt = (type) => sources.DOM.select(".dropdown").events(type);
-      sources.props$ = sources.props$ ? sources.props$ : xs.of({});
-      sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
-
-      const props$ = sources.props$.remember();
+      const content$ = sources.content$ ? sources.content$.map(c => c instanceof Array ? c : c.main) : xs.of([]) as Stream<Content<V>>;
+      const props$ = sources.props$ ? sources.props$.remember() : xs.of({}) as Stream<Partial<Props>>;
       const itemClick$proxy = xs.create() as Stream<Event>;
       const itemClick$ = itemClick$proxy.remember();
-      const value$proxy = xs.create();
+      const value$proxy = xs.create() as Stream<V>;
 
-      const dropdownClick$ = evt("click")
-        .filter(evt => !(evt.srcElement as HTMLElement).classList.contains("item"))
-        .mapTo(Direction.In);
-      const mouseleave$ = xs.merge(evt("mouseleave").filter(
-        evt => evt.srcElement.className.indexOf("icon") === -1
-      ), evt("mouseenter"))
-        .map(evt => (evt as MouseEvent).type === "mouseenter" ? Direction.In : Direction.Out)
-        .compose(debounce(250))
-        .filter(dir => dir === Direction.Out);
-      const transition$ = xs.merge(dropdownClick$, itemClick$.mapTo(Direction.Out), mouseleave$)
-        .startWith(Direction.Out)
-        .map(dir => ({
-          animation: Animation.Fade,
-          direction: dir
-        }))
-        .compose(dropRepeats(
-          (a, b) => (a as any).direction === (b as any).direction
-            && (a as any).animation === (b as any).animation
-        ))
-        .drop(1)
-        .startWith({ animation: Animation.None, direction: Direction.Out });
+      let filter$: Stream<string>;
+      if (sources.args && sources.args.search) {
+        const input$ = sources.DOM.select("input").events("keyup")
+          .map(ev => (ev.target as HTMLInputElement).value);
+        filter$ = xs.merge(input$, value$proxy.map(v => "")) as Stream<string>;
+      }
+      /*** Compose component ***/
+      let transition$ = createTransition$(evt, itemClick$);
+      let menu = createMenuComponent<V>(sources, content$, value$proxy, transition$, filter$);
+      const initialValue$ = props$.map(props => props.initial).remember();
+      value$proxy.imitate(xs.merge(initialValue$, menu.value$.map(i => i.value)));
+      let vTree$ =  createView(sources, props$, content$, transition$, menu, filter$);
 
-      const filter$ = sources.DOM.select("input").events("keyup")
-        .map(ev => (ev.target as HTMLInputElement).value)
-        .startWith("") as Stream<string>;
-      const filteredContent$ = xs.combine(sources.content$, filter$).map(
+      return {
+        DOM: vTree$,
+        events: evt,
+        value$: menu.value$.map(item => item.value)
+      };
+    }
+    const isolatedMain = isolate(main, scope);
+    return isolatedMain(sources);
+  }
+
+  /*** Show dropdown on click, hide on click/mouseleave ***/
+  function createTransition$(evt: EventSelector, itemClick$) {
+    const dropdownClick$ = evt("click")
+      .filter(evt => !(evt.srcElement as HTMLElement).classList.contains("item"))
+      .mapTo(Direction.In);
+    const mouseleave$ = xs.merge(evt("mouseleave").filter(
+      evt => evt.srcElement.className.indexOf("icon") === -1
+    ), evt("mouseenter"))
+      .map(evt => (evt as MouseEvent).type === "mouseenter" ? Direction.In : Direction.Out)
+      .compose(debounce(250))
+      .filter(dir => dir === Direction.Out);
+    return xs.merge(dropdownClick$, itemClick$.mapTo(Direction.Out), mouseleave$)
+      .startWith(Direction.Out)
+      .map(dir => ({
+        animation: Animation.Fade,
+        direction: dir
+      }))
+      .compose(dropRepeats(
+        (a, b) => (a as any).direction === (b as any).direction
+          && (a as any).animation === (b as any).animation
+      ))
+      .drop(1)
+      .startWith({ animation: Animation.None, direction: Direction.Out });
+  }
+
+  function createMenuComponent<V>(sources: DropdownSources<V>, content$: Stream<Content<V>>, value$proxy: Stream<V>, transition$, filter$?: Stream<string>) {
+    /*** Create child menu items ***/
+    let menuContent$: Stream<Content<V>>;
+    if (sources.args && sources.args.search) {
+      const filteredContent$ = xs.combine(content$, filter$).map(
         ([content, filter]) => content.filter(c => filterContent(c, filter))
       ).remember();
-
-      const content$ = xs.combine(filteredContent$, value$proxy).map(
+      menuContent$ = xs.combine(filteredContent$, value$proxy).map(
         ([content, value]) => content.map(
           item => item.value === value ? Object.assign({}, item, { active: true }) : item
         )
       ).remember();
-      const menu = Menu.run({ DOM: sources.DOM, content$ });
-
-      const transitionedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, args$: transition$ as any });
-  
-      itemClick$proxy.imitate(evt("click").filter(x => x.target.classList.contains("item")));
-
-      const clickedId$ = itemClick$
-        .map(ev => parseInt((ev.target as HTMLElement).id))
-        .filter(n => !isNaN(n) && typeof (n) !== "undefined");
-      const emittedValue$ = clickedId$.map(id => filteredContent$.map(items => items[id].value).take(1)).flatten().remember() as any;
-      const initialValue$ = props$.map(props => props.initial).remember();
-      value$proxy.imitate(xs.merge(initialValue$ as any, emittedValue$));
-
-      const icon = Icon.render({}, IconType.Dropdown);
-      const active$ = xs.merge(
-        transition$.filter(x => x.direction === Direction.In).mapTo(true),
-        transition$.filter(x => x.direction === Direction.Out).compose(delay(250)).mapTo(false)
+    } else {
+      menuContent$ = xs.combine(content$, value$proxy).map(
+        ([content, value]) => content.map(
+          item => item.value === value ? Object.assign({}, item, { active: true }) : item
+        )
       );
-      const streams = xs.combine(
-        props$,
-        active$,
-        transitionedMenu.DOM,
-        content$.map(content => content.filter(item => item.active)[0])
-      );
-      const vtree$ = streams.map(
-        ([props, active, menu, item]) =>
-          div({ props: { className: getClassName(props, active) } }, [
-            getText(item, props),
-            props.search ? input({ props: { className: "search" } }) : "",
-            icon, menu
-          ])
-      ).remember();
-
-      //Todo find cleaner way to clear input using snabbdom hooks?
-      emittedValue$.map(_ => vtree$.take(1)).flatten().addListener(new ExecuteListener(function (vnode: VNode) {
-        function clear() {
-          if (typeof (vnode.elm) !== "undefined") {
-            let elm = (vnode.elm as Element).getElementsByTagName("input");
-            if (elm[0] && elm[0].value !== "") {
-              {
-                console.log("Sending next");
-              }
-              elm[0].value = "";
-              filter$.shamefullySendNext("");
-            }
-          } else {
-            setTimeout(clear, 100);
-          }
-        }
-        clear();
-      }));
-
-      return {
-        DOM: vtree$,
-        Events: evt,
-        value$: concat(initialValue$, emittedValue$)
-      };
     }
-    const isolatedMain = isolate(main);
-    return isolatedMain(sources);
+    const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, content$: menuContent$ });
+    const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, args$: transition$ as any });
+    return {
+      DOM: animatedMenu.DOM,
+      events: menu.events,
+      value$: menu.value$
+    };
   }
 
-  /**
-   * A dropdown component for capturing user input.
-   * Accepts the following properties:
-   *  active?: boolean,
-   *  initial?: any
-   *  default?: string
-   *  selection?: boolean
-   *  inline?: boolean
-   *  floating?: boolean
-   *  loading?: boolean
-   *  disabled?: boolean
-   *  scrolling?: boolean
-   *  search?: boolean
-   *  compact?: boolean
-   *  size?: Size
-   *  color?: Color
-   * Expects the following type of content: Array of {
-   *  body: DOMContent,
-   *  value: any,
-   *  header?: boolean,
-   *  fitted?: boolean,
-   *  disabled?: boolean,
-   *  active?: boolean
-   * }
-   */
-  export function render(pOrC: Props | Content<any> = {}, c: Content<any> = []): VNode {
-    let props = (pOrC instanceof Array) ? {} : pOrC;
-    let content = (pOrC instanceof Array) ? pOrC : c;
-    const icon = Icon.render({}, IconType.Dropdown);
-    const menu = Menu.render({}, content);
-    const item = content.filter(item => item.active)[0];
-    return div({ props: { className: getClassName(props) } }, [
-      getText(item, props),
-      props.search ? input({ props: { className: "search" } }) : "",
-      icon, menu
-    ]);
+  function createView<V>(sources: DropdownSources<V>, props$: Stream<Partial<Props>>,
+    content$: Stream<Content<V>>, transition$, menu, filter$?) : Stream<VNode> {
+    const active$ = xs.merge(
+      transition$.filter(x => x.direction === Direction.In).mapTo(true),
+      transition$.filter(x => x.direction === Direction.Out).compose(delay(250)).mapTo(false)
+    ) as Stream<boolean>;
+    let activeItem$ = content$.map(content => content.filter(item => item.active)[0]);
+    if (sources.args && sources.args.search) {
+      return xs.combine(props$, active$, menu.DOM, filter$, activeItem$).map(
+        ([props, isActive, menu, filter, activeItem]) => div(
+          { props: { className: getClassName(props, isActive, sources.args && sources.args.static) } }, [
+            getText(activeItem, props),
+            input({ props: { className: "search", value: filter } }),
+            Icon.render(IconType.Dropdown),
+            menu
+          ]
+        )
+      );
+    } else {
+      return xs.combine(props$, active$, menu.DOM, activeItem$).map(
+        ([props, isActive, menu, activeItem]) => div(
+          { props: { className: getClassName(props, isActive, sources.args && sources.args.static) } }, [
+            getText(activeItem, props),
+            Icon.render(IconType.Dropdown),
+            menu
+          ]
+        )
+      );
+    }
   }
 
-  function getClassName(props: Props, active?) {
+  function getClassName(props: Partial<Props>, search?: boolean, active?: boolean, ) {
     let className = "ui";
     if (props.rightAligned) {
       className += " right";
-
     }
     if (props.selection) {
       className += " selection";
     }
-
     if (props.inline) {
       className += " inline";
     }
@@ -236,7 +180,7 @@ export namespace Dropdown {
     if (props.scrolling) {
       className += " scrolling";
     }
-    if (props.search) {
+    if (search) {
       className += " search";
     }
     if (props.compact) {
@@ -256,16 +200,16 @@ export namespace Dropdown {
     }
     return className + " dropdown";
   }
-  function getText<V>(item: DropdownItem<V>, props: Props): VNode {
-    if (typeof (props.static) !== "undefined") {
-      return div({ props: { className: "text" } }, props.static);
+  function getText<V>(item: Partial<DropdownItem<V>>, props: Partial<Props>, stat?: boolean): VNode {
+    if (typeof (stat) !== "undefined") {
+      return div({ props: { className: "text" } }, props.default);
     }
-    if (item === null || typeof(item) === "undefined") {
+    if (item === null || typeof (item) === "undefined") {
       return div({ props: { className: "default text" } }, props.default);
     }
     return div({ props: { className: "text" } }, item.main);
   }
-  function filterContent<V>(item: DropdownItem<V>, filter: string): boolean {
+  function filterContent<V>(item: Partial<DropdownItem<V>>, filter: string): boolean {
     function f(node: VNode) {
       if (node.text) {
         return node.text.indexOf(filter) !== -1 || !filter;
@@ -279,7 +223,7 @@ export namespace Dropdown {
         return false;
       }
     }
-    if (typeof(item.main) === "undefined") {
+    if (typeof (item.main) === "undefined") {
       return true;
     }
     if (typeof (item.main) === "string") {
@@ -294,14 +238,5 @@ export namespace Dropdown {
       }
     }
     return false;
-  }
-  class ExecuteListener {
-    f: Function;
-    constructor(f: Function) {
-      this.f = f;
-    }
-    next(i) { this.f(i); }
-    error(i) { }
-    complete() { }
   }
 }

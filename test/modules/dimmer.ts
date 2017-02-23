@@ -40,8 +40,5 @@ describe("Dimmer", function () {
         }
       });
     });
-    it("should support the inverted variation", function (done) {
-      
-    });
   });
 });

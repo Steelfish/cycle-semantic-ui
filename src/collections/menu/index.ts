@@ -29,23 +29,23 @@ export namespace Menu {
     attachment: Attachment | AttachmentString;
     size: Size | SizeString;
   }
-  export type Content = Array<MenuItem>;
+  export type Content = Array<Partial<MenuItem>>;
   export interface MenuItem {
-    link?: boolean;
-    active?: boolean;
-    disabled?: boolean;
-    headerOnly?: boolean;
-    header?: boolean;
-    fitted?: boolean;
-    divider?: boolean;
-    rightMenu?: boolean;
-    verticallyFitted?: boolean;
-    horizontallyFitted?: boolean;
-    icon?: boolean;
-    color?: Color | ColorString;
-    float?: Float | FloatString;
-    href?: string;
-    main?: DOMContent | Content;
+    link: boolean;
+    active: boolean;
+    disabled: boolean;
+    headerOnly: boolean;
+    header: boolean;
+    fitted: boolean;
+    divider: boolean;
+    rightMenu: boolean;
+    verticallyFitted: boolean;
+    horizontallyFitted: boolean;
+    icon: boolean;
+    color: Color | ColorString;
+    float: Float | FloatString;
+    href: string;
+    main: DOMContent | Content;
   }
 
   export type MenuArgs = StyleAndContentArgs<Props, Content, ContentObj<Content>>;
