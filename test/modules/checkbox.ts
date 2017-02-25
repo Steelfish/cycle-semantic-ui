@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Checkbox } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Checkbox", function () {
@@ -104,7 +103,7 @@ describe("Checkbox", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___checkbox": {
         ".checkbox": {
           "click": xs.of("Clicked")

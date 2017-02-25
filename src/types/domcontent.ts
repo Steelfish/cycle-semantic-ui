@@ -1,6 +1,6 @@
 import { VNode} from "@cycle/dom";
 
-export type DOMContent = String | VNode[];
+export type DOMContent = string | string[] | VNode[];
 export function isDOMContent(content) : content is DOMContent {
   if (!content){
     return false;

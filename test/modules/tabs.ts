@@ -1,12 +1,11 @@
 import * as assert from "assert";
 import { Tabs } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Tabs", function () {
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {});
+    let dom = mockDOMSource({});
     it("should wrap the content $s in a segment and add a menu", function (done) {
       let labels =  ["Tab1", "Tab2"];
       let tabs = Tabs.run({ DOM: dom, content: [xs.of("Tab1"), xs.of("Tab2")], labels });

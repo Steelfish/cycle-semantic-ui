@@ -41,13 +41,13 @@ export namespace Loader {
       const on$ = sources.args && sources.args.on$ ? sources.args.on$ : xs.of(true);
       const props$ = sources.props$.remember();
       const vTree$ = xs.combine(props$, sources.content$)
-        .map(([props, content]) => [loader({ props, content })]
+        .map(([props, content]) => loader({ props, content })
       );
-      const target$ = props$.map(props => props.type === LoaderType.Page ? xs.of("page") : sources.args.element$).flatten();
+      const target$ = props$.map(props => props.type === LoaderType.Page ? xs.of("page") : sources.args.element$).flatten<VNode|string>();
       const dimmer = Dimmer.run({ 
         DOM: sources.DOM, 
         props$: props$.map(props => ({inverted: props.inverted})), 
-        content$: vTree$, 
+        content$: vTree$.map(v => [v]), 
         args: {on$, target$} 
       });
       const result$ = props$.map(

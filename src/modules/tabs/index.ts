@@ -2,13 +2,14 @@ import xs, { MemoryStream, Stream } from "xstream";
 import dropRepeats from "xstream/extra/dropRepeats";
 import { div, VNode, DOMSource } from "@cycle/dom";
 import {Menu, Attachment, Segment} from "../../index";
+import {DOMContent} from "../../types";
 
 
 export namespace Tabs {
   export interface TabsSources {
     DOM: DOMSource;
     labels: string[];
-    content: Stream<VNode>[];
+    content: Stream<DOMContent>[];
     active?: string;
     menuProps$?: Stream<Partial<Menu.Props>>;
     segmentProps$?: Stream<Partial<Segment.Props>>;
@@ -33,13 +34,13 @@ export namespace Tabs {
     });
     menuValue$.imitate(menu.value$.map(x => (x as any).body));
     let tabContent$ = activeTab$.map(
-      tab => xs.merge(xs.of(div()), sources.content[sources.labels.indexOf(tab)])
+      tab => xs.merge(xs.of([div()]), sources.content[sources.labels.indexOf(tab)])
     ).flatten();
     
     const vTree$ = xs.combine(menu.DOM, tabContent$, segmentProps$).map(
       ([menu, tabcontent, segmentProps]) => div([
         menu,
-        Segment.render(segmentProps, [tabcontent])
+        Segment.render(segmentProps, tabcontent)
       ])
     );
     return {

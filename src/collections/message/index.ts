@@ -69,9 +69,8 @@ export namespace Message {
   function message(args: MessageArgs, closeIcon?: VNode) {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
-    closeIcon = closeIcon ? closeIcon : [];
     return div({ props: { className: getClassname(props) } }, [].concat(
-      content.icon ? content.icon : [], closeIcon,
+      content.icon ? content.icon : [], closeIcon ? closeIcon : [],
       div({ props: { className: "content" } }, [].concat(
         content.header ? div({ props: { className: "header" } }, content.header) : [],
         content.main

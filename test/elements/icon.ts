@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Icon } from "../../src";
 import { mockDOMSource } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Icon", function () {
@@ -106,7 +105,7 @@ describe("Icon", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___icon": {
         ".icon": {
           "click": xs.of("Clicked")

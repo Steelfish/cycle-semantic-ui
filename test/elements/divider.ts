@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Divider } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Divider", function () {
@@ -102,7 +101,7 @@ describe("Divider", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___divider": {
         ".divider": {
           "click": xs.of("Clicked")

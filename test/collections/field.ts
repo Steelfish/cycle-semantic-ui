@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Field } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Field", function () {
@@ -104,7 +103,7 @@ describe("Field", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___field": {
         ".field": {
           "click": xs.of("Clicked")

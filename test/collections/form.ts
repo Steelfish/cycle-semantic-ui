@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Form } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Form", function () {
@@ -86,7 +85,7 @@ describe("Form", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___form": {
         ".form": {
           "click": xs.of("Clicked")

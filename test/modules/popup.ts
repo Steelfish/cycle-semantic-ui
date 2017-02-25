@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Popup } from "../../src";
 import { mockDOMSource, VNode, div } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Popup", function () {
@@ -13,7 +12,7 @@ describe("Popup", function () {
         }
       }
     };
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___popup": {
         ".popup": {
           "click": xs.of(clickEvt)

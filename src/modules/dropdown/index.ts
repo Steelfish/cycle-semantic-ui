@@ -61,7 +61,7 @@ export namespace Dropdown {
       let menu = createMenuComponent<V>(sources, content$, value$proxy, transition$, filter$);
       const initialValue$ = props$.map(props => props.initial).remember();
       value$proxy.imitate(xs.merge(initialValue$, menu.value$.map(i => i.value)));
-      let vTree$ =  createView(sources, props$, content$, transition$, menu, filter$);
+      let vTree$ = createView(sources, props$, content$, transition$, menu, filter$);
 
       return {
         DOM: vTree$,
@@ -127,7 +127,7 @@ export namespace Dropdown {
   }
 
   function createView<V>(sources: DropdownSources<V>, props$: Stream<Partial<Props>>,
-    content$: Stream<Content<V>>, transition$, menu, filter$?) : Stream<VNode> {
+    content$: Stream<Content<V>>, transition$, menu, filter$?): Stream<VNode> {
     const active$ = xs.merge(
       transition$.filter(x => x.direction === Direction.In).mapTo(true),
       transition$.filter(x => x.direction === Direction.Out).compose(delay(250)).mapTo(false)
@@ -210,7 +210,10 @@ export namespace Dropdown {
     return div({ props: { className: "text" } }, item.main);
   }
   function filterContent<V>(item: Partial<DropdownItem<V>>, filter: string): boolean {
-    function f(node: VNode) {
+    function f(node: VNode | string) {
+      if (typeof (node) === "string") {
+        return node === filter;
+      }
       if (node.text) {
         return node.text.indexOf(filter) !== -1 || !filter;
       }
@@ -230,13 +233,19 @@ export namespace Dropdown {
       return (item.main as string).indexOf(filter) !== -1 || !filter;
     }
     if (!(item.main as any).push) {
-      return f(item.main as VNode);
-    }
-    for (let c in (item.main as VNode).children) {
-      if (f(c)) {
-        return true;
+      for (let c of item.main) {
+        if (isMenuItem(c)) {
+          return filterContent(c, filter);
+        }
+        if (f(c)) {
+          return true;
+        }
       }
     }
     return false;
+  }
+
+  function isMenuItem(obj): obj is Partial<Menu.MenuItem> {
+    return obj && obj.main;
   }
 }

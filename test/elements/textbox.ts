@@ -1,7 +1,6 @@
 import * as assert from "assert";
 import { Textbox } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
-import xsAdapter from "@cycle/xstream-adapter";
 import xs from "xstream";
 
 describe("Textbox", function () {
@@ -144,7 +143,7 @@ describe("Textbox", function () {
     });
   });
   describe("run", function () {
-    let dom = mockDOMSource(xsAdapter, {
+    let dom = mockDOMSource({
       ".___textbox": {
         ".input": {
           "click": xs.of("Clicked"),
