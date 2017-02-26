@@ -1,7 +1,7 @@
 import { VNode, i } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj } from "../../types";
 import { Color, ColorString, Size, SizeString, IconType } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs} from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Icon {
   export interface Props {
@@ -19,23 +19,23 @@ export namespace Icon {
     size: Size | SizeString;
   }
 
-  export type IconArgs = StyleAndContentArgs<Props, IconType|string, ContentObj<IconType|string>>;
-  export type IconSources = ComponentSources<Props, IconType|string, ContentObj<IconType|string>>;
+  export type IconArgs = StyleAndContentArgs<Props, IconType | string, ContentObj<IconType | string>>;
+  export type IconSources = ComponentSources<Props, IconType | string, ContentObj<IconType | string>>;
 
-  export function run(sources: IconSources, scope?: string) : ComponentSinks{
+  export function run(sources: IconSources, scope?: string): ComponentSinks {
     return runPropsAndContent(sources, icon, ".icon", scope);
   }
-  export function render(arg1?: IconArgs|Partial<Props>|IconType|string, arg2?: IconType|string) {
+  export function render(arg1?: IconArgs | Partial<Props> | IconType | string, arg2?: IconType | string) {
     return renderPropsAndContent(icon, makeIsArgs(isIconType), isIconType, arg1, arg2);
   }
 
   function icon(args: IconArgs): VNode {
     let props = args.props ? args.props : {};
-    let content = args.content ? isIconType(args.content) ? args.content : args.content.main : -1;
+    let content = typeof (args.content) !== "undefined" ? isIconType(args.content) ? args.content : args.content.main : -1;
     const className = getClassname(props, content);
     return className !== "ui icon" ? i({ props: { className: className } }) : undefined;
   }
-  function getClassname(props: Partial<Props>, content: IconType|string): string {
+  function getClassname(props: Partial<Props>, content: IconType | string): string {
     let className = "ui";
     if (props.button) {
       className += " button";
@@ -77,7 +77,7 @@ export namespace Icon {
     return className + " icon";
   }
 
-  function isIconType(obj): obj is IconType|string {
-    return typeof (obj) === "string" || typeof(obj) === "number";
+  function isIconType(obj): obj is IconType | string {
+    return typeof (obj) === "string" || typeof (obj) === "number";
   }
 }

@@ -19913,7 +19913,7 @@ ol.ui.horizontal.list li:before,
   box-shadow: none;
   border: 1px solid #D4D4D5;
 }
-.ui.attached + .ui.attached.segment:not(.top) {
+.ui.attached:not(.message) + .ui.attached.segment:not(.top) {
   border-top: none;
 }
 /* Top */
@@ -28064,7 +28064,7 @@ select.ui.dropdown {
 .article .example .code.icon:hover {
   opacity: 1;
 }
-.article p {
+.article .example > p {
   font-size: 16px;
   line-height: 1.5;
 }

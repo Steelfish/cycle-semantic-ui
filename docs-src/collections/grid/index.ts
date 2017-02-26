@@ -13,7 +13,7 @@ export namespace Grid {
       DOM: sources.DOM,
       labels: ["Overview", "Definition"],
       content: [overview.map(o => [o]), definition.map(o => [o])],
-      menuProps$: xs.of({ evenlyDivided: true }),
+      menuProps$: xs.of({ equalWidth: true }),
       segmentProps$: xs.of({ basic: true })
     });
 

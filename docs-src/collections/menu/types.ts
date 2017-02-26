@@ -139,7 +139,7 @@ export namespace Types {
         {
           float: "right", main: [
             UI.Textbox.render({ placeholder: "Search...", icon: true }, [
-              UI.Icon.render(UI.Icon.render(UI.IconType.Search))
+              UI.Icon.render(UI.IconType.Search)
             ])
           ]
         },
@@ -151,7 +151,7 @@ export namespace Types {
         { main: "Friends" },
         { float: "right", main: [
           UI.Textbox.render({placeholder: "Search...", icon: true}, [
-            UI.Icon.render(UI.Icon.render(UI.IconType.Search))
+            UI.Icon.render(UI.IconType.Search)
           ])
         ]},
         { float: "right", main: "Logout"}
@@ -172,7 +172,7 @@ export namespace Types {
         {
           float: "right", main: [
             UI.Textbox.render({ placeholder: "Search...", icon: true }, [
-              UI.Icon.render(UI.Icon.render(UI.IconType.Search))
+              UI.Icon.render(UI.IconType.Search)
             ])
           ]
         }
@@ -186,7 +186,7 @@ export namespace Types {
         {
           float: "right", main: [
             UI.Textbox.render({ placeholder: "Search...", icon: true }, [
-              UI.Icon.render(UI.Icon.render(UI.IconType.Search))
+              UI.Icon.render(UI.IconType.Search)
             ])
           ]
         }

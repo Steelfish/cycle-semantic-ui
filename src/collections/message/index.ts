@@ -1,6 +1,6 @@
 import xs, { Stream } from "xstream";
 import isolate from "@cycle/isolate";
-import { div, VNode } from "@cycle/dom";
+import { div, p, VNode } from "@cycle/dom";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
@@ -12,6 +12,8 @@ export namespace Message {
     icon: boolean;
     floating: boolean;
     compact: boolean;
+    hidden: boolean;
+    forceVisible: boolean;
     attachment: Attachment | AttachmentString;
     size: Size | SizeString;
     color: Color | ColorString;
@@ -69,6 +71,12 @@ export namespace Message {
   function message(args: MessageArgs, closeIcon?: VNode) {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
+    if (content.icon) {
+      props.icon = true;
+    }
+    if (typeof (content.main) === "string") {
+      content.main = [p(content.main)];
+    }
     return div({ props: { className: getClassname(props) } }, [].concat(
       content.icon ? content.icon : [], closeIcon ? closeIcon : [],
       div({ props: { className: "content" } }, [].concat(
@@ -88,6 +96,12 @@ export namespace Message {
     }
     if (props.compact) {
       className += " compact";
+    }
+    if (props.forceVisible) {
+      className += " visible";
+    }
+    if (props.hidden) {
+      className += " hidden";
     }
     if (typeof (props.attachment) !== "undefined") {
       className += Attachment.ToClassname(props.attachment);
