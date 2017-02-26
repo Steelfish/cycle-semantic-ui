@@ -40,7 +40,7 @@ export namespace Field {
         content = args.content.main ? args.content.main : [];
       }
     }
-    return div({ props: { className: getClassname(props) } }, [].concat(lbl ? label(lbl) : "", content));
+    return div({ props: { className: getClassname(props) } }, [].concat(lbl ? label(lbl) : [], content));
   }
 
   function getClassname(props: Partial<Props>) {

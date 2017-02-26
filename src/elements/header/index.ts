@@ -41,7 +41,7 @@ export namespace Header {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
     let children = [].concat(
-      content.main,
+      content.main ? content.main : [],
       content.subtext ? div({ props: { className: "sub header" } }, content.subtext) : []
     );
     return div({ props: { className: getClassname(props) } }, content.icon

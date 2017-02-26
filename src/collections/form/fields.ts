@@ -37,7 +37,7 @@ export namespace Fields {
         content = args.content.main ? args.content.main : [];
       }
     }
-    return div({ props: { className: getClassname(props, content) } }, [].concat(lbl ? label(lbl) : "", content));
+    return div({ props: { className: getClassname(props, content) } }, [].concat(lbl ? label(lbl) : [], content));
   }
 
 
