@@ -1,11 +1,10 @@
 import * as UI from "../../ui";
 import xs, { Stream } from "xstream";
-// tslint:disable-next-line:no-unused-variable
-import { div, VNode } from "@cycle/dom";
+import { div} from "@cycle/dom";
 
 export namespace Sidebar {
   export function run(sources) {
-    let currentPage$ = sources.router.history$.map(x => x.pathname) as Stream<string>;
+    let currentPage$ = sources.router.map(x => x.pathname) as Stream<string>;
     let prefix = "/cycle-semantic-ui";
     const vTree$ = currentPage$.map(page =>
       div(".left.menu", [

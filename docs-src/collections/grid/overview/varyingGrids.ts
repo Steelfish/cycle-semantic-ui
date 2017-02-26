@@ -4,7 +4,7 @@ import { div, VNode } from "@cycle/dom";
 import { Example } from "../../../components";
 
 export namespace VaryingGrids {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let nestedEx = Example.run(sources, {
       highlighted: true,
       header: "Nesting Grids",

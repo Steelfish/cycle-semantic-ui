@@ -4,7 +4,7 @@ import { p, a, i, div, code, VNode } from "@cycle/dom";
 import { Example } from "../../../components";
 
 export namespace Introduction {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let gridEx = Example.run(sources, {
       highlighted: true,
       header: "Grids",

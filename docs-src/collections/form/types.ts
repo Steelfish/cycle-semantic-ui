@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace Types {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let ex = Example.run(sources, {
       header: "Form",
       description: "A form",

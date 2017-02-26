@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace Content {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let fieldExamples = createFieldExamples(sources);
     let fieldsExamples = createFieldsExamples(sources);
     let textareaExamples = createTextAreaExamples(sources);
@@ -252,7 +252,7 @@ export namespace Content {
     });
     let ex2 = Example.run(sources, {
       VNode$: ddlCountries.DOM.map(ddlCountries => UI.Form.render([
-        UI.Field.render({content: { label: "Country", main: ddlCountries}})
+        UI.Field.render({ content: { label: "Country", main: ddlCountries } })
       ])),
       code: `let countries = ["United States", "The Netherlands", "Belgium", "Germany", "France"];
     let ddlCountries = UI.Dropdown.run({
@@ -277,21 +277,27 @@ export namespace Content {
       header: "Message",
       description: "A form can contain a message",
       VNode$: xs.of(UI.Form.render([
-        UI.Message.render({color: UI.Color.Error}, {
-          header: "We had some issues",
-          body: [UI.List.render({bulleted: true},[
-            {content: "Please enter your first name"},
-            {content: "Please enter your last name"}
-          ])]
+        UI.Message.render({
+          props: { color: UI.Color.Error },
+          content: {
+            header: "We had some issues",
+            body: [UI.List.render({ bulleted: true }, [
+              { main: "Please enter your first name" },
+              { main: "Please enter your last name" }
+            ])]
+          }
         })
       ])),
       code: `UI.Form.render([
-        UI.Message.render({color: UI.Color.Error}, {
-          header: "We had some issues",
-          main: [UI.List.render({bulleted: true},[
-            {content: "Please enter your first name"},
-            {content: "Please enter your last name"}
-          ])]
+        UI.Message.render({
+          props: { color: UI.Color.Error },
+          content: {
+            header: "We had some issues",
+            body: [UI.List.render({ bulleted: true }, [
+              { main: "Please enter your first name" },
+              { main: "Please enter your last name" }
+            ])]
+          }
         })
       ])`
     });

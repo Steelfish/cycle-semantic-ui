@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../../components";
 
 export namespace Columns {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let flowEx = Example.run(sources, {
       highlighted: true,
       header: "Automatic Flow",

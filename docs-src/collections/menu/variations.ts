@@ -31,7 +31,7 @@ export namespace Variations {
       header: "Stackable",
       description: [
         p("A menu can stack at mobile resolutions"),
-        UI.Message.render({ color: UI.Color.Info }, { body: "Stackable menus are intended to be used with only simple menu content. Stacked menus will not replicate all additional stylings for vertical menus like adjusting dropdown position." })
+        UI.Message.render({ color: UI.Color.Info }, "Stackable menus are intended to be used with only simple menu content. Stacked menus will not replicate all additional stylings for vertical menus like adjusting dropdown position.")
       ],
       VNode$: xs.of(UI.Menu.render([
         { main: "Features" },

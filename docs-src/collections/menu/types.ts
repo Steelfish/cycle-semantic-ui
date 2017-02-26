@@ -4,7 +4,7 @@ import { div, VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace Types {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let basicEx = createBasicExamples(sources);
     let secondaryEx = createSecondaryExamples(sources);
     let pointingEx = createPointingExamples(sources);

@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace FieldVariations {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let inlineEx = Example.run(sources, {
       header: "Inline",
       description: "A field can have its label next to instead of above it.",

@@ -1,6 +1,6 @@
 {
   "name": "cycle-semantic-ui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A set of cyclejs components using Semantic UI",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -26,17 +26,16 @@
     "xstream": "^10.2.0"
   },
   "devDependencies": {
+    "@cycle/history": "^5.0.0",
     "@cycle/xstream-run": "^4.2.0",
     "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.39",
     "@types/tether": "^1.4.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",
-    "cyclic-router": "^3.0.1",
     "extract-text-webpack-plugin": "^2.0.0-rc.3",
     "file-loader": "^0.10.0",
     "highlight.js": "^9.9.0",
-    "history": "3.0.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
     "mocha": "^3.2.0",

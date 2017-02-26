@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace States {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let loadingEx = Example.run(sources, {
       header: "Loading",
       description: "If a form is in loading state, it will automatically show a loading indicator.",

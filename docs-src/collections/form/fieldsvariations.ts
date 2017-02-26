@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace FieldsVariations {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let equalWidthEx = Example.run(sources, {
       header: "Evenly Divided",
       description: "Fields can have their widths divided evenly",

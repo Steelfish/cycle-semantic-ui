@@ -1,8 +1,8 @@
 import * as UI from "../../ui";
 import xs, { Stream } from "xstream";
 import { div, VNode } from "@cycle/dom";
-import {Overview} from "./overview";
-import {Definition} from "./definition";
+import { Overview } from "./overview";
+import { Definition } from "./definition";
 
 export namespace Grid {
   export function run(sources) {
@@ -12,9 +12,9 @@ export namespace Grid {
     let tabs = UI.Tabs.run({
       DOM: sources.DOM,
       labels: ["Overview", "Definition"],
-      content: [overview, definition],
-      menuProps$: xs.of({evenlyDivided: true}),
-      segmentProps$: xs.of({basic: true})
+      content: [overview.map(o => [o]), definition.map(o => [o])],
+      menuProps$: xs.of({ evenlyDivided: true }),
+      segmentProps$: xs.of({ basic: true })
     });
 
 
@@ -23,15 +23,19 @@ export namespace Grid {
         div({ props: { className: "article" } }, [
           UI.Segment.render({ vertical: true }, [
             UI.Container.render([
-              UI.Header.render({ size: UI.Size.Huge }, "Grid", {
-                subtext: "A grid is used to harmonize negative space in a layout"
-              }),
-            ]),
+              UI.Header.render({
+                props: { size: UI.Size.Huge },
+                content: {
+                  main: "Grid",
+                  subtext: "A grid is used to harmonize negative space in a layout"
+                }
+              })
+            ])
           ]),
           UI.Container.render([
-            UI.Divider.render({hidden: true}),
+            UI.Divider.render({ hidden: true }),
             tabs
-          ]),
+          ])
         ])
     ) as Stream<VNode>;
     return {

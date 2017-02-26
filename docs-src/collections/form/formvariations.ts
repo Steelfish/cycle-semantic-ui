@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../components";
 
 export namespace FormVariations {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let equalWidthExample = Example.run(sources, {
       header: "Equal Width",
       description: "Forms can automatically divide fields to be equal width",

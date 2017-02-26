@@ -1,10 +1,10 @@
 import * as UI from "../../ui";
 import xs, { Stream } from "xstream";
 import { div, VNode } from "@cycle/dom";
-import { Types} from "./types";
-import { Content} from "./content";
+import { Types } from "./types";
+import { Content } from "./content";
 import { States } from "./states";
-import { Variations} from "./variations";
+import { Variations } from "./variations";
 
 export namespace Menu {
   export function run(sources) {
@@ -18,8 +18,12 @@ export namespace Menu {
         div({ props: { className: "article" } }, [
           UI.Segment.render({ vertical: true }, [
             UI.Container.render([
-              UI.Header.render({ size: UI.Size.Huge }, "Menu", {
-                subtext: "A menu displays grouped navigation actions"
+              UI.Header.render({
+                props: { size: UI.Size.Huge },
+                content: {
+                  main: "Menu",
+                  subtext: "A menu displays grouped navigation actions"
+                }
               }),
             ]),
           ]),

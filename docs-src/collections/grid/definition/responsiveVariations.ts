@@ -21,9 +21,7 @@ export namespace ResponsiveVariations {
       header: "Doubling",
       description: [
         p("A grid can double its column width on tablet and mobile sizes"),
-        UI.Message.render({ color: UI.Color.Info }, {
-          body: "A grid will round its columns to the closest reasonable value when doubling, for example a five column grid will use 2 mobile, 3 tablet, 5 desktop. To force 1 column on mobile you can add stackable"
-        })
+        UI.Message.render({ color: UI.Color.Info }, "A grid will round its columns to the closest reasonable value when doubling, for example a five column grid will use 2 mobile, 3 tablet, 5 desktop. To force 1 column on mobile you can add stackable")
       ],
       VNode$: xs.of(UI.Grid.render({ width: 5, doubling: true }, [
         UI.Column.render([
@@ -59,9 +57,7 @@ export namespace ResponsiveVariations {
       header: "Stackable",
       description: [
         p("A grid can have its columns stack on-top of each other after reaching mobile breakpoints"),
-        UI.Message.render({ color: UI.Color.Info }, {
-          body: "To see a grid stack, try resizing your browser to a small width"
-        })
+        UI.Message.render({ color: UI.Color.Info }, "To see a grid stack, try resizing your browser to a small width")
       ],
       VNode$: xs.of(UI.Grid.render({ width: 2, stackable: true }, [
         UI.Column.render([
@@ -97,9 +93,7 @@ export namespace ResponsiveVariations {
       header: "Reversed",
       description: [
         p("A grid or row can specify that its columns should reverse order at different device sizes"),
-        UI.Message.render({ color: UI.Color.Info }, {
-          body: "Reversed grids are compatible with divided grids and other complex grid types."
-        })
+        UI.Message.render({ color: UI.Color.Info }, "Reversed grids are compatible with divided grids and other complex grid types.")
       ],
       VNode$: xs.of(div([
         UI.Grid.render({ reversedComputer: true, equalWidth: true }, [
@@ -265,9 +259,7 @@ export namespace ResponsiveVariations {
       header: "Device Visibility",
       description: [
         p("A columns or row can appear only for a specific device, or screen sizes"),
-        UI.Message.render({ color: UI.Color.Info }, {
-          body: "See container documentation for information on breakpoint calculations"
-        })
+        UI.Message.render({ color: UI.Color.Info }, "See container documentation for information on breakpoint calculations")
       ],
       VNode$: xs.of(UI.Grid.render([
         UI.Row.render({ width: 2, largescreenOnly: true }, [
@@ -392,9 +384,8 @@ export namespace ResponsiveVariations {
       header: "Responsive Width",
       description: [
         p("A column can specify a width for a specific device"),
-        UI.Message.render({ color: UI.Color.Info }, {
-          body: "It's recommended to use a responsive pattern like doubling or stackable to reduce complexity when designing responsively, however in some circumstances specifying exact widths for screen sizes may be necessary."
-        })
+        UI.Message.render({ color: UI.Color.Info }, "It's recommended to use a responsive pattern like doubling or stackable to reduce complexity when designing responsively, however in some circumstances specifying exact widths for screen sizes may be necessary."
+        )
       ],
       VNode$: xs.of(UI.Grid.render([
         UI.Column.render({ mobile: 16, tablet: 8, computer: 4 }, [

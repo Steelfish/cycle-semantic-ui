@@ -4,7 +4,7 @@ import { VNode } from "@cycle/dom";
 import { Example } from "../../../components";
 
 export namespace ResponsiveGrids {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let containerEx = Example.run(sources, {
       highlighted: true,
       header: "Containers",

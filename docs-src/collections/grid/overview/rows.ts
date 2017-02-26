@@ -4,7 +4,7 @@ import { p, VNode } from "@cycle/dom";
 import { Example } from "../../../components";
 
 export namespace Rows {
-  export function run(sources): Stream<VNode> {
+  export function run(sources): Stream<VNode[]> {
     let groupingEx = Example.run(sources, {
       highlighted: true,
       header: "Grouping",

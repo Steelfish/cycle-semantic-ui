@@ -1,12 +1,12 @@
 import * as UI from "../../ui";
 import xs, { Stream } from "xstream";
 import { div, VNode } from "@cycle/dom";
-import { Types} from "./types";
-import { Content} from "./content";
+import { Types } from "./types";
+import { Content } from "./content";
 import { States } from "./states";
-import { FormVariations} from "./formvariations";
-import { FieldVariations} from "./fieldvariations";
-import { FieldsVariations} from "./fieldsvariations";
+import { FormVariations } from "./formvariations";
+import { FieldVariations } from "./fieldvariations";
+import { FieldsVariations } from "./fieldsvariations";
 
 export namespace Form {
   export function run(sources) {
@@ -22,8 +22,12 @@ export namespace Form {
         div({ props: { className: "article" } }, [
           UI.Segment.render({ vertical: true }, [
             UI.Container.render([
-              UI.Header.render({ size: UI.Size.Huge }, "Form", {
-                subtext: "A form displays a set of related user input fields in a structured way"
+              UI.Header.render({
+                props: { size: UI.Size.Huge },
+                content: {
+                  main: "Form",
+                  subtext: "A form displays a set of related user input fields in a structured way"
+                }
               }),
             ]),
           ]),

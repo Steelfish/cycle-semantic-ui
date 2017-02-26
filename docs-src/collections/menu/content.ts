@@ -242,30 +242,30 @@ export namespace Content {
     return [ex.DOM];
   }
   function createDropdownExamples(sources): Stream<VNode>[] {
-    let ex = Example.run(sources, {
-      header: "",
-      description: "",
-      VNode$: xs.of(),
-      code: ``
-    });
+    // let ex = Example.run(sources, {
+    //   header: "",
+    //   description: "",
+    //   VNode$: xs.of(),
+    //   code: ``
+    // });
     return [];
   }
   function createPopupExamples(sources): Stream<VNode>[] {
-    let ex = Example.run(sources, {
-      header: "",
-      description: "",
-      VNode$: xs.of(),
-      code: ``
-    });
+    // let ex = Example.run(sources, {
+    //   header: "",
+    //   description: "",
+    //   VNode$: xs.of(),
+    //   code: ``
+    // });
     return [];
   }
   function createSearchExamples(sources): Stream<VNode>[] {
-    let ex = Example.run(sources, {
-      header: "",
-      description: "",
-      VNode$: xs.of(),
-      code: ``
-    });
+    // let ex = Example.run(sources, {
+    //   header: "",
+    //   description: "",
+    //   VNode$: xs.of(),
+    //   code: ``
+    // });
     return [];
   }
   function createMenuExamples(sources): Stream<VNode>[] {
