@@ -113,30 +113,30 @@
 @coloredBorderSize: 2px;
 
 /* Ordinality */
-@secondaryBackground: @darkWhite;
-@secondaryColor: @mutedTextColor;
+@secondaryInvBackground: @darkWhite;
+@secondaryInvColor: @mutedTextColor;
 
-@tertiaryBackground:  @midWhite;
-@tertiaryColor: @mutedTextColor;
+@tartiaryInvBackground:  @midWhite;
+@tartiaryInvColor: @mutedTextColor;
 
-@secondaryInvertedLightness: 0.2;
-@secondaryInvertedBackground:
-  lighten(@black, (@secondaryInvertedLightness * 100))
+@secondaryInvInvertedLightness: 0.2;
+@secondaryInvInvertedBackground:
+  lighten(@black, (@secondaryInvInvertedLightness * 100))
   linear-gradient(
-    rgba(255, 255, 255, @secondaryInvertedLightness) 0%,
-    rgba(255, 255, 255, @secondaryInvertedLightness) 100%
+    rgba(255, 255, 255, @secondaryInvInvertedLightness) 0%,
+    rgba(255, 255, 255, @secondaryInvInvertedLightness) 100%
   )
 ;
-@secondaryInvertedColor: @invertedMutedTextColor;
+@secondaryInvInvertedColor: @invertedMutedTextColor;
 
-@tertiaryInvertedLightness: 0.35;
-@tertiaryInvertedBackground:
-  lighten(@black, (@tertiaryInvertedLightness * 100))
+@tartiaryInvInvertedLightness: 0.35;
+@tartiaryInvInvertedBackground:
+  lighten(@black, (@tartiaryInvInvertedLightness * 100))
   linear-gradient(
-    rgba(255, 255, 255, @tertiaryInvertedLightness) 0%,
-    rgba(255, 255, 255, @tertiaryInvertedLightness) 100%
+    rgba(255, 255, 255, @tartiaryInvInvertedLightness) 0%,
+    rgba(255, 255, 255, @tartiaryInvInvertedLightness) 100%
   )
 ;
-@tertiaryInvertedColor: @invertedMutedTextColor;
+@tartiaryInvInvertedColor: @invertedMutedTextColor;
 
 @import (optional) "@{segment_overrides}";
