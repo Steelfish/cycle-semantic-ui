@@ -116,8 +116,8 @@
 @secondaryInvBackground: @darkWhite;
 @secondaryInvColor: @mutedTextColor;
 
-@tartiaryInvBackground:  @midWhite;
-@tartiaryInvColor: @mutedTextColor;
+@tertiaryInvBackground:  @midWhite;
+@tertiaryInvColor: @mutedTextColor;
 
 @secondaryInvInvertedLightness: 0.2;
 @secondaryInvInvertedBackground:
@@ -129,14 +129,14 @@
 ;
 @secondaryInvInvertedColor: @invertedMutedTextColor;
 
-@tartiaryInvInvertedLightness: 0.35;
-@tartiaryInvInvertedBackground:
-  lighten(@black, (@tartiaryInvInvertedLightness * 100))
+@tertiaryInvInvertedLightness: 0.35;
+@tertiaryInvInvertedBackground:
+  lighten(@black, (@tertiaryInvInvertedLightness * 100))
   linear-gradient(
-    rgba(255, 255, 255, @tartiaryInvInvertedLightness) 0%,
-    rgba(255, 255, 255, @tartiaryInvInvertedLightness) 100%
+    rgba(255, 255, 255, @tertiaryInvInvertedLightness) 0%,
+    rgba(255, 255, 255, @tertiaryInvInvertedLightness) 100%
   )
 ;
-@tartiaryInvInvertedColor: @invertedMutedTextColor;
+@tertiaryInvInvertedColor: @invertedMutedTextColor;
 
 @import (optional) "@{segment_overrides}";
