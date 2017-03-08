@@ -1,5 +1,5 @@
 import { run } from "@cycle/xstream-run";
-import { makeDOMDriver } from "@cycle/dom";
+import { makeDOMDriver, div } from "@cycle/dom";
 import { makeHistoryDriver, captureClicks } from "@cycle/history";
 import xs from "xstream";
 
@@ -10,7 +10,7 @@ function app(drivers) {
   const page = Router(Object.assign({}, drivers, {routes}));
   const layout = Layout.run(drivers, page);
   const sinks = {
-    DOM: layout.DOM,
+    DOM: layout.DOM.map(layout => div("#app.app", layout)),
     router: xs.merge(page.router, layout.router),
   };
   return sinks;

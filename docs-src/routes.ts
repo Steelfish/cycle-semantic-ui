@@ -9,6 +9,7 @@ let prefix = "/cycle-semantic-ui";
 let routes = {
   "/": Index.run,
 };
+routes[prefix + "/"] = Index.run;
 routes[prefix + "/collections/breadcrumb"] = Breadcrumb.run;
 routes[prefix + "/collections/form"] = Form.run;
 routes[prefix + "/collections/grid"] = Grid.run;

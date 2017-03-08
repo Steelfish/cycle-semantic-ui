@@ -72,7 +72,7 @@ export namespace Types {
     //Todo dropdown menu's
     let ddlNavigation2 = UI.Dropdown.run({
       DOM: sources.DOM,
-      props$: xs.of({ static: [UI.Icon.render(UI.IconType.Wrench)] }),
+      props$: xs.of({ simple: true, default: [UI.Icon.render(UI.IconType.Wrench)] }),
       content$: xs.of([
         { main: "New...", value: "new" },
         { main: "Open...", value: "open" },
@@ -81,13 +81,16 @@ export namespace Types {
         { divider: true },
         { main: "Export", headerOnly: true },
         { main: "Share...", value: "" }
-      ])
+      ]),
+      args: {
+        static: true
+      }
     });
     let ex3 = Example.run(sources, {
       VNode$: xs.combine(ddlNavigation2.DOM).map(
         ([ddlNavigation]) => div([
           UI.Menu.render({ attachment: "top" }, [
-            { main: [ddlNavigation] },
+            { icon: true, dropdown: true, main: ddlNavigation },
             {
               float: "right", main: [UI.Textbox.render({ icon: true, transparent: true }, [
                 UI.Icon.render(UI.IconType.Search)

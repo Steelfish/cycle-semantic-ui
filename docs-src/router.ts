@@ -32,8 +32,7 @@ function ComponentRouter (sources: ComponentRouterSources) {
   const component$ = 
   sources.router.map(l => switchPath(l.pathname, sources.routes))
     .map(route => callPage(sources)(route))
-    .remember()
-    .debug(() => {}); //State$ does not work without this line. Unable to reproduce in webpackbin.
+    .remember();
   const pluck = key => flattenByKey(key, component$);
   const sinks = {
     pluck: pluck,

@@ -1,5 +1,5 @@
 import { VNode, div } from "@cycle/dom";
-import { DOMContent,  isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
 import { Color, ColorString, Attachment, AttachmentString, Float, FloatString, TextAlignment, TextAlignmentString } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
@@ -27,7 +27,7 @@ export namespace Segment {
   export type SegmentArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
   export type SegmentSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
 
-  export function render(arg1?: SegmentArgs|Partial<Props>|DOMContent, arg2?: DOMContent) : VNode {
+  export function render(arg1?: SegmentArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
     return renderPropsAndContent(segment, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 

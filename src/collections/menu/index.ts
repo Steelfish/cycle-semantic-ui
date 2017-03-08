@@ -31,6 +31,7 @@ export namespace Menu {
   }
   export type Content = Array<Partial<MenuItem>>;
   export interface MenuItem {
+    dropdown: boolean;
     link: boolean;
     active: boolean;
     disabled: boolean;
@@ -82,15 +83,6 @@ export namespace Menu {
   function menu(args: MenuArgs) {
     let props = args.props ? args.props : {};
     let content = args.content ? isContent(args.content) ? args.content : args.content.main : [];
-    let renderItem = (item) => item.divider
-      ? div({ props: { className: "divider" } })
-      : item.headerOnly
-        ? div({ props: { className: "header" } }, item.main)
-        : item.rightMenu
-          ? div({ props: { className: "right menu" } }, item.main.map(renderItem))
-          : item.href
-            ? a({ props: { className: getItemClassname(item), id: content.indexOf(item), href: item.href } }, item.main)
-            : div({ props: { className: getItemClassname(item), id: content.indexOf(item) } }, item.main);
     return div({ props: { className: getClassname(props, content.length) } }, content.map(renderItem));
   }
 
@@ -185,6 +177,9 @@ export namespace Menu {
     if (item.disabled) {
       className += " disabled";
     }
+    if (item.dropdown) {
+      className += " dropdown";
+    }
     if (typeof (item.float) !== "undefined") {
       className += Float.ToClassname(item.float);
     }
@@ -196,11 +191,32 @@ export namespace Menu {
     return className;
   }
 
+  function renderItem(item: MenuItem, id: number) {
+    if (item.divider) {
+      return div({ props: { className: "divider" } });
+    }
+    if (item.headerOnly) {
+      return div({ props: { className: "header" } }, item.main);
+    }
+    if (item.rightMenu) {
+      return div({ props: { className: "right menu" } }, (item.main as any[]).map(renderItem));
+    }
+    if (item.dropdown) {
+      let content = item.main as VNode;
+      content.data.props.className += " item";
+      return content;
+    }
+    if (item.href) {
+      return a({ props: { className: getItemClassname(item), id, href: item.href } }, item.main);
+    }
+    return div({ props: { className: getItemClassname(item), id } }, item.main);
+  }
+
   function isContent(obj): obj is Content {
     return obj instanceof Array && (
-      obj.length === 0 || 
-      typeof (obj[0].main) !== "undefined" || 
-      typeof (obj[0].divider) !== "undefined" || 
+      obj.length === 0 ||
+      typeof (obj[0].main) !== "undefined" ||
+      typeof (obj[0].divider) !== "undefined" ||
       typeof (obj[0].headerOnly) !== "undefined"
     );
   }

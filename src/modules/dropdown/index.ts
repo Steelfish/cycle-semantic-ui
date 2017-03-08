@@ -1,7 +1,6 @@
 import xs, { Stream } from "xstream";
 import dropRepeats from "xstream/extra/dropRepeats";
 import debounce from "xstream/extra/debounce";
-import concat from "xstream/extra/concat";
 import isolate from "@cycle/isolate";
 import delay from "xstream/extra/delay";
 import { VNode, div, input } from "@cycle/dom";
@@ -9,7 +8,7 @@ import { VNode, div, input } from "@cycle/dom";
 import { Menu } from "../../collections/menu";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
-import { DOMContent, EventSelector, ContentObj, ComponentSources, ValueComponentSinks } from "../../types";
+import { DOMContent, isVNode, EventSelector, ContentObj, ComponentSources, ValueComponentSinks } from "../../types";
 import { IconType, Color, ColorString, Size, SizeString, Animation, Direction } from "../../enums";
 
 export namespace Dropdown {
@@ -18,6 +17,7 @@ export namespace Dropdown {
     active: boolean;
     initial: any;
     selection: boolean;
+    simple: boolean;
     inline: boolean;
     floating: boolean;
     loading: boolean;
@@ -76,7 +76,10 @@ export namespace Dropdown {
   /*** Show dropdown on click, hide on click/mouseleave ***/
   function createTransition$(evt: EventSelector, itemClick$) {
     const dropdownClick$ = evt("click")
-      .filter(evt => !(evt.srcElement as HTMLElement).classList.contains("item"))
+      .filter(evt => 
+        !(evt.srcElement as HTMLElement).classList.contains("item") || 
+        (evt.srcElement as HTMLElement).classList.contains("dropdown") 
+      )
       .mapTo(Direction.In);
     const mouseleave$ = xs.merge(evt("mouseleave").filter(
       evt => evt.srcElement.className.indexOf("icon") === -1
@@ -117,7 +120,7 @@ export namespace Dropdown {
         )
       );
     }
-    const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, content$: menuContent$ });
+    const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, props$: xs.of({submenu: true}), content$: menuContent$ });
     const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ });
     return {
       DOM: animatedMenu.DOM,
@@ -136,22 +139,22 @@ export namespace Dropdown {
     if (sources.args && sources.args.search) {
       return xs.combine(props$, active$, menu.DOM, filter$, activeItem$).map(
         ([props, isActive, menu, filter, activeItem]) => div(
-          { props: { className: getClassName(props, isActive, sources.args && sources.args.static) } }, [
-            getText(activeItem, props),
+          { props: { className: getClassName(props, sources.args && sources.args.search, isActive) } }, [].concat(
+            getText(activeItem, props, sources.args && sources.args.static),
             input({ props: { className: "search", value: filter } }),
-            Icon.render(IconType.Dropdown),
+            !props.simple ? Icon.render(IconType.Dropdown) : [],
             menu
-          ]
+          )
         )
       );
     } else {
       return xs.combine(props$, active$, menu.DOM, activeItem$).map(
         ([props, isActive, menu, activeItem]) => div(
-          { props: { className: getClassName(props, isActive, sources.args && sources.args.static) } }, [
-            getText(activeItem, props),
-            Icon.render(IconType.Dropdown),
+          { props: { className: getClassName(props, sources.args && sources.args.search, isActive) } }, [].concat(
+            getText(activeItem, props, sources.args && sources.args.static),
+            !props.simple ? Icon.render(IconType.Dropdown) : [],
             menu
-          ]
+          )
         )
       );
     }
@@ -229,10 +232,13 @@ export namespace Dropdown {
     if (typeof (item.main) === "undefined") {
       return true;
     }
-    if (typeof (item.main) === "string") {
+    else if (typeof (item.main) === "string") {
       return (item.main as string).indexOf(filter) !== -1 || !filter;
     }
-    if (!(item.main as any).push) {
+    else if (isVNode(item.main)) {
+      return f(item.main);
+    }
+    else if (item.main instanceof Array) {
       for (let c of item.main) {
         if (isMenuItem(c)) {
           return filterContent(c, filter);

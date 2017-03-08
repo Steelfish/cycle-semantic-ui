@@ -19689,10 +19689,10 @@ ol.ui.horizontal.list li:before,
 }
 /* Secondary */
 .ui.secondaryColored.segment:not(.inverted) {
-  border-top: 2px solid rgba(0, 0, 0, 0.6);
+  border-top: 2px solid #1B1C1D;
 }
 .ui.inverted.secondaryColored.segment {
-  background-color: rgba(0, 0, 0, 0.6) !important;
+  background-color: #1B1C1D !important;
   color: #FFFFFF !important;
 }
 /* Success */
@@ -27976,6 +27976,9 @@ select.ui.dropdown {
   flex: 0 0 auto;
   position: relative;
   width: 250px;
+  background-color: #1B1C1D;
+}
+.left.menu .fixed {
   background-color: #1B1C1D;
 }
 .left.menu .menu .item {
