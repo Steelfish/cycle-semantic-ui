@@ -5,7 +5,7 @@
   <img alt="cyclejs-logo" src="https://raw.githubusercontent.com/cyclejs/cyclejs/master/logo.png" width="128">
   </a>
   <a href="https://github.com/Semantic-Org/Semantic-UI">
-  <img alt="semantic-ui-log" src="https://camo.githubusercontent.com/64fc67646c5de06fe6aae46b33accdb111208897/687474703a2f2f73656d616e7469632d75692e636f6d2f696d616765732f6c6f676f2e706e67" width="128">
+  <img alt="semantic-ui-log" src="https://github.com/Semantic-Org/Semantic-UI/raw/master/logo.png" width="128">
   </a>
 </div>
 <div align="center">
