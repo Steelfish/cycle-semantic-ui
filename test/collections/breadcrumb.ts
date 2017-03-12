@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { Breadcrumb, Icon, IconType } from "../../src";
+import { Breadcrumb, BreadcrumbItem, Icon, IconType } from "../../src";
 import { mockDOMSource, VNode } from "@cycle/dom";
 import xs from "xstream";
 
@@ -11,11 +11,17 @@ describe("Breadcrumb", function () {
       assert.equal(breadcrumb.children.length, 0);
     });
     it("should support argument syntax", function () {
-      let breadcrumb = Breadcrumb.render({ divider: "|" }, [{ text: "Hello" }, { text: "There" }]);
+      let breadcrumb = Breadcrumb.render({ divider: "|" }, [
+        BreadcrumbItem.render("Hello"),
+        BreadcrumbItem.render("There")
+      ]);
       assert.equal(breadcrumb.children.length, 3);
       assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
       assert.equal((breadcrumb.children[1] as VNode).text, "|");
-      breadcrumb = Breadcrumb.render([{ text: "Hello" }, { text: "There" }]);
+      breadcrumb = Breadcrumb.render([
+        BreadcrumbItem.render("Hello"),
+        BreadcrumbItem.render("There")
+      ]);
       assert.equal(breadcrumb.children.length, 3);
       assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
       assert.equal((breadcrumb.children[1] as VNode).text, "/");
@@ -27,7 +33,10 @@ describe("Breadcrumb", function () {
       let breadcrumb = Breadcrumb.render({
         props: { divider: "|" },
         content: {
-          main: [{ text: "Hello" }, { text: "There" }]
+          main: [
+            BreadcrumbItem.render("Hello"),
+            BreadcrumbItem.render("There")
+          ]
         }
       });
       assert.equal(breadcrumb.children.length, 3);
@@ -35,7 +44,10 @@ describe("Breadcrumb", function () {
       assert.equal((breadcrumb.children[1] as VNode).text, "|");
       breadcrumb = Breadcrumb.render({
         content: {
-          main: [{ text: "Hello" }, { text: "There" }]
+          main: [
+            BreadcrumbItem.render("Hello"),
+            BreadcrumbItem.render("There")
+          ]
         }
       });
       assert.equal(breadcrumb.children.length, 3);
@@ -50,45 +62,51 @@ describe("Breadcrumb", function () {
     it("should support shorthand argument object syntax", function () {
       let breadcrumb = Breadcrumb.render({
         props: { divider: "|" },
-        content: [{ text: "Hello" }, { text: "There" }]
+        content: [
+          BreadcrumbItem.render("Hello"),
+          BreadcrumbItem.render("There")
+        ]
       });
       assert.equal(breadcrumb.children.length, 3);
       assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
       assert.equal((breadcrumb.children[1] as VNode).text, "|");
       breadcrumb = Breadcrumb.render({
-        content: [{ text: "Hello" }, { text: "There" }]
+        content: [
+          BreadcrumbItem.render("Hello"),
+          BreadcrumbItem.render("There")
+        ]
       });
       assert.equal(breadcrumb.children.length, 3);
       assert.equal((breadcrumb.children[0] as VNode).text, "Hello");
       assert.equal((breadcrumb.children[1] as VNode).text, "/");
     });
-    it("should create a link only if the href attribute is set", function () {
-      let breadcrumb = Breadcrumb.render([{ text: "Child 1" }]).children[0] as VNode;
-      assert.equal(breadcrumb.sel, "div");
-      breadcrumb = Breadcrumb.render([{ text: "Child 1", href: "#" }]).children[0] as VNode;
-      assert.equal(breadcrumb.sel, "a");
-    });
     it("should have only one section when given only 1 child", function () {
-      let breadcrumb = Breadcrumb.render([{ text: "Hello" }]);
+      let breadcrumb = Breadcrumb.render(BreadcrumbItem.render("Hello"));
       assert.equal(breadcrumb.children.length, 1);
       let child = breadcrumb.children[0] as VNode;
       assert.equal(child.text, "Hello");
       assert.equal(child.data.props.className, "section");
     });
     it("should seperate multiple children with dividers", function () {
-      let breadcrumb = Breadcrumb.render([{ text: "Child 1" }, { text: "Child 2" }, { text: "Child 3" }]);
+      let breadcrumb = Breadcrumb.render([
+          BreadcrumbItem.render("Child1"),
+          BreadcrumbItem.render("Child2"),
+          BreadcrumbItem.render("Child3")
+        ]);
       assert.equal(breadcrumb.children.length, 5);
       let divider = breadcrumb.children[1] as VNode;
       assert.equal(divider.data.props.className, "divider");
     });
     it("should allow for icon and string dividers", function () {
       let breadcrumb = Breadcrumb.render({ divider: "|" }, [
-        { text: "Child1" }, { text: "Child2" }
+        BreadcrumbItem.render("Child1"),
+        BreadcrumbItem.render("Child2")
       ]);
       let divider = breadcrumb.children[1] as VNode;
       assert.equal(divider.text, "|");
       breadcrumb = Breadcrumb.render({ divider: Icon.render(IconType.AngleRight) }, [
-        { text: "Child1" }, { text: "Child2" }
+        BreadcrumbItem.render("Child1"),
+        BreadcrumbItem.render("Child2")
       ]);
       divider = breadcrumb.children[1] as VNode;
       assert.equal(divider.data.props.className, "angle right icon divider");
@@ -114,7 +132,7 @@ describe("Breadcrumb", function () {
           done();
         },
         error: (err) => {
-          throw(err);
+          throw (err);
         }
       });
     });
@@ -126,7 +144,7 @@ describe("Breadcrumb", function () {
           done();
         },
         error: (err) => {
-          throw(err);
+          throw (err);
         }
       });
     });

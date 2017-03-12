@@ -49,7 +49,7 @@ export namespace Loader {
         props$: props$.map(props => ({ inverted: props.inverted })),
         content$: vTree$.map(v => [v]),
         args: { on$, target$ }
-      });
+      }, scope);
       const result$ = props$.map(
         props => props.type === LoaderType.Inline ? vTree$ : dimmer.DOM
       ).flatten();
