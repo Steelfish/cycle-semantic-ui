@@ -1,7 +1,7 @@
 import { div, a, VNode } from "@cycle/dom";
-import { DOMContent, isDOMContent, StyleAndContentArgs ,ComponentSinks, ComponentSources } from "../../types";
-import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
-import { runPropsAndContent, renderPropsAndContent} from "../../common";
+import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSinks, ComponentSources } from "../../types";
+import { Color, Size, Attachment, Float } from "../../enums";
+import { runPropsAndContent, renderPropsAndContent } from "../../common";
 
 export namespace Button {
   export interface Props {
@@ -19,10 +19,10 @@ export namespace Button {
     circular: boolean;
     fluid: boolean;
     href: string;
-    attachment: Attachment | AttachmentString;
-    size: Size | SizeString;
-    float: Float | FloatString;
-    color: Color | ColorString;
+    attachment: Attachment | string;
+    size: Size | string;
+    float: Float | string;
+    color: Color | string;
   }
 
   export interface ContentObj {
@@ -36,13 +36,13 @@ export namespace Button {
   export function render(arg1?: ButtonArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
     return renderPropsAndContent(button, isArgs, isDOMContent, arg1, arg2);
   }
-  export function run(sources: ButtonSources, scope?: string) : ComponentSinks {
+  export function run(sources: ButtonSources, scope?: string): ComponentSinks {
     return runPropsAndContent(sources, button, ".button", scope);
   }
 
   function button(args: ButtonArgs): VNode {
     let props = args.props ? args.props : {};
-    let content = args.content ? isDOMContent(args.content) ? {main: args.content} : args.content : {main: []};
+    let content = args.content ? isDOMContent(args.content) ? { main: args.content } : args.content : { main: [] };
     let children = content.hidden
       ? [div({ props: { className: "visible content" } }, content.main),
       div({ props: { className: "hidden content" } }, content.hidden)]
@@ -110,9 +110,9 @@ export namespace Button {
   }
 
   function isArgs(obj): obj is ButtonArgs {
-    return typeof(obj) !== "undefined" && (
-      typeof(obj.props) !== "undefined" ||
-      isDOMContent(obj.content) || ( typeof(obj.content) !== "undefined" && (
+    return typeof (obj) !== "undefined" && (
+      typeof (obj.props) !== "undefined" ||
+      isDOMContent(obj.content) || (typeof (obj.content) !== "undefined" && (
         isDOMContent(obj.content.main) || isDOMContent(obj.content.hidden)
       ))
     );

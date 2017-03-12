@@ -1,6 +1,6 @@
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
-import { Color, ColorString, Attachment, AttachmentString, Float, FloatString, TextAlignment, TextAlignmentString } from "../../enums";
+import { Color, Attachment, Float, TextAlignment } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Segment {
@@ -18,10 +18,10 @@ export namespace Segment {
     circular: boolean;
     clearing: boolean;
     basic: boolean;
-    color: Color | ColorString;
-    attachment: Attachment | AttachmentString;
-    float: Float | FloatString;
-    textAlignment: TextAlignment | TextAlignmentString;
+    color: Color | string;
+    attachment: Attachment | string;
+    float: Float | string;
+    textAlignment: TextAlignment | string;
   }
 
   export type SegmentArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;

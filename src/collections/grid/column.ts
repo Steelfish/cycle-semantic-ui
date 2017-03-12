@@ -2,10 +2,7 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
-import {
-  VerticalAlignment, VerticalAlignmentString, TextAlignment,
-  TextAlignmentString, Size, SizeString, Float, FloatString
-} from "../../enums";
+import { VerticalAlignment, TextAlignment, Size, Float } from "../../enums";
 import { numToText } from "../../utils";
 
 export namespace Column {
@@ -20,10 +17,10 @@ export namespace Column {
     tabletOnly: boolean;
     computerOnly: boolean;
     largescreenOnly: boolean;
-    size: Size | SizeString;
-    alignment: VerticalAlignment | VerticalAlignmentString;
-    textAlignment: TextAlignment | TextAlignmentString;
-    float: Float | FloatString;
+    size: Size | string;
+    alignment: VerticalAlignment | string;
+    textAlignment: TextAlignment | string;
+    float: Float | string;
   }
 
   export type ColumnArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;

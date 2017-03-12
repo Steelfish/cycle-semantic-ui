@@ -1,6 +1,6 @@
 import { VNode, div, a } from "@cycle/dom";
 import { DOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { Size, SizeString, Attachment, AttachmentString } from "../../enums";
+import { Size,  Attachment} from "../../enums";
 import { numToText } from "../../utils";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
@@ -10,8 +10,8 @@ export namespace Steps {
     stackable: boolean;
     equalWidth: boolean;
     fluid: boolean;
-    size: Size | SizeString;
-    attachment: Attachment | AttachmentString;
+    size: Size | string;
+    attachment: Attachment | string;
   }
   export type Content = Array<Partial<StepItem>>;
   export interface StepItem {

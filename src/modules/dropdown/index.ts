@@ -9,7 +9,7 @@ import { Menu } from "../../collections/menu";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isVNode, EventSelector, ContentObj, ComponentSources, ValueComponentSinks } from "../../types";
-import { IconType, Color, ColorString, Size, SizeString, Animation, Direction } from "../../enums";
+import { IconType, Color, Size, Animation, Direction } from "../../enums";
 
 export namespace Dropdown {
   export interface Props {
@@ -26,8 +26,8 @@ export namespace Dropdown {
     compact: boolean;
     pointing: boolean;
     default: DOMContent;
-    size: Size | SizeString;
-    color: Color | ColorString;
+    size: Size | string;
+    color: Color | string;
   }
   export type Content<V> = Array<Partial<DropdownItem<V>>>;
   export interface DropdownItem<V> extends Menu.MenuItem {

@@ -2,8 +2,8 @@ import { VNode, div, input, textarea } from "@cycle/dom";
 import isolate from "@cycle/isolate";
 import xs from "xstream";
 import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ValueComponentSinks } from "../../types";
-import { Color, ColorString, Size, SizeString } from "../../enums";
-import { renderPropsAndContent, makeIsArgs} from "../../common";
+import { Color, Size } from "../../enums";
+import { renderPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Textbox {
   export interface Props {
@@ -22,14 +22,14 @@ export namespace Textbox {
     readonly: boolean;
     rows: number;
     type: string;
-    color: Color | ColorString;
-    size: Size | SizeString;
+    color: Color | string;
+    size: Size | string;
   }
 
   export type TextboxArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
   export type TextboxSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
 
-  export function render(arg1?: TextboxArgs|Partial<Props>|DOMContent, arg2?: DOMContent) : VNode {
+  export function render(arg1?: TextboxArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
     return renderPropsAndContent(textbox, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
@@ -42,7 +42,7 @@ export namespace Textbox {
       const props$ = sources.props$.remember();
       const newValue$ = evt("input").map(ev => (ev.target as HTMLInputElement).value).remember();
       const vtree$ = xs.combine(props$, sources.content$).map(
-        ([props, content]) => textbox({props, content})
+        ([props, content]) => textbox({ props, content })
       );
 
       return {
@@ -54,7 +54,7 @@ export namespace Textbox {
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }
-  
+
   function textbox(args: TextboxArgs): VNode {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];

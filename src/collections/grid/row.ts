@@ -1,7 +1,7 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
-import { TextAlignment, TextAlignmentString, VerticalAlignment, VerticalAlignmentString} from "../../enums";
+import { TextAlignment, VerticalAlignment} from "../../enums";
 import { numToText } from "../../utils";
 
 export namespace Row {
@@ -15,8 +15,8 @@ export namespace Row {
     computerOnly: boolean;
     largescreenOnly: boolean;
     equalWidth: boolean;
-    alignment: VerticalAlignment | VerticalAlignmentString;
-    textAlignment: TextAlignment | TextAlignmentString;
+    alignment: VerticalAlignment | string;
+    textAlignment: TextAlignment | string;
   }
 
   export type RowArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;

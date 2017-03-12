@@ -5,15 +5,14 @@ export * from "./iconType";
 export enum Size {
   Mini, Tiny, Small, Medium, Large, Big, Huge, Massive, Fluid
 }
-export type SizeString = "mini" | "tiny" | "small" | "medium" | "large" | "big" | "huge" | "massive" | "fluid";
 
 export namespace Size {
-  export function ToEnum(sizeOrString: Size | SizeString): Size {
+  export function ToEnum(sizeOrString: Size | string): Size {
     return typeof (sizeOrString) === "number"
       ? sizeOrString
       : Size[capitalize(sizeOrString)];
   }
-  export function ToClassname(size: Size | SizeString) {
+  export function ToClassname(size: Size | string) {
     size = ToEnum(size);
     switch (size) {
       case Size.Mini: return " mini";
@@ -30,18 +29,17 @@ export namespace Size {
   }
 }
 
-export type VerticalAlignmentString = "top" | "middle" | "bottom";
 export enum VerticalAlignment {
   Top, Middle, Bottom
 }
 
 export namespace VerticalAlignment {
-  export function ToEnum(vAlignmentOrString: VerticalAlignment | VerticalAlignmentString): VerticalAlignment {
+  export function ToEnum(vAlignmentOrString: VerticalAlignment | string): VerticalAlignment {
     return typeof (vAlignmentOrString) === "number"
       ? vAlignmentOrString
       : VerticalAlignment[capitalize(vAlignmentOrString)];
   }
-  export function ToClassname(alignment: VerticalAlignment | VerticalAlignmentString): string {
+  export function ToClassname(alignment: VerticalAlignment | string): string {
     alignment = VerticalAlignment.ToEnum(alignment);
     switch (alignment) {
       case VerticalAlignment.Top: return " top aligned";
@@ -52,18 +50,17 @@ export namespace VerticalAlignment {
   }
 }
 
-export type TextAlignmentString = "left" | "right" | "center" | "justified";
 export enum TextAlignment {
   Left, Right, Center, Justified
 }
 
 export namespace TextAlignment {
-  export function ToEnum(tAlignmentOrString: TextAlignment | TextAlignmentString): TextAlignment {
+  export function ToEnum(tAlignmentOrString: TextAlignment | string): TextAlignment {
     return typeof (tAlignmentOrString) === "number"
       ? tAlignmentOrString
       : TextAlignment[capitalize(tAlignmentOrString)];
   }
-  export function ToClassname(alignment: TextAlignment | TextAlignmentString): string {
+  export function ToClassname(alignment: TextAlignment | string): string {
     alignment = TextAlignment.ToEnum(alignment);
     switch (alignment) {
       case TextAlignment.Left: return " left aligned";
@@ -75,18 +72,17 @@ export namespace TextAlignment {
   }
 }
 
-export type FloatString = "none" | "right" | "left";
 export enum Float {
   None, Right, Left
 }
 
 export namespace Float {
-  export function ToEnum(floatOrString: Float | FloatString): Float {
+  export function ToEnum(floatOrString: Float | string): Float {
     return typeof (floatOrString) === "number"
       ? floatOrString
       : Float[capitalize(floatOrString)];
   }
-  export function ToClassname(float: Float | FloatString): string {
+  export function ToClassname(float: Float | string): string {
     float = Float.ToEnum(float);
     switch (float) {
       case Float.Left: return " left floated";
@@ -96,18 +92,17 @@ export namespace Float {
   }
 }
 
-export type AttachmentString = "none" | "top" | "bottom";
 export enum Attachment {
   None, Top, Bottom
 }
 
 export namespace Attachment {
-  export function ToEnum(attachmentOrString: Attachment | AttachmentString): Attachment {
+  export function ToEnum(attachmentOrString: Attachment | string): Attachment {
     return typeof (attachmentOrString) === "number"
       ? attachmentOrString
       : Attachment[capitalize(attachmentOrString)];
   }
-  export function ToClassname(attachment: Attachment | AttachmentString): string {
+  export function ToClassname(attachment: Attachment | string): string {
     attachment = Attachment.ToEnum(attachment);
     switch (attachment) {
       case Attachment.None: return " attached";
@@ -118,18 +113,17 @@ export namespace Attachment {
   }
 }
 
-export type ColorString = "none" | "primary" | "secondary" | "success" | "info" | "warning" | "error";
 export enum Color {
   None, Primary, Secondary, Success, Info, Warning, Error
 }
 
 export namespace Color {
-  export function ToEnum(colorOrString: Color | ColorString): Color {
+  export function ToEnum(colorOrString: Color | string): Color {
     return typeof (colorOrString) === "number"
       ? colorOrString
       : Color[capitalize(colorOrString)];
   }
-  export function ToClassname(color: Color | ColorString): string {
+  export function ToClassname(color: Color | string): string {
     color = Color.ToEnum(color);
     switch (color) {
       case Color.Primary: return " primaryColored";
@@ -143,8 +137,6 @@ export namespace Color {
   }
 }
 
-export type AnimationString = "browse" | "drop" | "fade" | "flip" | "scale" | "fly"
-  | "swing" | "flash" | "shake" | "bounce" | "tada" | "pulse" | "jiggle" | "none";
 export enum Animation {
   Browse, Drop, Fade, Flip, Scale, Fly, Slide, Swing,
   Flash, Shake, Bounce, Tada, Pulse, Jiggle,
@@ -187,7 +179,6 @@ export namespace Animation {
   }
 }
 
-export type DirectionString = "in" | "out" | "none";
 export enum Direction {
   In, Out, None
 }
@@ -203,7 +194,6 @@ export namespace Direction {
   }
 }
 
-export type AnimationDirectionString = "up" | "down" | "left" | "right";
 export enum AnimationDirection {
   Up, Down, Left, Right
 }

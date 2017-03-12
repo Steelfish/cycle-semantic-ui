@@ -1,6 +1,6 @@
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { Color, ColorString, Float, FloatString, Size, SizeString } from "../../enums";
+import { Color,  Float,  Size } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent} from "../../common";
 
 export namespace Statistic {
@@ -8,9 +8,9 @@ export namespace Statistic {
     text: boolean;
     horizontal: boolean;
     inverted: boolean;
-    color: Color | ColorString;
-    size: Size | SizeString;
-    float: Float | FloatString;
+    color: Color | string;
+    size: Size | string;
+    float: Float | string;
   }
 
   export interface ContentObj {

@@ -4,7 +4,7 @@ import { div, p, VNode } from "@cycle/dom";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { Size, SizeString, Color, ColorString, Attachment, AttachmentString, Animation, Direction, IconType } from "../../enums";
+import { Size, Color, Attachment, Animation, Direction, IconType } from "../../enums";
 import { renderPropsAndContent } from "../../common";
 
 export namespace Message {
@@ -14,9 +14,9 @@ export namespace Message {
     compact: boolean;
     hidden: boolean;
     forceVisible: boolean;
-    attachment: Attachment | AttachmentString;
-    size: Size | SizeString;
-    color: Color | ColorString;
+    attachment: Attachment | string;
+    size: Size | string;
+    color: Color | string;
   }
   export interface Content {
     icon: DOMContent;

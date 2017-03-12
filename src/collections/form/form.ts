@@ -1,4 +1,4 @@
-import { Size, SizeString } from "../../enums";
+import { Size } from "../../enums";
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs} from "../../common";
@@ -8,7 +8,7 @@ export namespace Form {
     equalWidth: boolean;
     inverted: boolean;
     loading: boolean;
-    size: Size | SizeString;
+    size: Size | string;
   }
   export type FormArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
   export type FormSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;

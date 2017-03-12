@@ -1,7 +1,7 @@
 import xs, { Stream } from "xstream";
 import { VNode, h, DOMSource } from "@cycle/dom";
 import { ComponentSinks } from "../../types";
-import { Animation, AnimationString, AnimationDirection, AnimationDirectionString, Direction, DirectionString } from "../../enums";
+import { Animation,  AnimationDirection, Direction } from "../../enums";
 import { patchClassList } from "../../utils";
 
 export namespace Transition {

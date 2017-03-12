@@ -3,21 +3,21 @@ import isolate from "@cycle/isolate";
 import { VNode, div } from "@cycle/dom";
 import { Dimmer } from "../../modules/dimmer";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
-import { Size, SizeString } from "../../enums";
+import { Size } from "../../enums";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
 import { capitalize } from "../../utils";
 
 
 export namespace Loader {
   export interface Props {
-    type: LoaderType | LoaderTypeString;
+    type: LoaderType | string;
     centered: boolean;
     active: boolean;
     disabled: boolean;
     indeterminate: boolean;
     inverted: boolean;
     text: boolean;
-    size: Size | SizeString;
+    size: Size | string;
   }
 
   export type LoaderArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
@@ -42,13 +42,13 @@ export namespace Loader {
       const props$ = sources.props$.remember();
       const vTree$ = xs.combine(props$, sources.content$)
         .map(([props, content]) => loader({ props, content })
-      );
-      const target$ = props$.map(props => props.type === LoaderType.Page ? xs.of("page") : sources.args.element$).flatten<VNode|string>();
-      const dimmer = Dimmer.run({ 
-        DOM: sources.DOM, 
-        props$: props$.map(props => ({inverted: props.inverted})), 
-        content$: vTree$.map(v => [v]), 
-        args: {on$, target$} 
+        );
+      const target$ = props$.map(props => props.type === LoaderType.Page ? xs.of("page") : sources.args.element$).flatten<VNode | string>();
+      const dimmer = Dimmer.run({
+        DOM: sources.DOM,
+        props$: props$.map(props => ({ inverted: props.inverted })),
+        content$: vTree$.map(v => [v]),
+        args: { on$, target$ }
       });
       const result$ = props$.map(
         props => props.type === LoaderType.Inline ? vTree$ : dimmer.DOM
@@ -90,21 +90,20 @@ export namespace Loader {
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
     }
-    className += LoaderType.ToClassname(typeof(props.type) !== "undefined" ? props.type : LoaderType.Page);
+    className += LoaderType.ToClassname(typeof (props.type) !== "undefined" ? props.type : LoaderType.Page);
     return className;
   }
 
-  export type LoaderTypeString = "inline" | "page" | "content";
   export enum LoaderType {
     Inline, Page, Content
   }
   export namespace LoaderType {
-    export function ToEnum(attachmentOrString: LoaderType | LoaderTypeString): LoaderType {
-      return typeof (attachmentOrString) === "number"
-        ? attachmentOrString
-        : LoaderType[capitalize(attachmentOrString)];
+    export function ToEnum(attachmentstring: LoaderType | string): LoaderType {
+      return typeof (attachmentstring) === "number"
+        ? attachmentstring
+        : LoaderType[capitalize(attachmentstring)];
     }
-    export function ToClassname(type: LoaderType | LoaderTypeString) {
+    export function ToClassname(type: LoaderType | string) {
       type = LoaderType.ToEnum(type);
       switch (type) {
         case LoaderType.Inline: return " inline loader";

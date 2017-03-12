@@ -1,12 +1,12 @@
 import { div, a, span, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, ContentObj, StyleAndContentArgs, DOMContent } from "../../types";
-import { Size, SizeString } from "../../enums";
+import { Size } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Breadcrumb {
   export interface Props {
     divider: VNode | string;
-    size: Size | SizeString;
+    size: Size | string;
   }
   export type Content = Array<Partial<BreadCrumbItem>>;
   export interface BreadCrumbItem {

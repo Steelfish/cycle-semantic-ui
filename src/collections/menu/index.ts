@@ -1,5 +1,5 @@
 import { ComponentSources, ValueComponentSinks, StyleAndContentArgs, DOMContent, ContentObj, } from "../../types";
-import { Color, ColorString, Size, SizeString, Attachment, AttachmentString, Float, FloatString } from "../../enums";
+import { Color, Size, Attachment, Float } from "../../enums";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
 import { numToText } from "../../utils";
 import isolate from "@cycle/isolate";
@@ -25,9 +25,9 @@ export namespace Menu {
     equalWidth: boolean;
     borderless: boolean;
     fluid: boolean;
-    color: Color | ColorString;
-    attachment: Attachment | AttachmentString;
-    size: Size | SizeString;
+    color: Color | string;
+    attachment: Attachment | string;
+    size: Size | string;
   }
   export type Content = Array<Partial<MenuItem>>;
   export interface MenuItem {
@@ -43,8 +43,8 @@ export namespace Menu {
     verticallyFitted: boolean;
     horizontallyFitted: boolean;
     icon: boolean;
-    color: Color | ColorString;
-    float: Float | FloatString;
+    color: Color | string;
+    float: Float | string;
     href: string;
     main: DOMContent | Content;
   }

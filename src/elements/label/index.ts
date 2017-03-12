@@ -1,4 +1,4 @@
-import { Size, SizeString, Attachment, AttachmentString, Color, ColorString } from "../../enums";
+import { Size, Attachment, Color} from "../../enums";
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
@@ -18,9 +18,9 @@ export namespace Label {
     rightRibbon: boolean;
     horizontal: boolean;
     floating: boolean;
-    attachment: Attachment | AttachmentString;
-    size: Size | SizeString;
-    color: Color | ColorString;
+    attachment: Attachment | string;
+    size: Size | string;
+    color: Color | string;
   }
 
   export interface ContentObj {

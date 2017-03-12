@@ -7,7 +7,7 @@ import delay from "xstream/extra/delay";
 import * as Tether from "tether";
 
 import { DOMContent, isDOMContent, ComponentSources, ComponentSinks } from "../../types";
-import { Size, SizeString, Animation, Direction } from "../../enums";
+import { Size, Animation, Direction } from "../../enums";
 import { Transition } from "../../modules/transition";
 import { capitalize } from "../../utils";
 
@@ -18,8 +18,8 @@ export namespace Popup {
     veryWide: boolean;
     flowing: boolean;
     inverted: boolean;
-    size: Size | SizeString;
-    attachment: Popup.Attachment | Popup.AttachmentString;
+    size: Size | string;
+    attachment: Popup.Attachment | string;
   }
   export interface ContentObj {
     main: DOMContent;
@@ -118,17 +118,14 @@ export namespace Popup {
     BottomLeft, BottomMiddle, BottomRight,
     Center
   }
-  export type AttachmentString =
-    "top left" | "top middle" | "top right" | "left center" | "right center" |
-    "bottom left" | "bottom middle" | "bottom right" | "center";
   export namespace Attachment {
-    export function ToEnum(attachmentOrString: Attachment | AttachmentString): Attachment {
-      if (typeof (attachmentOrString) === "number") {
-        return attachmentOrString;
+    export function ToEnum(attachmentstring: Attachment | string): Attachment {
+      if (typeof (attachmentstring) === "number") {
+        return attachmentstring;
       }
-      return Attachment[attachmentOrString.split(" ").map(capitalize).join("")];
+      return Attachment[attachmentstring.split(" ").map(capitalize).join("")];
     }
-    export function ToClassname(attachment: Attachment | AttachmentString) {
+    export function ToClassname(attachment: Attachment | string) {
       attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
         case Attachment.TopLeft: return " top left";
@@ -143,7 +140,7 @@ export namespace Popup {
         default: return " bottom left";
       }
     }
-    export function ToTether(attachment: Attachment | AttachmentString) {
+    export function ToTether(attachment: Attachment | string) {
       attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
         case Attachment.TopLeft: return "top left";
@@ -158,7 +155,7 @@ export namespace Popup {
         default: return "bottom left";
       }
     }
-    export function ToOppositeTether(attachment: Attachment | AttachmentString) {
+    export function ToOppositeTether(attachment: Attachment | string) {
       attachment = Attachment.ToEnum(attachment);
       switch (attachment) {
         case Attachment.TopLeft: return "bottom right";

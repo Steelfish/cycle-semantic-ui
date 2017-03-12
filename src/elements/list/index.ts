@@ -1,5 +1,5 @@
 import { VNode, a, div } from "@cycle/dom";
-import { Size, SizeString, VerticalAlignment, VerticalAlignmentString, Float, FloatString } from "../../enums";
+import { Size,  VerticalAlignment, Float } from "../../enums";
 import { DOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
@@ -14,9 +14,9 @@ export namespace List {
     relaxed: boolean;
     divided: boolean;
     celled: boolean;
-    size: Size | SizeString;
-    alignment: VerticalAlignment | VerticalAlignmentString;
-    float: Float | FloatString;
+    size: Size | string;
+    alignment: VerticalAlignment | string;
+    float: Float | string;
   }
   export interface ListItem {
     left: DOMContent;

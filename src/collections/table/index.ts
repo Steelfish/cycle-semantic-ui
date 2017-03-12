@@ -1,7 +1,7 @@
 import { VNode, table, tr, th, td, thead, tbody, tfoot } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { Size, SizeString, Color, ColorString } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent} from "../../common";
+import { Size, Color } from "../../enums";
+import { renderPropsAndContent, runPropsAndContent } from "../../common";
 
 export namespace Table {
   export interface Props {
@@ -17,8 +17,8 @@ export namespace Table {
     veryPadded: boolean;
     compact: boolean;
     veryCompact: boolean;
-    size: Size | SizeString;
-    color: Color | ColorString;
+    size: Size | string;
+    color: Color | string;
   }
   export interface Content {
     header: Array<DOMContent>;
@@ -40,7 +40,7 @@ export namespace Table {
 
   function tableR(args: TableArgs): VNode {
     let props = args.props ? args.props : {};
-    let content = args.content ? isContent(args.content) ? args.content : {main: args.content}  : {main: []};
+    let content = args.content ? isContent(args.content) ? args.content : { main: args.content } : { main: [] };
     let header = content.header ? thead([tr(content.header.map(h => th(h)))]) : [];
     let footer;
     if (isDOMContent(content.footer)) {
@@ -106,9 +106,9 @@ export namespace Table {
   }
 
   function isArgs(obj): obj is TableArgs {
-    return typeof(obj) !== "undefined" && (
-      typeof(obj.props) !== "undefined" || 
-        (typeof(obj.content) !== "undefined" && (isContent(obj.content) || isMain(obj.content)))
+    return typeof (obj) !== "undefined" && (
+      typeof (obj.props) !== "undefined" ||
+      (typeof (obj.content) !== "undefined" && (isContent(obj.content) || isMain(obj.content)))
     );
   }
 
@@ -120,6 +120,6 @@ export namespace Table {
   }
 
   function isMain(obj): obj is Array<Array<DOMContent>> {
-    return typeof(obj) !== "undefined" && obj instanceof Array;
+    return typeof (obj) !== "undefined" && obj instanceof Array;
   }
 }

@@ -1,9 +1,6 @@
 import { div, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import {
-  Size, SizeString, Attachment, AttachmentString, Float,
-  FloatString, TextAlignment, TextAlignmentString, Color, ColorString
-} from "../../enums";
+import {Size,  Attachment,  Float, TextAlignment, Color} from "../../enums";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
 
 export namespace Header {
@@ -14,11 +11,11 @@ export namespace Header {
     block: boolean;
     disabled: boolean;
     inverted: boolean;
-    attachment: Attachment | AttachmentString;
-    float: Float | FloatString;
-    textAlignment: TextAlignment | TextAlignmentString;
-    size: Size | SizeString;
-    color: Color | ColorString;
+    attachment: Attachment | string;
+    float: Float | string;
+    textAlignment: TextAlignment | string;
+    size: Size | string;
+    color: Color | string;
   }
   export interface ContentObj {
     main: DOMContent;

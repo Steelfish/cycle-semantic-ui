@@ -1,6 +1,6 @@
 import { VNode, i } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj } from "../../types";
-import { Color, ColorString, Size, SizeString, IconType } from "../../enums";
+import { Color, Size, IconType } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Icon {
@@ -15,8 +15,8 @@ export namespace Icon {
     flipped: boolean;
     rotated: boolean;
     inverted: boolean;
-    color: Color | ColorString;
-    size: Size | SizeString;
+    color: Color | string;
+    size: Size | string;
   }
 
   export type IconArgs = StyleAndContentArgs<Props, IconType | string, ContentObj<IconType | string>>;

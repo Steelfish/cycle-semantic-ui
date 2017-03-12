@@ -1,6 +1,6 @@
 import { VNode, a, img } from "@cycle/dom";
 import { StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
-import { Size, SizeString, VerticalAlignment, VerticalAlignmentString, Float, FloatString } from "../../enums";
+import { Size, VerticalAlignment, Float } from "../../enums";
 import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
 export namespace Image {
   export interface Props {
@@ -12,23 +12,23 @@ export namespace Image {
     spaced: boolean;
     circular: boolean;
     rounded: boolean;
-    float: Float | FloatString;
-    size: Size | SizeString;
-    alignment: VerticalAlignment | VerticalAlignmentString;
+    float: Float | string;
+    size: Size | string;
+    alignment: VerticalAlignment | string;
   }
 
   export type ImageArgs = StyleAndContentArgs<Props, string, ContentObj<string>>;
   export type ImageSources = ComponentSources<Props, string, ContentObj<string>>;
 
-  export function run(sources: ImageSources, scope?: string): ComponentSinks{
+  export function run(sources: ImageSources, scope?: string): ComponentSinks {
     return runPropsAndContent(sources, image, ".image", scope);
   }
-  export function render(arg1?: ImageArgs | Partial<Props>|string, arg2?: string) {
+  export function render(arg1?: ImageArgs | Partial<Props> | string, arg2?: string) {
     return renderPropsAndContent(image, makeIsArgs(isUrl), isUrl, arg1, arg2);
-  } 
+  }
 
   export function image(args: ImageArgs): VNode {
-    let props =  args.props ? args.props : {};
+    let props = args.props ? args.props : {};
     let content = args.content ? isUrl(args.content) ? args.content : args.content.main : "";
     let image = img({ props: { className: getClassname(props), src: content } });
     return props.href ? a({ props: { href: props.href } }, image) : image;
@@ -72,6 +72,6 @@ export namespace Image {
   }
 
   function isUrl(obj): obj is string {
-    return typeof(obj) === "string";
+    return typeof (obj) === "string";
   }
 }

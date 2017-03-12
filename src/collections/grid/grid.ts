@@ -1,7 +1,7 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
-import { VerticalAlignment, VerticalAlignmentString, TextAlignment, TextAlignmentString } from "../../enums";
+import { VerticalAlignment, TextAlignment } from "../../enums";
 import { numToText } from "../../utils";
 
 export namespace Grid {
@@ -33,8 +33,8 @@ export namespace Grid {
     tabletOnly: boolean;
     computerOnly: boolean;
     largescreenOnly: boolean;
-    alignment: VerticalAlignment | VerticalAlignmentString;
-    textAlignment: TextAlignment | TextAlignmentString;
+    alignment: VerticalAlignment | string;
+    textAlignment: TextAlignment | string;
   }
 
   export type GridArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
