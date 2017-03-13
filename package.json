@@ -1,6 +1,6 @@
 {
   "name": "cycle-semantic-ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A set of cyclejs components using Semantic UI",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -10,7 +10,8 @@
     "serve-docs": "webpack-dev-server --hot --config docs-src/webpack.config.js",
     "build-docs": "rimraf docs/ && webpack --config docs-src/webpack.config.js",
     "build": "rimraf build/ && tsc",
-    "test": "mocha test/**/*.ts --compilers ts:ts-node/register"
+    "test": "mocha test/**/*.ts --compilers ts:ts-node/register",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "repository": {
     "type": "git",
