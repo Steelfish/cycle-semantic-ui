@@ -40,7 +40,7 @@ export namespace Textbox {
 
       const evt = (type) => sources.DOM.select(".input").events(type);
       const props$ = sources.props$.remember();
-      const newValue$ = evt("input").map(ev => (ev.target as HTMLInputElement).value).remember();
+      const newValue$ = evt("input").map(ev => (ev.target as HTMLInputElement).value);
       const vtree$ = xs.combine(props$, sources.content$).map(
         ([props, content]) => textbox({ props, content })
       );
