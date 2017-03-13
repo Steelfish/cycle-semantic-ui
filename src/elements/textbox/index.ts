@@ -7,7 +7,7 @@ import { renderPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Textbox {
   export interface Props {
-    initial: string;
+    value: string;
     placeholder: string;
     icon: boolean;
     labeled: boolean;
@@ -59,8 +59,8 @@ export namespace Textbox {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
     let textbox = props.rows
-      ? textarea({ attrs: { rows: props.rows, readonly: props.readonly, value: props.initial, placeholder: props.placeholder } })
-      : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", value: props.initial, placeholder: props.placeholder } });
+      ? textarea({ attrs: { rows: props.rows, readonly: props.readonly, placeholder: props.placeholder }, props: { value: props.value } })
+      : input({ attrs: { readonly: props.readonly, type: props.type ? props.type : "text", placeholder: props.placeholder }, props: { value: props.value } });
     return props.rightContent
       ? div({ props: { className: getClassname(props) } }, [].concat(textbox, content))
       : div({ props: { className: getClassname(props) } }, [].concat(content, textbox));

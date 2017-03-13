@@ -68,9 +68,9 @@ describe("Textbox", function () {
       assert.equal(textbox.data.props.className, "ui loading input");
     });
     it("support setting the initial value of the input", function () {
-      let textbox = Textbox.render({ initial: "initial" });
+      let textbox = Textbox.render({ value: "initial" });
       let input = textbox.children[0] as VNode;
-      assert.equal(input.data.attrs.value, "initial");
+      assert.equal(input.data.props.value, "initial");
     });
     it("support setting the placeholder value of the input", function () {
       let textbox = Textbox.render({ placeholder: "placeholder" });
@@ -184,6 +184,24 @@ describe("Textbox", function () {
         next: (x) => {
           assert.equal("next", x);
           done();
+        }
+      });
+    });
+    it("should keep the textbox's value property in sync with props.value", function (done) {
+      const testStrings = ["0", "1", "2"];
+      const test$ = xs.periodic(20).map(v => v.toString()).take(testStrings.length);
+      const textbox = Textbox.run({DOM: dom, props$: test$.map(value => ({value}))});
+
+      let index = 0;
+      textbox.DOM.addListener({
+        next: (x) => {
+          let input = x.children[0] as VNode;
+          assert.equal(input.data.props.value, testStrings[index]);
+          index++;
+          if (index === testStrings.length - 1) {
+            console.log("DONE");
+            done();
+          }
         }
       });
     });
