@@ -57,10 +57,10 @@ export namespace Modal {
         .fold((prevAnim, active) => prevAnim.direction === Direction.None
           ? ({ animation: Animation.None, direction: active ? Direction.In : Direction.Out })
           : {
-            animation: Animation.Fade, direction: active ? Direction.In : Direction.Out
+            animation: Animation.Scale, direction: active ? Direction.In : Direction.Out
           }
         , ({ animation: Animation.None, direction: Direction.None }));
-      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ }, scope);
+      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ }, scope + "_transition");
 
       /*** Activate dimmer ***/
       let dimmerContent$ = animatedContent.DOM.map(x => [x]);
