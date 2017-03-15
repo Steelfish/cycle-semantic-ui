@@ -62,7 +62,7 @@ export namespace Dropdown {
       let menu = createMenuComponent<V>(sources, content$, value$proxy, transition$, filter$, scope);
       const initialValue$ = props$.map(props => props.initial).remember();
       value$proxy.imitate(xs.merge(initialValue$, menu.value$.map(i => i.value)));
-      let vTree$ = createView(sources, props$, content$, transition$, menu, filter$);
+      let vTree$ = createView(sources, props$, menu.menuContent$, transition$, menu, filter$);
 
       return {
         DOM: vTree$,
@@ -119,14 +119,15 @@ export namespace Dropdown {
         ([content, value]) => content.map(
           item => item.value === value ? Object.assign({}, item, { active: true }) : item
         )
-      );
+      ).remember();
     }
     const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, props$: xs.of({submenu: true}), content$: menuContent$ });
     const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ }, scope);
     return {
       DOM: animatedMenu.DOM,
       events: menu.events,
-      value$: menu.value$
+      value$: menu.value$,
+      menuContent$
     };
   }
 
