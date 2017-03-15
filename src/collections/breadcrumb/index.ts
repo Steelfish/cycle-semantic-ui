@@ -2,6 +2,7 @@ import { div, a, span, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, ContentObj, StyleAndContentArgs, DOMContent } from "../../types";
 import { Size } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Breadcrumb {
   export interface Props {
@@ -20,7 +21,7 @@ export namespace Breadcrumb {
   export function render(arg1?: Partial<Props> | Content | BreadcrumbArgs, arg2?: Content): VNode {
     return renderPropsAndContent(breadcrumb, makeIsArgs(isContent),isContent, arg1, arg2);
   }
-  export function run(sources: BreadcrumbSources, scope?: string) : ComponentSinks {
+  export function run(sources: BreadcrumbSources, scope: string = getScope()) : ComponentSinks {
     return runPropsAndContent(sources, breadcrumb, ".breadcrumb", scope);
   }
 

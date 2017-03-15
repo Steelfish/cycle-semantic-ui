@@ -6,6 +6,7 @@ import { Transition } from "../../modules/transition";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Color, Attachment, Animation, Direction, IconType } from "../../enums";
 import { renderPropsAndContent } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Message {
   export interface Props {
@@ -37,7 +38,7 @@ export namespace Message {
     return renderPropsAndContent(message, isArgs, isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: MessageSources, scope?: string): ComponentSinks {
+  export function run(sources: MessageSources, scope: string = getScope()): ComponentSinks {
     function main(sources: MessageSources) {
       let props$ = sources.props$ ? sources.props$ : xs.of({});
       let content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
@@ -45,7 +46,7 @@ export namespace Message {
 
       let vTree$, active$;
       if (sources.args && sources.args.closeable) {
-        const icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) });
+        const icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) }, scope);
         const close$ = icon.events("click").mapTo(false);
         vTree$ = xs.combine(props$, content$, icon.DOM)
           .map(([props, content, closeIcon]) => message({ props, content }, closeIcon));
@@ -58,7 +59,7 @@ export namespace Message {
         ? { animation: Animation.None, direction: active ? Direction.In : Direction.Out }
         : { animation: Animation.Fade, direction: active ? Direction.In : Direction.Out }
         , { animation: Animation.None, direction: Direction.None });
-      const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }).DOM;
+      const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope).DOM;
       return {
         DOM: animatedVTree$,
         events: (type) => sources.DOM.select(".message").events(type)

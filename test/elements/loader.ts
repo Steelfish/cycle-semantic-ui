@@ -125,7 +125,7 @@ describe("Loader", function () {
       let loader = Loader.run({ DOM: dom }, "loader");
       loader.DOM.addListener({
         next: (x) => {
-          assert.equal(x.sel, "div.___cycle22.___loader");
+          assert.equal(x.sel, "div.___loader");
           done();
         }
       });

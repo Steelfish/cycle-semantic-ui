@@ -4,6 +4,7 @@ import xs from "xstream";
 import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ValueComponentSinks } from "../../types";
 import { Color, Size } from "../../enums";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Textbox {
   export interface Props {
@@ -33,7 +34,7 @@ export namespace Textbox {
     return renderPropsAndContent(textbox, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: TextboxSources, scope?: string): ValueComponentSinks<string> {
+  export function run(sources: TextboxSources, scope: string = getScope()): ValueComponentSinks<string> {
     function main(sources: TextboxSources) {
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);

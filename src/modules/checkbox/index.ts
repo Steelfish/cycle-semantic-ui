@@ -3,6 +3,7 @@ import isolate from "@cycle/isolate";
 import { VNode, input, label, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ValueComponentSinks } from "../../types";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Checkbox {
   export interface Props {
@@ -22,7 +23,7 @@ export namespace Checkbox {
   export function render(arg1?: CheckboxArgs|Partial<Props>|DOMContent, arg2?: DOMContent) : VNode {
     return renderPropsAndContent(checkbox, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
-  export function run(sources: CheckboxSources, scope?: string) : ValueComponentSinks<boolean> {
+  export function run(sources: CheckboxSources, scope: string = getScope()) : ValueComponentSinks<boolean> {
     function main(sources: CheckboxSources) {
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
       sources.content$ = sources.content$ ? sources.content$ : xs.of("");

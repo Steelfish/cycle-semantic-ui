@@ -2,6 +2,7 @@ import { Size } from "../../enums";
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs} from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Form {
   export interface Props {
@@ -16,7 +17,7 @@ export namespace Form {
     return renderPropsAndContent(form, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: FormSources, scope?: string): ComponentSinks {
+  export function run(sources: FormSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, form, ".form", scope);
   }
 

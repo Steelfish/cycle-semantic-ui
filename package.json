@@ -23,13 +23,13 @@
     "tether": "^1.4.0"
   },
   "peerDependencies": {
-    "@cycle/dom": "^15.2.0",
+    "@cycle/dom": "^16.0.0",
     "@cycle/isolate": "^2.0.0",
     "xstream": "^10.2.0"
   },
   "devDependencies": {
+    "@cycle/run": "^3.0.0",
     "@cycle/history": "^5.0.0",
-    "@cycle/xstream-run": "^4.2.0",
     "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.39",
     "@types/tether": "^1.4.0",

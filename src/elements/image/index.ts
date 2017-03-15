@@ -2,6 +2,7 @@ import { VNode, a, img } from "@cycle/dom";
 import { StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
 import { Size, VerticalAlignment, Float } from "../../enums";
 import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 export namespace Image {
   export interface Props {
     href: string;
@@ -20,7 +21,7 @@ export namespace Image {
   export type ImageArgs = StyleAndContentArgs<Props, string, ContentObj<string>>;
   export type ImageSources = ComponentSources<Props, string, ContentObj<string>>;
 
-  export function run(sources: ImageSources, scope?: string): ComponentSinks {
+  export function run(sources: ImageSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, image, ".image", scope);
   }
   export function render(arg1?: ImageArgs | Partial<Props> | string, arg2?: string) {

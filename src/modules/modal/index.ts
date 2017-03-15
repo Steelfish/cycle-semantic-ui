@@ -7,6 +7,7 @@ import { Dimmer } from "../../modules/dimmer";
 import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isDOMContent, ComponentSources, ComponentSinks } from "../../types";
+import { getScope} from "../../utils";
 
 export namespace Modal {
   export interface Props {
@@ -28,14 +29,14 @@ export namespace Modal {
   }
 
 
-  export function run(sources: ModalSources, scope?: string) : ModalSinks {
+  export function run(sources: ModalSources, scope: string = getScope()) : ModalSinks {
     function main(sources: ModalSources) {
       const props$ = sources.props$ ? sources.props$ : xs.of({}) as Stream<Partial<Props>>;
       const content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
       const target$ = sources.args && sources.args.target$ ? sources.args.target$ : xs.of("page");
       const show$= sources.args && sources.args.on$ ? sources.args.on$ : xs.of(true);
 
-      const closeIcon = Icon.run({ DOM: sources.DOM, props$: xs.of({ link: true }), content$: xs.of(IconType.Close) });
+      const closeIcon = Icon.run({ DOM: sources.DOM, props$: xs.of({ link: true }), content$: xs.of(IconType.Close) }, scope);
       const close$ = closeIcon.events("click").mapTo(false);
 
       /*** Render modal ***/
@@ -59,7 +60,7 @@ export namespace Modal {
             animation: Animation.Fade, direction: active ? Direction.In : Direction.Out
           }
         , ({ animation: Animation.None, direction: Direction.None }));
-      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ });
+      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ }, scope);
 
       /*** Activate dimmer ***/
       let dimmerContent$ = animatedContent.DOM.map(x => [x]);

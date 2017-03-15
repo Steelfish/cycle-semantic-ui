@@ -2,6 +2,7 @@ import { Size, Attachment, Color} from "../../enums";
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Label {
   export interface Props {
@@ -31,7 +32,7 @@ export namespace Label {
   export type LabelArgs = StyleAndContentArgs<Props, DOMContent, ContentObj>;
   export type LabelSources = ComponentSources<Props, DOMContent, ContentObj>;
 
-  export function run(sources: LabelSources, scope?: string): ComponentSinks {
+  export function run(sources: LabelSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, label, ".label", scope);
   }
 

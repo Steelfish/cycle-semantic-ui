@@ -2,7 +2,7 @@ import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 import { VerticalAlignment, TextAlignment } from "../../enums";
-import { numToText } from "../../utils";
+import { numToText, getScope } from "../../utils";
 
 export namespace Grid {
   export interface Props {
@@ -42,7 +42,7 @@ export namespace Grid {
   export function render(arg1?: Partial<Props> | DOMContent | GridArgs, arg2?: DOMContent): VNode {
     return renderPropsAndContent(grid, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
-  export function run(sources: GridSources, scope?: string): ComponentSinks {
+  export function run(sources: GridSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, grid, ".grid", scope);
   }
 

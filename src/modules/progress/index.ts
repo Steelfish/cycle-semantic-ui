@@ -3,6 +3,7 @@ import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Attachment, Color } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Progress {
   export interface Props {
@@ -22,7 +23,7 @@ export namespace Progress {
     return renderPropsAndContent(progress, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: ProgressBarSources, scope?: string): ComponentSinks {
+  export function run(sources: ProgressBarSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, progress, ".progress", scope);
   }
 

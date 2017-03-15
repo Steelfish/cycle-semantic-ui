@@ -1,12 +1,13 @@
 import {div, VNode} from "@cycle/dom";
 import {DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import {renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Container {
   export type ContainerArgs = StyleAndContentArgs<Object, DOMContent, ContentObj<DOMContent>>;
   export type ContainerSources = ComponentSources<Object, DOMContent, ContentObj<DOMContent>>;
 
-  export function run(sources, scope?: string) : ComponentSinks {
+  export function run(sources, scope: string = getScope()) : ComponentSinks {
     return runPropsAndContent(sources, container, ".container", scope);
   }
 

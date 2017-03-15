@@ -1,6 +1,6 @@
 import { div, label, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, DOMContent, isDOMContent } from "../../types";
-import { numToText } from "../../utils";
+import { numToText, getScope } from "../../utils";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
 
 export namespace Fields {
@@ -21,7 +21,7 @@ export namespace Fields {
     return renderPropsAndContent(fields, isArgs, isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: FieldsSources, scope?: string): ComponentSinks {
+  export function run(sources: FieldsSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, fields, ".fields", scope);
   }
 

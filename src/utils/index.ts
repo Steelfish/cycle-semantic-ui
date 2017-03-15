@@ -1,5 +1,9 @@
 import { VNode } from "@cycle/dom";
 
+let counter = 0;
+export function getScope(): string {
+  return `cs-ui${++counter}`;
+}
 export function capitalize(string: string): string {
   return string ? string.charAt(0).toUpperCase() + string.slice(1) : string;
 }

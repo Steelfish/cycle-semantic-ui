@@ -2,6 +2,7 @@ import { VNode, table, tr, th, td, thead, tbody, tfoot } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Color } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Table {
   export interface Props {
@@ -33,7 +34,7 @@ export namespace Table {
     return renderPropsAndContent(tableR, isArgs, isMain, arg1, arg2);
   }
 
-  export function run(sources: TableSources, scope?: string): ComponentSinks {
+  export function run(sources: TableSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, tableR, ".table", scope);
   }
 

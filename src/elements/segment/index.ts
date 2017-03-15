@@ -2,6 +2,7 @@ import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
 import { Color, Attachment, Float, TextAlignment } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Segment {
   export interface Props {
@@ -31,7 +32,7 @@ export namespace Segment {
     return renderPropsAndContent(segment, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: SegmentSources, scope?: string): ComponentSinks {
+  export function run(sources: SegmentSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, segment, ".segment", scope);
   }
 

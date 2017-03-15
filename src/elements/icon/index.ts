@@ -2,6 +2,7 @@ import { VNode, i } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj } from "../../types";
 import { Color, Size, IconType } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Icon {
   export interface Props {
@@ -22,7 +23,7 @@ export namespace Icon {
   export type IconArgs = StyleAndContentArgs<Props, IconType | string, ContentObj<IconType | string>>;
   export type IconSources = ComponentSources<Props, IconType | string, ContentObj<IconType | string>>;
 
-  export function run(sources: IconSources, scope?: string): ComponentSinks {
+  export function run(sources: IconSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, icon, ".icon", scope);
   }
   export function render(arg1?: IconArgs | Partial<Props> | IconType | string, arg2?: IconType | string) {

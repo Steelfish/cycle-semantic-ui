@@ -3,7 +3,7 @@ import isolate from "@cycle/isolate";
 import xs, { Stream, MemoryStream } from "xstream";
 import { h, div, VNode } from "@cycle/dom";
 import { Transition } from "../../modules/transition";
-import { patchClassList, addElement } from "../../utils";
+import { patchClassList, addElement, getScope } from "../../utils";
 import { Animation, Direction } from "../../enums";
 import { DOMContent, isDOMContent, ContentObj, ComponentSources, ComponentSinks, EventSelector } from "../../types";
 
@@ -19,7 +19,7 @@ export namespace Dimmer {
     };
   }
 
-  export function run(sources: DimmerSources, scope?: string): ComponentSinks {
+  export function run(sources: DimmerSources, scope: string = getScope()): ComponentSinks {
     function main(sources: DimmerSources) {
       const evt = (type) => sources.DOM.select(".dimmable").events(type);
       const props$ = sources.props$ ? sources.props$ : xs.of({});
@@ -39,7 +39,7 @@ export namespace Dimmer {
       /*** Animate content ***/
       const children$ = xs.combine(content$, props$, target$)
         .map(([content, props, target]) => dimmer(content, props, target));
-      const animatedContent = Transition.run({ DOM: sources.DOM, transition$, target$: children$ });
+      const animatedContent = Transition.run({ DOM: sources.DOM, transition$, target$: children$ }, scope);
 
       /*** Render view ***/
       const vTree$ = xs.combine(target$, animatedContent.DOM, on$)

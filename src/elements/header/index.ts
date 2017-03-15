@@ -2,6 +2,7 @@ import { div, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import {Size,  Attachment,  Float, TextAlignment, Color} from "../../enums";
 import { renderPropsAndContent, runPropsAndContent } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Header {
   export interface Props {
@@ -26,7 +27,7 @@ export namespace Header {
   export type HeaderArgs = StyleAndContentArgs<Props, DOMContent, ContentObj>;
   export type HeaderSources = ComponentSources<Props, DOMContent, ContentObj>;
 
-  export function run(sources: HeaderSources, scope?: string): ComponentSinks {
+  export function run(sources: HeaderSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, header, ".header", scope);
   }
 

@@ -1,7 +1,7 @@
 import { VNode, div, a } from "@cycle/dom";
 import { DOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size,  Attachment} from "../../enums";
-import { numToText } from "../../utils";
+import { numToText, getScope } from "../../utils";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
 
 export namespace Steps {
@@ -32,7 +32,7 @@ export namespace Steps {
     return renderPropsAndContent(steps, makeIsArgs(isContent), isContent, arg1, arg2);
   }
 
-  export function run(sources: StepSources, scope?: string): ComponentSinks {
+  export function run(sources: StepSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, steps, ".steps", scope);
   }
 

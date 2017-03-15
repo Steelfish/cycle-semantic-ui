@@ -1,14 +1,15 @@
 import xs, { Stream } from "xstream";
+import isolate from "@cycle/isolate";
 import { VNode, h, DOMSource } from "@cycle/dom";
 import { ComponentSinks } from "../../types";
-import { Animation,  AnimationDirection, Direction } from "../../enums";
-import { patchClassList } from "../../utils";
+import { Animation, AnimationDirection, Direction } from "../../enums";
+import { patchClassList, getScope } from "../../utils";
 
 export namespace Transition {
   export interface Transition {
-    animation: Animation|string;
-    direction?: Direction|string;
-    animationDirection?: AnimationDirection|string;
+    animation: Animation | string;
+    direction?: Direction | string;
+    animationDirection?: AnimationDirection | string;
   }
 
   export interface TransitionSources {
@@ -17,22 +18,26 @@ export namespace Transition {
     transition$: Stream<Transition>;
   }
 
-  export function run(sources: TransitionSources): ComponentSinks {
-    const evt = (type) => sources.DOM.select(".transition").events(type);
+  export function run(sources: TransitionSources, scope: string = getScope()): ComponentSinks {
+    function main(sources: TransitionSources) : ComponentSinks {
+      const evt = (type) => sources.DOM.select(".transition").events(type);
 
-    let animationEnd$ = evt("animationend").map(evt => ({
-      animation: Animation.None,
-      direction: (evt.currentTarget as HTMLElement).classList.contains("out") ? Direction.Out : Direction.In
-    })) as Stream<Transition>;
-    let animation$ = xs.merge(sources.transition$, animationEnd$);
+      let animationEnd$ = evt("animationend").map(evt => ({
+        animation: Animation.None,
+        direction: (evt.currentTarget as HTMLElement).classList.contains("out") ? Direction.Out : Direction.In
+      })) as Stream<Transition>;
+      let animation$ = xs.merge(sources.transition$, animationEnd$);
 
-    let vTree$ = xs.combine(animation$, sources.target$).map(
-      ([transition, target]) => render(target, transition)
-    );
-    return {
-      DOM: vTree$,
-      events: evt
-    };
+      let vTree$ = xs.combine(animation$, sources.target$).map(
+        ([transition, target]) => render(target, transition)
+      );
+      return {
+        DOM: vTree$,
+        events: evt
+      };
+    }
+    const isolatedMain = isolate(main, scope);
+    return isolatedMain(sources);
   }
 
   export function render(target: VNode, args: Transition = { animation: Animation.None }): VNode {

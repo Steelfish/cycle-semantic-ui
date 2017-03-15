@@ -9,7 +9,7 @@ import * as Tether from "tether";
 import { DOMContent, isDOMContent, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Animation, Direction } from "../../enums";
 import { Transition } from "../../modules/transition";
-import { capitalize } from "../../utils";
+import { capitalize, getScope } from "../../utils";
 
 
 export namespace Popup {
@@ -32,7 +32,7 @@ export namespace Popup {
     };
   }
 
-  export function run(sources: PopupSources, scope?: string): ComponentSinks {
+  export function run(sources: PopupSources, scope: string = getScope()): ComponentSinks {
     function main(sources: PopupSources) {
       if (!(sources.args && sources.args.target$)) {
         throw ("Popups must be attached to an element");
@@ -65,7 +65,7 @@ export namespace Popup {
             && (a as any).animation === (b as any).animation
         ))
         .startWith({ animation: Animation.None, direction: Direction.Out }) as Stream<any>;
-      const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ });
+      const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope);
       return {
         DOM: animatedPopup.DOM,
         events: evt

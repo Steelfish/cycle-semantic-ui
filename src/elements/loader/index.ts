@@ -5,7 +5,7 @@ import { Dimmer } from "../../modules/dimmer";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
 import { Size } from "../../enums";
 import { renderPropsAndContent, makeIsArgs } from "../../common";
-import { capitalize } from "../../utils";
+import { capitalize, getScope } from "../../utils";
 
 
 export namespace Loader {
@@ -33,7 +33,7 @@ export namespace Loader {
     return renderPropsAndContent(loader, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: LoaderSources, scope?: string): ComponentSinks {
+  export function run(sources: LoaderSources, scope: string = getScope()): ComponentSinks {
     function main(sources: LoaderSources) {
       sources.props$ = sources.props$ ? sources.props$ : xs.of({ type: LoaderType.Page });
       sources.content$ = sources.content$ ? sources.content$ : xs.of(undefined);
@@ -49,7 +49,7 @@ export namespace Loader {
         props$: props$.map(props => ({ inverted: props.inverted })),
         content$: vTree$.map(v => [v]),
         args: { on$, target$ }
-      });
+      }, scope);
       const result$ = props$.map(
         props => props.type === LoaderType.Inline ? vTree$ : dimmer.DOM
       ).flatten();

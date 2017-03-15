@@ -10,6 +10,7 @@ import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isVNode, EventSelector, ContentObj, ComponentSources, ValueComponentSinks } from "../../types";
 import { IconType, Color, Size, Animation, Direction } from "../../enums";
+import { getScope} from "../../utils";
 
 export namespace Dropdown {
   export interface Props {
@@ -40,7 +41,7 @@ export namespace Dropdown {
     };
   }
 
-  export function run<V>(sources: DropdownSources<V>, scope?: string): ValueComponentSinks<V> {
+  export function run<V>(sources: DropdownSources<V>, scope: string = getScope()): ValueComponentSinks<V> {
     function main(sources: DropdownSources<V>) {
       /*** Main streams ***/
       const evt = (type) => sources.DOM.select(".dropdown").events(type);
@@ -58,7 +59,7 @@ export namespace Dropdown {
       }
       /*** Compose component ***/
       let transition$ = createTransition$(evt, itemClick$);
-      let menu = createMenuComponent<V>(sources, content$, value$proxy, transition$, filter$);
+      let menu = createMenuComponent<V>(sources, content$, value$proxy, transition$, filter$, scope);
       const initialValue$ = props$.map(props => props.initial).remember();
       value$proxy.imitate(xs.merge(initialValue$, menu.value$.map(i => i.value)));
       let vTree$ = createView(sources, props$, content$, transition$, menu, filter$);
@@ -101,7 +102,7 @@ export namespace Dropdown {
       .startWith({ animation: Animation.None, direction: Direction.Out });
   }
 
-  function createMenuComponent<V>(sources: DropdownSources<V>, content$: Stream<Content<V>>, value$proxy: Stream<V>, transition$, filter$?: Stream<string>) {
+  function createMenuComponent<V>(sources: DropdownSources<V>, content$: Stream<Content<V>>, value$proxy: Stream<V>, transition$, filter$?: Stream<string>, scope?: string) {
     /*** Create child menu items ***/
     let menuContent$: Stream<Content<V>>;
     if (sources.args && sources.args.search) {
@@ -121,7 +122,7 @@ export namespace Dropdown {
       );
     }
     const menu = Menu.run<DropdownItem<V>>({ DOM: sources.DOM, props$: xs.of({submenu: true}), content$: menuContent$ });
-    const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ });
+    const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ }, scope);
     return {
       DOM: animatedMenu.DOM,
       events: menu.events,

@@ -2,6 +2,7 @@ import { div, a, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSinks, ComponentSources } from "../../types";
 import { Color, Size, Attachment, Float } from "../../enums";
 import { runPropsAndContent, renderPropsAndContent } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Button {
   export interface Props {
@@ -36,7 +37,7 @@ export namespace Button {
   export function render(arg1?: ButtonArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
     return renderPropsAndContent(button, isArgs, isDOMContent, arg1, arg2);
   }
-  export function run(sources: ButtonSources, scope?: string): ComponentSinks {
+  export function run(sources: ButtonSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, button, ".button", scope);
   }
 

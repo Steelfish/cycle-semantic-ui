@@ -1,4 +1,4 @@
-import { run } from "@cycle/xstream-run";
+import { run } from "@cycle/run";
 import { makeDOMDriver, div } from "@cycle/dom";
 import { makeHistoryDriver, captureClicks } from "@cycle/history";
 import xs from "xstream";

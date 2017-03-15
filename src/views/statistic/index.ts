@@ -2,6 +2,7 @@ import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Color,  Float,  Size } from "../../enums";
 import { renderPropsAndContent, runPropsAndContent} from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Statistic {
   export interface Props {
@@ -25,7 +26,7 @@ export namespace Statistic {
     return renderPropsAndContent(statistic, isArgs, isDOMContent, arg1, arg2);
   }
 
-  export function run(sources: StatisticSources, scope?: string): ComponentSinks {
+  export function run(sources: StatisticSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, statistic, ".statistic", scope);
   }
 

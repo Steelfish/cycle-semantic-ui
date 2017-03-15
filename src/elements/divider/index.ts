@@ -1,6 +1,7 @@
 import { div, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
 import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { getScope} from "../../utils";
 
 export namespace Divider {
   export interface Props {
@@ -17,7 +18,7 @@ export namespace Divider {
   export type DividerArgs = StyleAndContentArgs<Props, DOMContent, ContentObj<DOMContent>>;
   export type DividerSources = ComponentSources<Props, DOMContent, ContentObj<DOMContent>>;
 
-  export function run(sources: DividerSources, scope?: string): ComponentSinks {
+  export function run(sources: DividerSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, divider, ".divider", scope);
   }
 
