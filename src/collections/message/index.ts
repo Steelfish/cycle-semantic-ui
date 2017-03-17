@@ -44,9 +44,9 @@ export namespace Message {
       let content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
       let on$ = sources.args && sources.args.on$ ? sources.args.on$ : xs.of(true);
 
-      let vTree$, active$;
+      let vTree$:Stream<VNode>, active$:Stream<boolean>, icon:ComponentSinks;
       if (sources.args && sources.args.closeable) {
-        const icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) }, scope);
+        icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) }, scope);
         const close$ = icon.events("click").mapTo(false);
         vTree$ = xs.combine(props$, content$, icon.DOM)
           .map(([props, content, closeIcon]) => message({ props, content }, closeIcon));
@@ -59,10 +59,19 @@ export namespace Message {
         ? { animation: Animation.None, direction: active ? Direction.In : Direction.Out }
         : { animation: Animation.Fade, direction: active ? Direction.In : Direction.Out }
         , { animation: Animation.None, direction: Direction.None });
-      const animatedVTree$ = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope).DOM;
+        
+      const animation = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope);
+      
+      let evt;
+      if (sources.args && sources.args.closeable) {
+        evt = (type) => xs.merge(sources.DOM.select(".message").events(type), icon.events(type), animation.events(type));
+      } else {
+        evt = (type) => sources.DOM.select(".message").events(type);
+      }
+
       return {
-        DOM: animatedVTree$,
-        events: (type) => sources.DOM.select(".message").events(type)
+        DOM: animation.DOM,
+        events: evt
       };
     }
     const isolatedMain = isolate(main, scope);

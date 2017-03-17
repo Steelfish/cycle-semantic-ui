@@ -68,7 +68,7 @@ export namespace Popup {
       const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope);
       return {
         DOM: animatedPopup.DOM,
-        events: evt
+        events: (type) => xs.merge(evt(type), animatedPopup.events(type))
       };
     }
     const isolatedMain = isolate(main, scope);

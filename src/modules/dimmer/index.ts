@@ -46,7 +46,7 @@ export namespace Dimmer {
         .map(([target, content, active]) => dimElement(target, content, active));
       return {
         DOM: vTree$,
-        events: (type) => sources.DOM.select(".dimmer").events(type),
+        events: (type) => xs.merge(sources.DOM.select(".dimmer").events(type), animatedContent.events(type))
       };
     }
     const isolatedMain = isolate(main, scope);

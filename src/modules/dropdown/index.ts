@@ -66,7 +66,7 @@ export namespace Dropdown {
 
       return {
         DOM: vTree$,
-        events: evt,
+        events: (type) => xs.merge(evt(type), menu.events(type)),
         value$: menu.value$.map(item => item.value)
       };
     }
@@ -125,7 +125,7 @@ export namespace Dropdown {
     const animatedMenu = Transition.run({ DOM: sources.DOM, target$: menu.DOM, transition$ }, scope);
     return {
       DOM: animatedMenu.DOM,
-      events: menu.events,
+      events: (type) => xs.merge(menu.events(type), animatedMenu.events(type)),
       value$: menu.value$,
       menuContent$
     };

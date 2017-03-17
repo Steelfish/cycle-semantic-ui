@@ -24,12 +24,8 @@ export namespace Modal {
       target$?: Stream<VNode>;
     };
   }
-  export interface ModalSinks extends ComponentSinks {
-    active$: Stream<boolean>;
-  }
 
-
-  export function run(sources: ModalSources, scope: string = getScope()) : ModalSinks {
+  export function run(sources: ModalSources, scope: string = getScope()) : ComponentSinks {
     function main(sources: ModalSources) {
       const props$ = sources.props$ ? sources.props$ : xs.of({}) as Stream<Partial<Props>>;
       const content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
@@ -74,13 +70,10 @@ export namespace Modal {
         .filter(evt => evt.srcElement === (evt as MouseEvent).currentTarget)
         .mapTo(false);
       dimmerclick$proxy.imitate(dimmerclick$);
-
-      const fadeOutEnd$ = on$.map(active => !active ? dimmer.events("animationend") : xs.never()).flatten().mapTo(false);
-      // const active$ = xs.merge(sources.on$, fadeOutEnd$).remember();
+      
       return {
-        active$: xs.merge(show$, fadeOutEnd$),
         DOM: dimmer.DOM,
-        events: (type) => sources.DOM.select(".modal").events(type)
+        events: (type) => xs.merge(sources.DOM.select(".modal").events(type), dimmer.events(type), closeIcon.events(type))
       };
     }
     const isolatedMain = isolate(main, scope);
