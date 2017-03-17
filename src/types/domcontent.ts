@@ -16,7 +16,7 @@ export function isDOMContent(content) : content is DOMContent {
       return true;
     }
     else {
-      return content[0].sel !== undefined || typeof(content[0]) === "string" ;
+      return isVNode(content[0]) || typeof(content[0]) === "string" ;
     };
   }
   return false;
