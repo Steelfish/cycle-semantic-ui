@@ -1,3 +1,24 @@
+<a name="0.3.5"></a>
+## [0.3.5](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.4...v0.3.5) (2017-03-17)
+
+
+### Bug Fixes
+
+* Fixed undefined error for isDOMContent type check ([5c42bba](https://www.github.com/Steelfish/cycle-semantic-ui/commit/5c42bba))
+* **List:** Headers and descriptions should now show up ([14de693](https://www.github.com/Steelfish/cycle-semantic-ui/commit/14de693))
+
+
+### Features
+
+* Added support for subcomponent event selection ([4c48bc5](https://www.github.com/Steelfish/cycle-semantic-ui/commit/4c48bc5))
+
+
+### BREAKING CHANGES
+
+* Modal no longer offers an active$.
+
+
+
 <a name="0.3.4"></a>
 ## [0.3.4](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.3...v0.3.4) (2017-03-15)
 
