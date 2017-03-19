@@ -29,19 +29,16 @@ export namespace Checkbox {
       sources.content$ = sources.content$ ? sources.content$ : xs.of("");
       const evt = (type) => sources.DOM.select(".checkbox").events(type);
       
-      const clicked$ = evt("click");
       const props$ = sources.props$.remember();
-      const checked$ = props$.map(props =>
-        clicked$.fold((acc, evt) => (evt.srcElement as any).checked, props.checked ? true : false)
-      ).flatten().remember();
       const vTree$ = xs.combine(props$, sources.content$).map(
         ([props, content]) => checkbox({props, content})
       );
+      const value$ = evt("click").map(evt => (evt.srcElement as any).checked);
 
       return {
         DOM: vTree$,
         events: evt,
-        value$: checked$
+        value$
       };
     }
     const isolatedMain = isolate(main, scope);
