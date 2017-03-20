@@ -1,3 +1,14 @@
+<a name="0.3.6"></a>
+## [0.3.6](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.5...v0.3.6) (2017-03-20)
+
+
+### Bug Fixes
+
+* **Checkbox:** Checkbox.value$ is now a stream. ([215fe91](https://www.github.com/Steelfish/cycle-semantic-ui/commit/215fe91))
+* **Dropdown:** Fixed the searchable dropdown variant ([c19a9a2](https://www.github.com/Steelfish/cycle-semantic-ui/commit/c19a9a2))
+
+
+
 <a name="0.3.5"></a>
 ## [0.3.5](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.4...v0.3.5) (2017-03-17)
 
