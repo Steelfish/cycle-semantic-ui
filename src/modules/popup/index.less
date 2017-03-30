@@ -237,6 +237,74 @@
   background: @invertedArrowBottomBackground;
 }
 
+/* Colored Arrow Colors */
+.ui.primaryColored.bottom.popup:before {
+  background: @primaryColoredArrowTopBackground;
+}
+.ui.primaryColored.right.center.popup:before,
+.ui.primaryColored.left.center.popup:before {
+  background: @primaryColoredArrowCenterBackground;
+}
+.ui.primaryColored.top.popup:before {
+  background: @primaryColoredArrowBottomBackground;
+}
+
+.ui.secondaryColored.bottom.popup:before {
+  background: @secondaryColoredArrowTopBackground;
+}
+.ui.secondaryColored.right.center.popup:before,
+.ui.secondaryColored.left.center.popup:before {
+  background: @secondaryColoredArrowCenterBackground;
+}
+.ui.secondaryColored.top.popup:before {
+  background: @secondaryColoredArrowBottomBackground;
+}
+
+.ui.successColored.bottom.popup:before {
+  background: @successColoredArrowTopBackground;
+}
+.ui.successColored.right.center.popup:before,
+.ui.successColored.left.center.popup:before {
+  background: @successColoredArrowCenterBackground;
+}
+.ui.successColored.top.popup:before {
+  background: @successColoredArrowBottomBackground;
+}
+
+.ui.infoColored.bottom.popup:before {
+  background: @infoColoredArrowTopBackground;
+}
+.ui.infoColored.right.center.popup:before,
+.ui.infoColored.left.center.popup:before {
+  background: @infoColoredArrowCenterBackground;
+}
+.ui.infoColored.top.popup:before {
+  background: @infoColoredArrowBottomBackground;
+}
+
+.ui.warningColored.bottom.popup:before {
+  background: @warningColoredArrowTopBackground;
+}
+.ui.warningColored.right.center.popup:before,
+.ui.warningColored.left.center.popup:before {
+  background: @warningColoredArrowCenterBackground;
+}
+.ui.warningColored.top.popup:before {
+  background: @warningColoredArrowBottomBackground;
+}
+
+.ui.errorColored.bottom.popup:before {
+  background: @errorColoredArrowTopBackground;
+}
+.ui.errorColored.right.center.popup:before,
+.ui.errorColored.left.center.popup:before {
+  background: @errorColoredArrowCenterBackground;
+}
+.ui.errorColored.top.popup:before {
+  background: @errorColoredArrowBottomBackground;
+}
+
+
 
 /*******************************
             Coupling
@@ -328,6 +396,97 @@
 }
 .ui.inverted.popup:before {
   background-color: @invertedArrowColor;
+  box-shadow: none !important;
+}
+
+/* Colored variant colors  */
+.ui.primaryColored.popup {
+  background: @primaryColoredBackground;
+  color: @primaryColoredColor;
+  border: @primaryColoredBorder;
+  box-shadow: @primaryColoredBoxShadow;
+}
+.ui.primaryColored.popup .header {
+  background-color: @primaryColoredHeaderBackground;
+  color: @primaryColoredHeaderColor;
+}
+.ui.primaryColored.popup:before {
+  background-color: @primaryColoredArrowColor;
+  box-shadow: none !important;
+}
+
+.ui.secondaryColored.popup {
+  background: @secondaryColoredBackground;
+  color: @secondaryColoredColor;
+  border: @secondaryColoredBorder;
+  box-shadow: @secondaryColoredBoxShadow;
+}
+.ui.secondaryColored.popup .header {
+  background-color: @secondaryColoredHeaderBackground;
+  color: @secondaryColoredHeaderColor;
+}
+.ui.secondaryColored.popup:before {
+  background-color: @secondaryColoredArrowColor;
+  box-shadow: none !important;
+}
+
+.ui.successColored.popup {
+  background: @successColoredBackground;
+  color: @successColoredColor;
+  border: @successColoredBorder;
+  box-shadow: @successColoredBoxShadow;
+}
+.ui.successColored.popup .header {
+  background-color: @successColoredHeaderBackground;
+  color: @successColoredHeaderColor;
+}
+.ui.successColored.popup:before {
+  background-color: @successColoredArrowColor;
+  box-shadow: none !important;
+}
+
+.ui.infoColored.popup {
+  background: @infoColoredBackground;
+  color: @infoColoredColor;
+  border: @infoColoredBorder;
+  box-shadow: @infoColoredBoxShadow;
+}
+.ui.infoColored.popup .header {
+  background-color: @infoColoredHeaderBackground;
+  color: @infoColoredHeaderColor;
+}
+.ui.infoColored.popup:before {
+  background-color: @infoColoredArrowColor;
+  box-shadow: none !important;
+}
+
+.ui.warningColored.popup {
+  background: @warningColoredBackground;
+  color: @warningColoredColor;
+  border: @warningColoredBorder;
+  box-shadow: @warningColoredBoxShadow;
+}
+.ui.warningColored.popup .header {
+  background-color: @warningColoredHeaderBackground;
+  color: @warningColoredHeaderColor;
+}
+.ui.warningColored.popup:before {
+  background-color: @warningColoredArrowColor;
+  box-shadow: none !important;
+}
+
+.ui.errorColored.popup {
+  background: @errorColoredBackground;
+  color: @errorColoredColor;
+  border: @errorColoredBorder;
+  box-shadow: @errorColoredBoxShadow;
+}
+.ui.errorColored.popup .header {
+  background-color: @errorColoredHeaderBackground;
+  color: @errorColoredHeaderColor;
+}
+.ui.errorColored.popup:before {
+  background-color: @errorColoredArrowColor;
   box-shadow: none !important;
 }
 

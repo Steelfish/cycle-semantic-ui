@@ -93,9 +93,90 @@
 @invertedHeaderColor: @white;
 @invertedArrowColor: @invertedBackground;
 
+/* Colors */
+@primaryColoredBackground: @primaryColor;
+@primaryColoredColor: @white;
+@primaryColoredBorder: none;
+@primaryColoredBoxShadow: @floatingShadow;
+@primaryColoredHeaderBackground: none;
+@primaryColoredHeaderColor: @white;
+@primaryColoredArrowColor: @primaryColor;
+
+@secondaryColoredBackground: @secondaryColor;
+@secondaryColoredColor: @white;
+@secondaryColoredBorder: none;
+@secondaryColoredBoxShadow: @floatingShadow;
+@secondaryColoredHeaderBackground: none;
+@secondaryColoredHeaderColor: @white;
+@secondaryColoredArrowColor: @secondaryColor;
+
+@successColoredBackground: @successColor;
+@successColoredColor: @white;
+@successColoredBorder: none;
+@successColoredBoxShadow: @floatingShadow;
+@successColoredHeaderBackground: none;
+@successColoredHeaderColor: @white;
+@successColoredArrowColor: @successColor;
+
+@infoColoredBackground: @infoColor;
+@infoColoredColor: @white;
+@infoColoredBorder: none;
+@infoColoredBoxShadow: @floatingShadow;
+
+@infoColoredHeaderBackground: none;
+@infoColoredHeaderColor: @white;
+@infoColoredArrowColor: @infoColor;
+
+@warningColoredBackground: @warningColor;
+@warningColoredColor: @white;
+@warningColoredBorder: none;
+@warningColoredBoxShadow: @floatingShadow;
+
+@warningColoredHeaderBackground: none;
+@warningColoredHeaderColor: @white;
+@warningColoredArrowColor: @warningColor;
+
+@errorColoredBackground: @errorColor;
+@errorColoredColor: @white;
+@errorColoredBorder: none;
+@errorColoredBoxShadow: @floatingShadow;
+
+@errorColoredHeaderBackground: none;
+@errorColoredHeaderColor: @white;
+@errorColoredArrowColor: @errorColor;
+
 /* Arrow color by position */
 @invertedArrowTopBackground: @invertedBackground;
 @invertedArrowCenterBackground: @invertedBackground;
 @invertedArrowBottomBackground: @invertedBackground;
+
+@primaryColoredArrowTopBackground: @primaryColor;
+@primaryColoredArrowCenterBackground: @primaryColor;
+@primaryColoredArrowBottomBackground: @primaryColor;
+
+@secondayColoredArrowColor: @secondaryColor;
+@secondaryColoredArrowTopBackground: @secondaryColor;
+@secondaryColoredArrowCenterBackground: @secondaryColor;
+@secondaryColoredArrowBottomBackground: @secondaryColor;
+
+@successColoredArrowColor: @successColor;
+@successColoredArrowTopBackground: @successColor;
+@successColoredArrowCenterBackground: @successColor;
+@successColoredArrowBottomBackground: @successColor;
+
+@infoColoredArrowColor: @infoColor;
+@infoColoredArrowTopBackground: @infoColor;
+@infoColoredArrowCenterBackground: @infoColor;
+@infoColoredArrowBottomBackground: @infoColor;
+
+@warningColoredArrowColor: @primaryColor;
+@warningColoredArrowTopBackground: @warningColor;
+@warningColoredArrowCenterBackground: @warningColor;
+@warningColoredArrowBottomBackground: @warningColor;
+
+@errorColoredArrowColor: @primaryColor;
+@errorColoredArrowTopBackground: @errorColor;
+@errorColoredArrowCenterBackground: @errorColor;
+@errorColoredArrowBottomBackground: @errorColor;
 
 @import (optional) "@{popup_overrides}";

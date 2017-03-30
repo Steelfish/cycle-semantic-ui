@@ -7,7 +7,7 @@ import delay from "xstream/extra/delay";
 import * as Tether from "tether";
 
 import { DOMContent, isDOMContent, ComponentSources, ComponentSinks } from "../../types";
-import { Size, Animation, Direction } from "../../enums";
+import { Size, Animation, Direction, Color } from "../../enums";
 import { Transition } from "../../modules/transition";
 import { capitalize, getScope } from "../../utils";
 
@@ -20,6 +20,7 @@ export namespace Popup {
     inverted: boolean;
     size: Size | string;
     attachment: Popup.Attachment | string;
+    color: Color | string;
   }
   export interface ContentObj {
     main: DOMContent;
@@ -115,6 +116,9 @@ export namespace Popup {
     }
     if (typeof (props.size) !== "undefined") {
       className += Size.ToClassname(props.size);
+    }
+    if (typeof (props.color) !== "undefined") {
+      className += Color.ToClassname(props.color);
     }
     className += Attachment.ToClassname(props.attachment) + " popup";
     return className;
