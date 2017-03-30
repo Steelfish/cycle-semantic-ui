@@ -28,7 +28,7 @@ export namespace Popup {
   export interface PopupSources extends ComponentSources<Props, DOMContent, ContentObj> {
     args: {
       target$: Stream<VNode | Element>,
-      on$?: Stream<boolean>
+      on$?: Stream<boolean>,
     };
   }
 
@@ -46,16 +46,17 @@ export namespace Popup {
         ([props, content, target]) => popup(props, content, target)
       );
 
-      const mouseenter$ = evt("mouseenter");
-      const mouseleave$ = xs.merge(evt("mouseleave"), mouseenter$)
+      const mouseenter$proxy = xs.create() as xs<Event>;
+      const mouseleave$proxy = xs.create() as xs<Event>;
+      const mouserInteract$ = xs.merge(mouseleave$proxy, mouseenter$proxy)
         .map(evt => evt.type === "mouseenter" ? Direction.In : Direction.Out)
         .compose(debounce(200))
         .filter(dir => dir === Direction.Out);
       const active$ = on$.map(active => active ? Direction.In : Direction.Out).drop(1);
-      const timer$ = active$.map(dir => dir === Direction.Out ? xs.of(Direction.Out)
-        : xs.of(Direction.Out).compose(delay(1000)).endWhen(mouseenter$)
+      const timer$ = active$.map(dir => dir === Direction.Out ? xs.never()
+        : xs.of(Direction.Out).compose(delay(1000)).endWhen(mouseenter$proxy)
       ).flatten();
-      const transition$ = xs.merge(active$, mouseleave$, timer$)
+      const transition$ = xs.merge(active$, mouserInteract$, timer$)
         .map(dir => ({
           animation: Animation.Fade,
           direction: dir
@@ -66,10 +67,15 @@ export namespace Popup {
         ))
         .startWith({ animation: Animation.None, direction: Direction.Out }) as Stream<any>;
       const animatedPopup = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope);
+      mouseenter$proxy.imitate(animatedPopup.events("mouseenter"));
+      mouseleave$proxy.imitate(animatedPopup.events("mouseleave"));
       return {
         DOM: animatedPopup.DOM,
         events: (type) => xs.merge(evt(type), animatedPopup.events(type))
       };
+    }
+    if (scope === null) {
+      return main(sources);
     }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);

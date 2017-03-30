@@ -49,6 +49,9 @@ export namespace Dimmer {
         events: (type) => xs.merge(sources.DOM.select(".dimmer").events(type), animatedContent.events(type))
       };
     }
+    if (scope === null) {
+      return main(sources);
+    }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }

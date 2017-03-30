@@ -74,6 +74,9 @@ export namespace Message {
         events: evt
       };
     }
+    if (scope === null) {
+      return main(sources);
+    }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }

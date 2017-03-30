@@ -56,7 +56,7 @@ export namespace Modal {
             animation: Animation.Scale, direction: active ? Direction.In : Direction.Out
           }
         , ({ animation: Animation.None, direction: Direction.None }));
-      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ }, scope + "_transition");
+      const animatedContent = Transition.run({ DOM: sources.DOM, target$: modal$, transition$ }, scope === null ? "transition" : scope + "_transition");
 
       /*** Activate dimmer ***/
       let dimmerContent$ = animatedContent.DOM.map(x => [x]);
@@ -75,6 +75,9 @@ export namespace Modal {
         DOM: dimmer.DOM,
         events: (type) => xs.merge(sources.DOM.select(".modal").events(type), dimmer.events(type), closeIcon.events(type))
       };
+    }
+    if (scope === null) {
+      return main(sources);
     }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);

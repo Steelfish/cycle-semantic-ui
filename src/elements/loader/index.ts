@@ -58,6 +58,9 @@ export namespace Loader {
         events: (type) => xs.merge(sources.DOM.select(".loader").events(type), dimmer.events(type))
       };
     }
+    if (scope === null) {
+      return main(sources);
+    }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }

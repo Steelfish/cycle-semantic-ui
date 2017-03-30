@@ -4,7 +4,7 @@ import { renderPropsAndContent, makeIsArgs } from "../../common";
 import { numToText, getScope } from "../../utils";
 import isolate from "@cycle/isolate";
 import { div, a, VNode } from "@cycle/dom";
-import xs from "xstream";
+import xs, {MemoryStream} from "xstream";
 
 export namespace Menu {
   export interface Props {
@@ -55,13 +55,13 @@ export namespace Menu {
   export function render(arg1?: MenuArgs | Partial<Props> | Content, arg2: Content = []): VNode {
     return renderPropsAndContent(menu, makeIsArgs(isContent), isContent, arg1, arg2);
   }
-  export function run<V extends MenuItem>(sources: MenuSources, scope: string = getScope()): ValueComponentSinks<V> {
+  export function run<V extends MenuItem>(sources: MenuSources, scope: string = getScope()): ValueComponentSinks<Partial<V>> {
     function main(sources: MenuSources) {
       sources.content$ = sources.content$ ? sources.content$ : xs.of([]);
       sources.props$ = sources.props$ ? sources.props$ : xs.of({});
 
       const click$ = sources.DOM.select(".menu > .item").events("click");
-      const items$ = sources.content$.map(c => isContent(c) ? c : c.main).remember();
+      const items$ = sources.content$.map(c => isContent(c) ? c : c.main).remember() as any as MemoryStream<Partial<V>[]>;
       const clickedId$ = click$.map(ev => parseInt((ev as any).currentTarget.id))
         .filter(n => !isNaN(n) && typeof (n) !== "undefined");
       const clickedItem$ = items$.map(items => clickedId$.map(id => items[id])).flatten()
@@ -75,6 +75,9 @@ export namespace Menu {
         events: (type) => sources.DOM.select(".menu").events(type),
         value$: clickedItem$
       };
+    }
+    if (scope === null) {
+      return main(sources);
     }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);

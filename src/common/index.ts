@@ -45,6 +45,9 @@ export function runPropsAndContent<P, B, C extends ContentObj<B>>(
       events: (type) => sources.DOM.select(selector).events(type),
     };
   }
+  if (scope === null) {
+    return main(sources);
+  }
   const isolatedMain = isolate(main, scope);
   return isolatedMain(sources);
 }

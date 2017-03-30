@@ -41,6 +41,9 @@ export namespace Checkbox {
         value$
       };
     }
+    if (scope === null) {
+      return main(sources);
+    }
     const isolatedMain = isolate(main, scope);
     return isolatedMain(sources);
   }

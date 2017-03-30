@@ -72,6 +72,9 @@ export default function run<V>(sources: Dropdown.DropdownSources<V>, scope: stri
       value$: value$proxy
     };
   }
+  if (scope === null) {
+    return main(sources);
+  }
   const isolatedMain = isolate(main, scope);
   return isolatedMain(sources);
 }
