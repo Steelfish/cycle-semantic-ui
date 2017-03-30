@@ -30,6 +30,7 @@ export namespace Popup {
     args: {
       target$: Stream<VNode | Element>,
       on$?: Stream<boolean>,
+      timeout: number
     };
   }
 
@@ -41,6 +42,7 @@ export namespace Popup {
       const props$ = sources.props$ ? sources.props$ : xs.of({ attachment: Attachment.BottomLeft });
       const content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
       const on$ = sources.args.on$ ? sources.args.on$ : xs.of(true);
+      const timeout = sources.args.timeout === void 0 ? 1000 :  sources.args.timeout; 
       const evt = (type) => sources.DOM.select(".popup").events(type) as Stream<Event>;
 
       const vTree$ = xs.combine(props$, content$, sources.args.target$).map(
@@ -55,7 +57,7 @@ export namespace Popup {
         .filter(dir => dir === Direction.Out);
       const active$ = on$.map(active => active ? Direction.In : Direction.Out).drop(1);
       const timer$ = active$.map(dir => dir === Direction.Out ? xs.never()
-        : xs.of(Direction.Out).compose(delay(1000)).endWhen(mouseenter$proxy)
+        : timeout === null ? xs.never() : xs.of(Direction.Out).compose(delay(timeout)).endWhen(mouseenter$proxy)
       ).flatten();
       const transition$ = xs.merge(active$, mouserInteract$, timer$)
         .map(dir => ({
