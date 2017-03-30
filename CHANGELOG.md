@@ -1,3 +1,20 @@
+<a name="0.3.7"></a>
+## [0.3.7](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.6...v0.3.7) (2017-03-30)
+
+
+### Bug Fixes
+
+* **Dropdown/Menu:** Improved dropdown in menu interop ([37bb80c](https://www.github.com/Steelfish/cycle-semantic-ui/commit/37bb80c))
+
+
+### Features
+
+* Added option to disable isolation of components ([6d996c3](https://www.github.com/Steelfish/cycle-semantic-ui/commit/6d996c3))
+* **Popup:** Added basic support for colored variations ([f4e759f](https://www.github.com/Steelfish/cycle-semantic-ui/commit/f4e759f))
+* **Popup:** Added option to set popup timeout ([dadc686](https://www.github.com/Steelfish/cycle-semantic-ui/commit/dadc686))
+
+
+
 <a name="0.3.6"></a>
 ## [0.3.6](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.5...v0.3.6) (2017-03-20)
 
