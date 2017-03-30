@@ -24965,6 +24965,7 @@ select.ui.dropdown {
 --------------------*/
 /* Wide */
 /* Inverted */
+/* Colors */
 /* Arrow color by position */
 /*******************************
             Popup
@@ -25160,6 +25161,67 @@ select.ui.dropdown {
 .ui.inverted.top.popup:before {
   background: #1B1C1D;
 }
+/* Colored Arrow Colors */
+.ui.primaryColored.bottom.popup:before {
+  background: #2185D0;
+}
+.ui.primaryColored.right.center.popup:before,
+.ui.primaryColored.left.center.popup:before {
+  background: #2185D0;
+}
+.ui.primaryColored.top.popup:before {
+  background: #2185D0;
+}
+.ui.secondaryColored.bottom.popup:before {
+  background: #1B1C1D;
+}
+.ui.secondaryColored.right.center.popup:before,
+.ui.secondaryColored.left.center.popup:before {
+  background: #1B1C1D;
+}
+.ui.secondaryColored.top.popup:before {
+  background: #1B1C1D;
+}
+.ui.successColored.bottom.popup:before {
+  background: #21BA45;
+}
+.ui.successColored.right.center.popup:before,
+.ui.successColored.left.center.popup:before {
+  background: #21BA45;
+}
+.ui.successColored.top.popup:before {
+  background: #21BA45;
+}
+.ui.infoColored.bottom.popup:before {
+  background: #2185D0;
+}
+.ui.infoColored.right.center.popup:before,
+.ui.infoColored.left.center.popup:before {
+  background: #2185D0;
+}
+.ui.infoColored.top.popup:before {
+  background: #2185D0;
+}
+.ui.warningColored.bottom.popup:before {
+  background: #FBBD08;
+}
+.ui.warningColored.right.center.popup:before,
+.ui.warningColored.left.center.popup:before {
+  background: #FBBD08;
+}
+.ui.warningColored.top.popup:before {
+  background: #FBBD08;
+}
+.ui.errorColored.bottom.popup:before {
+  background: #DB2828;
+}
+.ui.errorColored.right.center.popup:before,
+.ui.errorColored.left.center.popup:before {
+  background: #DB2828;
+}
+.ui.errorColored.top.popup:before {
+  background: #DB2828;
+}
 /*******************************
             Coupling
 *******************************/
@@ -25231,6 +25293,91 @@ select.ui.dropdown {
 }
 .ui.inverted.popup:before {
   background-color: #1B1C1D;
+  box-shadow: none !important;
+}
+/* Colored variant colors  */
+.ui.primaryColored.popup {
+  background: #2185D0;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.primaryColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.primaryColored.popup:before {
+  background-color: #2185D0;
+  box-shadow: none !important;
+}
+.ui.secondaryColored.popup {
+  background: #1B1C1D;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.secondaryColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.secondaryColored.popup:before {
+  background-color: #1B1C1D;
+  box-shadow: none !important;
+}
+.ui.successColored.popup {
+  background: #21BA45;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.successColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.successColored.popup:before {
+  background-color: #21BA45;
+  box-shadow: none !important;
+}
+.ui.infoColored.popup {
+  background: #2185D0;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.infoColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.infoColored.popup:before {
+  background-color: #2185D0;
+  box-shadow: none !important;
+}
+.ui.warningColored.popup {
+  background: #FBBD08;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.warningColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.warningColored.popup:before {
+  background-color: #2185D0;
+  box-shadow: none !important;
+}
+.ui.errorColored.popup {
+  background: #DB2828;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
+}
+.ui.errorColored.popup .header {
+  background-color: none;
+  color: #FFFFFF;
+}
+.ui.errorColored.popup:before {
+  background-color: #2185D0;
   box-shadow: none !important;
 }
 /*--------------
