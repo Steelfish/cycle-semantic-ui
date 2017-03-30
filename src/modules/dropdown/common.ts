@@ -1,5 +1,5 @@
 import { Dropdown } from "./index";
-import { EventSelector, } from "../../types";
+import { EventSelector, isVNode } from "../../types";
 import { Color, Size, Animation, Direction } from "../../enums";
 import { Transition } from "../../modules/transition";
 import { Menu } from "../../collections/menu";
@@ -48,16 +48,14 @@ export function getClassName(className: string, props: Partial<Dropdown.Props>):
 
 
 export function createTransition$(evt: EventSelector, args): MemoryStream<Transition.Transition> {
-  const itemClick$ = evt("click").filter(evt => evt.srcElement.classList.contains("item"));
+  const itemClick$ = evt("click").filter(evt => evt.srcElement.classList.contains("item") && !evt.srcElement.classList.contains("dropdown"));
   const dropdownClick$ = evt("click")
     .filter(evt =>
       !(evt.srcElement as HTMLElement).classList.contains("item") ||
       (evt.srcElement as HTMLElement).classList.contains("dropdown")
     )
     .mapTo(Direction.In);
-  const mouseleave$ = xs.merge(evt("mouseleave").filter(
-    evt => evt.srcElement.className.indexOf("icon") === -1 && (!(args && args.search) || typeof (document) === "undefined" || !document.activeElement.classList.contains("search"))
-  ), evt("mouseenter"))
+  const mouseleave$ = xs.merge(evt("mouseleave").filter(evt => !isDropdownIcon(evt) && !searchIsActive(args)), evt("mouseenter"))
     .map(evt => (evt as MouseEvent).type === "mouseenter" ? Direction.In : Direction.Out)
     .compose(debounce(250))
     .filter(dir => dir === Direction.Out);
@@ -80,17 +78,37 @@ export function createTransition$(evt: EventSelector, args): MemoryStream<Transi
 
 export function getText<V>(item: Partial<Dropdown.DropdownItem<V>>, props: Partial<Dropdown.Props>, stat?: boolean, filter?: string): VNode {
   if (typeof (stat) !== "undefined") {
+    if (isVNode(props.default)) {
+      return props.default;
+    }
     return div({ props: { className: "text" } }, props.default);
   }
   if (item === null || typeof (item) === "undefined") {
+    if (isVNode(props.default)) {
+      return props.default;
+    }
     return div({ props: { className: "default text" } }, props.default);
   }
   if (filter && filter.length > 0) {
+    if (isVNode(item.main)) {
+      return item.main;
+    }
     return div({ props: { className: "filtered text" } }, item.main);
+  }
+  if (isVNode(item.main)) {
+    return item.main;
   }
   return div({ props: { className: "text" } }, item.main);
 }
 
 export function isMenuItem(obj): obj is Partial<Menu.MenuItem> {
   return obj && obj.main;
+}
+
+function isDropdownIcon(evt: Event): boolean {
+  return evt.srcElement.className.indexOf("dropdown icon") !== -1 && !evt.srcElement.classList.contains("ui");
+}
+
+function searchIsActive(args): boolean {
+  return (args && args.search && typeof (document) !== "undefined" && document.activeElement.classList.contains("search"));
 }

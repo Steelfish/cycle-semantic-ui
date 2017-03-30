@@ -180,9 +180,6 @@ export namespace Menu {
     if (item.disabled) {
       className += " disabled";
     }
-    if (item.dropdown) {
-      className += " dropdown";
-    }
     if (typeof (item.float) !== "undefined") {
       className += Float.ToClassname(item.float);
     }
@@ -206,7 +203,7 @@ export namespace Menu {
     }
     if (item.dropdown) {
       let content = item.main as VNode;
-      content.data.props.className += " item";
+      content.data.props.className += " " + getItemClassname(item);
       return content;
     }
     if (item.href) {

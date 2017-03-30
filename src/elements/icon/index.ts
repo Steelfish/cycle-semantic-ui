@@ -33,11 +33,11 @@ export namespace Icon {
   function icon(args: IconArgs): VNode {
     let props = args.props ? args.props : {};
     let content = typeof (args.content) !== "undefined" ? isIconType(args.content) ? args.content : args.content.main : -1;
-    const className = getClassname(props, content);
-    return className !== "ui icon" ? i({ props: { className: className } }) : undefined;
+    const className = getClassname(props, content).substring(1);
+    return className !== "icon" ? i({ props: { className: className } }) : undefined;
   }
   function getClassname(props: Partial<Props>, content: IconType | string): string {
-    let className = "ui";
+    let className = "";
     if (props.button) {
       className += " button";
     }
