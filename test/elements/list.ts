@@ -112,6 +112,14 @@ describe("List", function () {
       assert.equal((list.children[0] as VNode).sel, "a");
       assert.equal((list.children[0] as VNode).data.props.href, "#");
     });
+    it("should properly order the content items", function () {
+      let list = List.render([{left: "left", right: "right", icon: "icon", header: "header"}]);
+      let item = list.children[0] as VNode;
+      assert.equal((item.children[0] as VNode).text, "left");
+      assert.equal((item.children[1] as VNode).text, "right");
+      assert.equal((item.children[2] as VNode).text, "icon");
+      assert.equal(((item.children[3] as VNode).children[0] as VNode).text, "header");
+    })
   });
   describe("run", function () {
     let dom = mockDOMSource({
