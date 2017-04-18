@@ -28,8 +28,8 @@
     "xstream": "^10.2.0"
   },
   "devDependencies": {
-    "@cycle/run": "^3.0.0",
     "@cycle/history": "^5.0.0",
+    "@cycle/run": "^3.0.0",
     "@types/es6-shim": "^0.31.32",
     "@types/mocha": "^2.2.39",
     "@types/tether": "^1.4.0",
@@ -49,6 +49,7 @@
     "switch-path": "^1.2.0",
     "ts-loader": "^2.0.1",
     "ts-node": "^2.1.0",
+    "tslint": "^5.1.0",
     "typescript": "^2.2.1",
     "typings": "^2.1.0",
     "webpack": "^2.2.1",
