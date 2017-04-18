@@ -30,7 +30,7 @@ export namespace Popup {
     args: {
       target$: Stream<VNode | Element>,
       on$?: Stream<boolean>,
-      timeout: number
+      timeout?: number
     };
   }
 
