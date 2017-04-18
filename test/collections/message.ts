@@ -146,7 +146,7 @@ describe("Message", function () {
       let message = Message.run({ DOM: dom, args: { closeable: true } }, "message");
       message.DOM.addListener({
         next: (x) => {
-          assert.equal((x.children[0] as VNode).data.props.className, "ui close icon");
+          assert.equal((x.children[0] as VNode).data.props.className, "close icon");
           done();
         }
       });
