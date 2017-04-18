@@ -52,7 +52,7 @@ export namespace List {
         let d = description ? div({ props: { className: "description" } }, description) : [];
         let i = icon ? icon : [];
         let c = (header || description) ? div({ props: { className: "content" } }, [].concat(h, d, main)) : main;
-        let children = [].concat(l, i, c, r);
+        let children = [].concat(l, r, i, c);
         return href
           ? a({ props: { className: "item", href: href } }, children)
           : div({ props: { className: "item" } }, children);
