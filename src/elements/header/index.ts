@@ -1,8 +1,8 @@
 import { div, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import {Size,  Attachment,  Float, TextAlignment, Color} from "../../enums";
-import { renderPropsAndContent, runPropsAndContent } from "../../common";
-import { getScope} from "../../utils";
+import { Size, Attachment, Float, TextAlignment, Color } from "../../enums";
+import { renderPropsAndContent, runPropsAndContent, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Header {
   export interface Props {
@@ -33,6 +33,10 @@ export namespace Header {
 
   export function render(arg1?: HeaderArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
     return renderPropsAndContent(header, isArgs, isDOMContent, arg1, arg2);
+  }
+
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   function header(args: HeaderArgs): VNode {
@@ -88,7 +92,7 @@ export namespace Header {
 
   function isArgs(obj): obj is HeaderArgs {
     return (typeof (obj) !== "undefined") && (
-      typeof(obj.props) !== "undefined" ||
+      typeof (obj.props) !== "undefined" ||
       isDOMContent(obj.content) || (
         typeof (obj.content) !== "undefined" && (
           isDOMContent(obj.content.main) ||

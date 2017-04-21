@@ -1,8 +1,8 @@
 import { VNode, i } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj } from "../../types";
 import { Color, Size, IconType } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
-import { getScope} from "../../utils";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Icon {
   export interface Props {
@@ -28,6 +28,9 @@ export namespace Icon {
   }
   export function render(arg1?: IconArgs | Partial<Props> | IconType | string, arg2?: IconType | string) {
     return renderPropsAndContent(icon, makeIsArgs(isIconType), isIconType, arg1, arg2);
+  } 
+  export function from(node: VNode, props: Partial<Props> = {}, content: IconType = -1): VNode {
+    return addClassName(node, getClassname(props, content));
   }
 
   function icon(args: IconArgs): VNode {

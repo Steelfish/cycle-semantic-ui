@@ -1,7 +1,7 @@
 
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { VerticalAlignment, TextAlignment, Size, Float } from "../../enums";
 import { numToText, getScope } from "../../utils";
 
@@ -32,7 +32,9 @@ export namespace Column {
   export function run(sources: ColumnSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, column, ".column", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
 
   function column(args: ColumnArgs) {
     let props = args.props ? args.props : {};

@@ -3,8 +3,8 @@ import isolate from "@cycle/isolate";
 import xs from "xstream";
 import { DOMContent, isDOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ValueComponentSinks } from "../../types";
 import { Color, Size } from "../../enums";
-import { renderPropsAndContent, makeIsArgs } from "../../common";
-import { getScope} from "../../utils";
+import { renderPropsAndContent, makeIsArgs, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Textbox {
   export interface Props {
@@ -32,6 +32,10 @@ export namespace Textbox {
 
   export function render(arg1?: TextboxArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
     return renderPropsAndContent(textbox, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   export function run(sources: TextboxSources, scope: string = getScope()): ValueComponentSinks<string> {

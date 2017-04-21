@@ -1,6 +1,6 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { TextAlignment, VerticalAlignment} from "../../enums";
 import { numToText, getScope } from "../../utils";
 
@@ -28,13 +28,15 @@ export namespace Row {
   export function run(sources: RowSources, scope: string = getScope()) : ComponentSinks {
     return runPropsAndContent(sources, row, ".row", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
   export function row(args): VNode {
     let props = args.props ? args.props : {};
     let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main: [];
-    return div({ props: { className: getClassname(props, content) } }, content);
+    return div({ props: { className: getClassname(props) } }, content);
   }
-  function getClassname(props: Partial<Props>, content: DOMContent): string {
+  function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.doubling) {
       className += " doubling";

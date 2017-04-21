@@ -1,7 +1,7 @@
 import { VNode, table, tr, th, td, thead, tbody, tfoot } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Color } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, addClassName } from "../../common";
 import { getScope} from "../../utils";
 
 export namespace Table {
@@ -37,7 +37,9 @@ export namespace Table {
   export function run(sources: TableSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, tableR, ".table", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
 
   function tableR(args: TableArgs): VNode {
     let props = args.props ? args.props : {};

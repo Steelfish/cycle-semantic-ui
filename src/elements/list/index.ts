@@ -1,7 +1,7 @@
 import { VNode, a, div } from "@cycle/dom";
 import { Size,  VerticalAlignment, Float } from "../../enums";
 import { DOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { getScope} from "../../utils";
 
 export namespace List {
@@ -39,6 +39,9 @@ export namespace List {
 
   export function run(sources: ListSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, list, ".list", scope);
+  }
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   export function list(args: ListArgs): VNode {

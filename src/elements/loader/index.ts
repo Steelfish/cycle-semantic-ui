@@ -4,7 +4,7 @@ import { VNode, div } from "@cycle/dom";
 import { Dimmer } from "../../modules/dimmer";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
 import { Size } from "../../enums";
-import { renderPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { capitalize, getScope } from "../../utils";
 
 
@@ -31,6 +31,10 @@ export namespace Loader {
 
   export function render(arg1?: LoaderArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
     return renderPropsAndContent(loader, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }  
+  
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   export function run(sources: LoaderSources, scope: string = getScope()): ComponentSinks {

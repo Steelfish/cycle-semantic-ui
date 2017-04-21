@@ -1,7 +1,7 @@
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
 import { Color, Attachment, Float, TextAlignment } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { getScope} from "../../utils";
 
 export namespace Segment {
@@ -35,7 +35,9 @@ export namespace Segment {
   export function run(sources: SegmentSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, segment, ".segment", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
 
   function segment(args: SegmentArgs): VNode {
     let props = args.props ? args.props : {};

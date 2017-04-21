@@ -1,8 +1,8 @@
 import { div, a, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSinks, ComponentSources } from "../../types";
 import { Color, Size, Attachment, Float } from "../../enums";
-import { runPropsAndContent, renderPropsAndContent } from "../../common";
-import { getScope} from "../../utils";
+import { runPropsAndContent, renderPropsAndContent, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Button {
   export interface Props {
@@ -39,6 +39,10 @@ export namespace Button {
   }
   export function run(sources: ButtonSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, button, ".button", scope);
+  }
+
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   function button(args: ButtonArgs): VNode {

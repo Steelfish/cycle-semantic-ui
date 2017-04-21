@@ -1,7 +1,7 @@
 import { Size, Attachment, Color} from "../../enums";
 import { VNode, div } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
-import { renderPropsAndContent, runPropsAndContent } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, addClassName } from "../../common";
 import { getScope} from "../../utils";
 
 export namespace Label {
@@ -38,6 +38,9 @@ export namespace Label {
 
   export function render(arg1?: LabelArgs | Partial<Props> | DOMContent, arg2?: DOMContent) {
     return renderPropsAndContent(label, isArgs, isDOMContent, arg1, arg2);
+  }  
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
   }
 
   function label(args: LabelArgs): VNode {

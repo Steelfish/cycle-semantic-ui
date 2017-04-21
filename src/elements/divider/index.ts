@@ -1,6 +1,6 @@
 import { div, VNode } from "@cycle/dom";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ContentObj, ComponentSources, ComponentSinks } from "../../types";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { getScope} from "../../utils";
 
 export namespace Divider {
@@ -24,6 +24,9 @@ export namespace Divider {
 
   export function render(arg1?: DividerArgs | Partial<Props> | DOMContent, arg2?: DOMContent): VNode {
     return renderPropsAndContent(divider, makeIsArgs(isDOMContent), isDOMContent, arg1, arg2);
+  }
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassName(props));
   }
 
   function divider(args: DividerArgs): VNode {

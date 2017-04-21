@@ -5,8 +5,8 @@ import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { DOMContent, isDOMContent, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size, Color, Attachment, Animation, Direction, IconType } from "../../enums";
-import { renderPropsAndContent } from "../../common";
-import { getScope} from "../../utils";
+import { renderPropsAndContent, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Message {
   export interface Props {
@@ -38,13 +38,17 @@ export namespace Message {
     return renderPropsAndContent(message, isArgs, isDOMContent, arg1, arg2);
   }
 
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
+
   export function run(sources: MessageSources, scope: string = getScope()): ComponentSinks {
     function main(sources: MessageSources) {
       let props$ = sources.props$ ? sources.props$ : xs.of({});
       let content$ = sources.content$ ? sources.content$.map(c => isDOMContent(c) ? { main: c } : c) : xs.of({ main: [] });
       let on$ = sources.args && sources.args.on$ ? sources.args.on$ : xs.of(true);
 
-      let vTree$:Stream<VNode>, active$:Stream<boolean>, icon:ComponentSinks;
+      let vTree$: Stream<VNode>, active$: Stream<boolean>, icon: ComponentSinks;
       if (sources.args && sources.args.closeable) {
         icon = Icon.run({ DOM: sources.DOM, content$: xs.of(IconType.Close) }, scope);
         const close$ = icon.events("click").mapTo(false);
@@ -59,9 +63,9 @@ export namespace Message {
         ? { animation: Animation.None, direction: active ? Direction.In : Direction.Out }
         : { animation: Animation.Fade, direction: active ? Direction.In : Direction.Out }
         , { animation: Animation.None, direction: Direction.None });
-        
+
       const animation = Transition.run({ DOM: sources.DOM, target$: vTree$, transition$ }, scope);
-      
+
       let evt;
       if (sources.args && sources.args.closeable) {
         evt = (type) => xs.merge(sources.DOM.select(".message").events(type), icon.events(type), animation.events(type));

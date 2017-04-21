@@ -1,10 +1,10 @@
 import { ComponentSources, ValueComponentSinks, StyleAndContentArgs, DOMContent, ContentObj, } from "../../types";
 import { Color, Size, Attachment, Float } from "../../enums";
-import { renderPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { numToText, getScope } from "../../utils";
 import isolate from "@cycle/isolate";
 import { div, a, VNode } from "@cycle/dom";
-import xs, {MemoryStream} from "xstream";
+import xs, { MemoryStream } from "xstream";
 
 export namespace Menu {
   export interface Props {
@@ -54,6 +54,9 @@ export namespace Menu {
 
   export function render(arg1?: MenuArgs | Partial<Props> | Content, arg2: Content = []): VNode {
     return renderPropsAndContent(menu, makeIsArgs(isContent), isContent, arg1, arg2);
+  }
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props, node.children.length));
   }
   export function run<V extends MenuItem>(sources: MenuSources, scope: string = getScope()): ValueComponentSinks<Partial<V>> {
     function main(sources: MenuSources) {

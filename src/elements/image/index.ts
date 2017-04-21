@@ -1,7 +1,7 @@
 import { VNode, a, img } from "@cycle/dom";
 import { StyleAndContentArgs, ComponentSources, ComponentSinks, ContentObj } from "../../types";
 import { Size, VerticalAlignment, Float } from "../../enums";
-import { runPropsAndContent, renderPropsAndContent, makeIsArgs } from "../../common";
+import { runPropsAndContent, renderPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { getScope} from "../../utils";
 export namespace Image {
   export interface Props {
@@ -27,7 +27,9 @@ export namespace Image {
   export function render(arg1?: ImageArgs | Partial<Props> | string, arg2?: string) {
     return renderPropsAndContent(image, makeIsArgs(isUrl), isUrl, arg1, arg2);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
   export function image(args: ImageArgs): VNode {
     let props = args.props ? args.props : {};
     let content = args.content ? isUrl(args.content) ? args.content : args.content.main : "";

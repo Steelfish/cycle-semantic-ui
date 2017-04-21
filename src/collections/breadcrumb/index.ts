@@ -1,8 +1,8 @@
 import { div, a, span, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, ContentObj, StyleAndContentArgs, DOMContent } from "../../types";
 import { Size } from "../../enums";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
-import { getScope} from "../../utils";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
+import { getScope } from "../../utils";
 
 export namespace Breadcrumb {
   export interface Props {
@@ -15,20 +15,23 @@ export namespace Breadcrumb {
     text: DOMContent;
     href: string;
   }
-  export type BreadcrumbArgs = StyleAndContentArgs<Props,Content, ContentObj<Content>>;
+  export type BreadcrumbArgs = StyleAndContentArgs<Props, Content, ContentObj<Content>>;
   export type BreadcrumbSources = ComponentSources<Props, Content, ContentObj<Content>>;
-  
+
   export function render(arg1?: Partial<Props> | Content | BreadcrumbArgs, arg2?: Content): VNode {
-    return renderPropsAndContent(breadcrumb, makeIsArgs(isContent),isContent, arg1, arg2);
+    return renderPropsAndContent(breadcrumb, makeIsArgs(isContent), isContent, arg1, arg2);
   }
-  export function run(sources: BreadcrumbSources, scope: string = getScope()) : ComponentSinks {
+  export function run(sources: BreadcrumbSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, breadcrumb, ".breadcrumb", scope);
   }
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassName(props));
+  }
 
-  function breadcrumb(args: BreadcrumbArgs) : VNode {
-    let props = args.props ? args.props : {divider: "/"};
+  function breadcrumb(args: BreadcrumbArgs): VNode {
+    let props = args.props ? args.props : { divider: "/" };
     let content = [];
-    if(args.content) {
+    if (args.content) {
       if (isContent(args.content)) {
         content = args.content;
       } else if (isContent(args.content.main)) {
@@ -56,7 +59,7 @@ export namespace Breadcrumb {
   function section(section: Partial<BreadCrumbItem>): VNode {
     return section.active
       ? div({ props: { className: "active section" } }, section.text)
-      : section.href 
+      : section.href
         ? a({ props: { className: "section", href: section.href } }, section.text)
         : div({ props: { className: "section" } }, section.text);
   }

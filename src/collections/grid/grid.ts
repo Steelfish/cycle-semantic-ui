@@ -1,6 +1,6 @@
 import { div, VNode } from "@cycle/dom";
 import { ComponentSources, ComponentSinks, StyleAndContentArgs, ContentObj, DOMContent, isDOMContent } from "../../types";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 import { VerticalAlignment, TextAlignment } from "../../enums";
 import { numToText, getScope } from "../../utils";
 
@@ -45,13 +45,15 @@ export namespace Grid {
   export function run(sources: GridSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, grid, ".grid", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props));
+  }
   export function grid(args: GridArgs): VNode {
     let content = args.content ? isDOMContent(args.content) ? args.content : args.content.main : [];
     let props = typeof (args.props) !== "undefined" ? args.props : {};
-    return div({ props: { className: getClassname(props, content) } }, content);
+    return div({ props: { className: getClassname(props) } }, content);
   }
-  export function getClassname(props: Partial<Props>, content: DOMContent): string {
+  export function getClassname(props: Partial<Props>): string {
     let className = "ui";
     if (props.equalWidth) {
       className += " equal width";

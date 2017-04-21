@@ -2,7 +2,7 @@ import { VNode, div, a } from "@cycle/dom";
 import { DOMContent, ContentObj, StyleAndContentArgs, ComponentSources, ComponentSinks } from "../../types";
 import { Size,  Attachment} from "../../enums";
 import { numToText, getScope } from "../../utils";
-import { renderPropsAndContent, runPropsAndContent, makeIsArgs } from "../../common";
+import { renderPropsAndContent, runPropsAndContent, makeIsArgs, addClassName } from "../../common";
 
 export namespace Steps {
   export interface Props {
@@ -35,7 +35,9 @@ export namespace Steps {
   export function run(sources: StepSources, scope: string = getScope()): ComponentSinks {
     return runPropsAndContent(sources, steps, ".steps", scope);
   }
-
+  export function from(node: VNode, props: Partial<Props> = {}): VNode {
+    return addClassName(node, getClassname(props, node.children.length));
+  }
   function steps(args: StepArgs): VNode {
     let props = args.props ? args.props : {};
     let content = args.content ? isContent(args.content) ? args.content : args.content.main : [];
