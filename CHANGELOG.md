@@ -1,3 +1,13 @@
+<a name="0.3.12"></a>
+## [0.3.12](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.11...v0.3.12) (2017-04-25)
+
+
+### Bug Fixes
+
+* **Dropdown:** Search now works on items that aren't just strings ([b40a085](https://www.github.com/Steelfish/cycle-semantic-ui/commit/b40a085))
+
+
+
 <a name="0.3.11"></a>
 ## [0.3.11](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.11) (2017-04-25)
 
