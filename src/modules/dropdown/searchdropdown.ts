@@ -82,7 +82,7 @@ export default function run<V>(sources: Dropdown.DropdownSources<V>, scope: stri
 function filterContent<V>(item: Partial<Dropdown.DropdownItem<V>>, filter: string): boolean {
   function f(node: VNode | string) {
     if (typeof (node) === "string") {
-      return node === filter;
+      return node.indexOf(filter) !== -1 || !filter;
     }
     if (node.text) {
       return node.text.indexOf(filter) !== -1 || !filter;
