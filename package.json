@@ -1,6 +1,6 @@
 {
   "name": "cycle-semantic-ui",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "A set of cyclejs components using Semantic UI",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
