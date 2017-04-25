@@ -8,7 +8,8 @@ import xs, { Stream, MemoryStream } from "xstream";
 import dropRepeats from "xstream/extra/dropRepeats";
 import debounce from "xstream/extra/debounce";
 import { div, VNode } from "@cycle/dom";
-
+import { deepArrayCopy} from "../../utils";
+ 
 export function getClassName(className: string, props: Partial<Dropdown.Props>): string {
   if (props.rightAligned) {
     className += " right";
@@ -93,12 +94,12 @@ export function getText<V>(item: Partial<Dropdown.DropdownItem<V>>, props: Parti
     if (isVNode(item.main)) {
       return item.main;
     }
-    return div({ props: { className: "filtered text" } }, item.main);
+    return div({ props: { className: "filtered text" } }, deepArrayCopy(item.main as any));
   }
   if (isVNode(item.main)) {
     return item.main;
   }
-  return div({ props: { className: "text" } }, item.main);
+  return div({ props: { className: "text" } }, deepArrayCopy(item.main as any));
 }
 
 export function isMenuItem(obj): obj is Partial<Menu.MenuItem> {

@@ -86,3 +86,7 @@ export function numToText(num: number): string {
   }
 }
 
+export function deepArrayCopy(obj: any[])
+{
+    return JSON.parse(JSON.stringify(obj));
+}

@@ -199,7 +199,6 @@ describe("Textbox", function () {
           assert.equal(input.data.props.value, testStrings[index]);
           index++;
           if (index === testStrings.length - 1) {
-            console.log("DONE");
             done();
           }
         }

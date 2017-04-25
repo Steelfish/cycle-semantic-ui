@@ -11,7 +11,7 @@ import { Icon } from "../../elements/icon";
 import { Transition } from "../../modules/transition";
 import { isVNode, ValueComponentSinks } from "../../types";
 import { IconType, Direction } from "../../enums";
-import { getScope } from "../../utils";
+import { getScope, deepArrayCopy } from "../../utils";
 
 
 
@@ -37,8 +37,8 @@ export default function run<V>(sources: Dropdown.DropdownSources<V>, scope: stri
       )
     ).remember();
     const activeItem$ = menuItems$.map(content => content.filter(item => item.active)[0]);
-    const filteredItems$ = xs.combine(content$, filter$).map(
-      ([content, filter]) => content.filter(c => filterContent(c, filter))
+    const filteredItems$ = xs.combine(menuItems$, filter$).map(
+      ([content, filter]) => deepArrayCopy(content.filter(c => filterContent(c, filter)))
     ).remember();
     const menu = Menu.run<Dropdown.DropdownItem<V>>({ DOM: sources.DOM, props$: xs.of({ submenu: true }), content$: filteredItems$ }, scope);
 
