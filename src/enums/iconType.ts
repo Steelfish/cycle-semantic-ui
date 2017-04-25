@@ -8,7 +8,7 @@ export namespace IconType {
       return "";
     }
     let name = IconType[type];
-    return " " + name.match(/[A-Z][a-z]+/g).join(" ").toLowerCase();
+    return " " + name.match(/[A-Z][a-z]*/g).join(" ").toLowerCase();
   }
 }
 
