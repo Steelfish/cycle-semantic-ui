@@ -1,13 +1,12 @@
-<a name="0.3.9"></a>
-## [0.3.9](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.9) (2017-04-25)
-
+<a name="0.3.11"></a>
+## [0.3.11](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.11) (2017-04-25)
 
 ### Bug Fixes
 
 * **IconType:** IconType "H" should now get a classname ([1157045](https://www.github.com/Steelfish/cycle-semantic-ui/commit/1157045))
-* **List:** Fixed html output for right floated content ([17d77e4](https://www.github.com/Steelfish/cycle-semantic-ui/commit/17d77e4))
-* **Popup:** Timeout is now properly an optional argument ([7ea57b5](https://www.github.com/Steelfish/cycle-semantic-ui/commit/7ea57b5))
 
+<a name="0.3.9"></a>
+## [0.3.9](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.9) (2017-04-25)
 
 ### Features
 
