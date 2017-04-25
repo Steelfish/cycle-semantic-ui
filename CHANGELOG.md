@@ -1,3 +1,13 @@
+<a name="0.3.13"></a>
+## [0.3.13](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.12...v0.3.13) (2017-04-25)
+
+
+### Bug Fixes
+
+* **Dropdown:** Fixed various issues with array content ([e4fcd33](https://www.github.com/Steelfish/cycle-semantic-ui/commit/e4fcd33))
+
+
+
 <a name="0.3.12"></a>
 ## [0.3.12](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.11...v0.3.12) (2017-04-25)
 
@@ -15,8 +25,8 @@
 
 * **IconType:** IconType "H" should now get a classname ([1157045](https://www.github.com/Steelfish/cycle-semantic-ui/commit/1157045))
 
-<a name="0.3.9"></a>
-## [0.3.9](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.9) (2017-04-25)
+<a name="0.3.10"></a>
+## [0.3.10](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.7...v0.3.9) (2017-04-25)
 
 ### Features
 
