@@ -1,3 +1,13 @@
+<a name="0.3.16"></a>
+## [0.3.16](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.15...v0.3.16) (2017-08-20)
+
+
+### Bug Fixes
+
+* Actually fix the issue with attrs from v0.3.14 ([5db3744](https://www.github.com/Steelfish/cycle-semantic-ui/commit/5db3744))
+
+
+
 <a name="0.3.15"></a>
 ## [0.3.15](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.14...v0.3.15) (2017-08-20)
 
