@@ -1,3 +1,13 @@
+<a name="0.3.14"></a>
+## [0.3.14](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.13...v0.3.14) (2017-08-20)
+
+
+### Bug Fixes
+
+* from functions throws typeerror for null attrs ([7545244](https://www.github.com/Steelfish/cycle-semantic-ui/commit/7545244))
+
+
+
 <a name="0.3.13"></a>
 ## [0.3.13](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.12...v0.3.13) (2017-04-25)
 
