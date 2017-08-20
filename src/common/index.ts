@@ -1,4 +1,3 @@
-
 import xs from "xstream";
 import isolate from "@cycle/isolate";
 import { VNode } from "@cycle/dom";
@@ -20,14 +19,16 @@ export function addClassName(node: VNode, className: string): VNode {
     } else {
       node.data.props.className = node.data.props.className + " " + className;
     }
-  } else {
+  } else if (node.data.attrs) {
     if (node.data.attrs.className === void 0) {
-      node.data.attrs.className = className;
+      node.data.props.className = className;
     } else if (className.indexOf("ui") !== -1) {
       node.data.attrs.className = node.data.attrs.className + className.substr(2);
     } else {
       node.data.attrs.className = node.data.attrs.className + " " + className;
     }
+  } else {
+    node.data.props = { className};
   }
   return node;
 }
