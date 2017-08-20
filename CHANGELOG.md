@@ -1,3 +1,13 @@
+<a name="0.3.15"></a>
+## [0.3.15](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.14...v0.3.15) (2017-08-20)
+
+
+### Bug Fixes
+
+* fix typescript errors for build ([ef4566d](https://www.github.com/Steelfish/cycle-semantic-ui/commit/ef4566d))
+
+
+
 <a name="0.3.14"></a>
 ## [0.3.14](https://www.github.com/Steelfish/cycle-semantic-ui/compare/v0.3.13...v0.3.14) (2017-08-20)
 
