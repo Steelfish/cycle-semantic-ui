@@ -71,7 +71,7 @@ export function createTransition$(evt: EventSelector, args): MemoryStream<Transi
       direction: dir
     }))
     .compose(dropRepeats(
-      (a, b) => a.direction === b.direction && a.animation === b.animation
+      (a, b) => (a as any).direction === (b as any).direction && (a as any).animation === (b as any).animation
     ))
     .drop(1)
     .startWith({ animation: Animation.None, direction: Direction.Out });

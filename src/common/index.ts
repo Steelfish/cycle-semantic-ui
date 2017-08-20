@@ -80,7 +80,7 @@ export function runPropsAndContent<P, B, C extends ContentObj<B>>(
 export function makeIsArgs<P, B, C extends ContentObj<B>>(isB: IsBFn<B>): IsArgsFn<P, B, C> {
   return <(obj) => obj is StyleAndContentArgs<P, B, C>>((obj) => isArgs(obj, isB));
 }
-export function isArgs<P, B, C>(obj, isB: IsBFn<B>): obj is StyleAndContentArgs<P, B, C> {
+export function isArgs<P, B, C extends ContentObj<B>>(obj, isB: IsBFn<B>): obj is StyleAndContentArgs<P, B, C> {
   return obj && (
     typeof (obj.props) !== "undefined" ||
     (typeof (obj.content) !== "undefined" && (isB(obj.content) || isB(obj.content.main)))
